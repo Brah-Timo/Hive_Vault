@@ -2,6 +2,10 @@
 
 > **Advanced Secure Storage Wrapper for Flutter** — a production-grade middleware layer over [Hive](https://pub.dev/packages/hive) that adds AES-256-GCM/CBC encryption, GZip/LZ4 compression, O(1) in-memory indexing, ACID transactions, a fluent query DSL, plugin middleware, Prometheus-compatible metrics, horizontal sharding, sync/conflict resolution, and automated key rotation.
 
+
+<img width="1408" height="768" alt="image" src="https://github.com/user-attachments/assets/65107a7d-962d-495b-bae4-24a7511baafb" />
+
+
 [![Dart SDK](https://img.shields.io/badge/Dart-≥3.0.0-blue)](https://dart.dev)
 [![Flutter](https://img.shields.io/badge/Flutter-≥3.10-blue)](https://flutter.dev)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
