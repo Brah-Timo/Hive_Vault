@@ -146,6 +146,7 @@ class TtlManager {
   }
 
   void _requireInit() {
-    assert(_ttlBox != null, 'TtlManager not initialised. Call initialize() first.');
+    assert(_ttlBox != null,
+        'TtlManager not initialised. Call initialize() first.');
   }
 }

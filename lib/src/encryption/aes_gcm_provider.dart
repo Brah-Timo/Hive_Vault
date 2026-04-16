@@ -85,7 +85,8 @@ class AesGcmProvider extends EncryptionProvider {
       final cipherAndTag = Uint8List.fromList(
         [...secretBox.cipherText, ...secretBox.mac.bytes],
       );
-      final envelope = Uint8List(kSaltSize + kGcmNonceSize + cipherAndTag.length);
+      final envelope =
+          Uint8List(kSaltSize + kGcmNonceSize + cipherAndTag.length);
       envelope.setRange(_saltStart, _saltEnd, salt);
       envelope.setRange(_nonceStart, _nonceEnd, nonce);
       envelope.setRange(_dataStart, envelope.length, cipherAndTag);
@@ -119,8 +120,7 @@ class AesGcmProvider extends EncryptionProvider {
       // Split ciphertext and GCM tag.
       final cipherText =
           cipherAndTag.sublist(0, cipherAndTag.length - kGcmTagSize);
-      final tag =
-          cipherAndTag.sublist(cipherAndTag.length - kGcmTagSize);
+      final tag = cipherAndTag.sublist(cipherAndTag.length - kGcmTagSize);
 
       // 2. Derive the same sub-key.
       final derivedKey = await KeyManager.deriveKeyFromPassword(
@@ -138,7 +138,8 @@ class AesGcmProvider extends EncryptionProvider {
         mac: crypto.Mac(tag),
       );
 
-      final plainText = await algorithm.decrypt(secretBox, secretKey: secretKey);
+      final plainText =
+          await algorithm.decrypt(secretBox, secretKey: secretKey);
       return Uint8List.fromList(plainText);
     } on crypto.SecretBoxAuthenticationError {
       throw VaultIntegrityException(

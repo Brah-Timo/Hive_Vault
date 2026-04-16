@@ -181,8 +181,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
   }
 
   Widget _buildProgress() {
-    final progress =
-        _entries.isEmpty ? 0.0 : _totalConfirmed / _entries.length;
+    final progress = _entries.isEmpty ? 0.0 : _totalConfirmed / _entries.length;
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
       child: Column(
@@ -193,8 +192,8 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
             children: [
               Text(
                 '$_totalConfirmed / ${_entries.length} counted',
-                style: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               ),
               Text(
                 '${(progress * 100).toStringAsFixed(0)}%',
@@ -214,9 +213,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
               value: progress,
               backgroundColor: Colors.grey.shade200,
               valueColor: AlwaysStoppedAnimation<Color>(
-                progress == 1.0
-                    ? AppTheme.successColor
-                    : AppTheme.primaryColor,
+                progress == 1.0 ? AppTheme.successColor : AppTheme.primaryColor,
               ),
               minHeight: 6,
             ),
@@ -418,8 +415,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
                         ),
                       ),
                       if (entry.scanned)
-                        const Icon(Icons.qr_code,
-                            size: 14, color: Colors.grey),
+                        const Icon(Icons.qr_code, size: 14, color: Colors.grey),
                     ],
                   ),
                   Text(
@@ -542,9 +538,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
                 : AppTheme.infoColor.withOpacity(0.12),
             child: Icon(
               e.variance < 0 ? Icons.trending_down : Icons.trending_up,
-              color: e.variance < 0
-                  ? AppTheme.errorColor
-                  : AppTheme.infoColor,
+              color: e.variance < 0 ? AppTheme.errorColor : AppTheme.infoColor,
               size: 20,
             ),
           ),
@@ -559,8 +553,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              color:
-                  e.variance < 0 ? AppTheme.errorColor : AppTheme.infoColor,
+              color: e.variance < 0 ? AppTheme.errorColor : AppTheme.infoColor,
             ),
           ),
         );
@@ -578,22 +571,19 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
           color: Theme.of(context).colorScheme.surface,
           boxShadow: const [
             BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: Offset(0, -2))
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, -2))
           ],
         ),
         child: Row(
           children: [
-            _summaryChip(Icons.done_all, '$confirmed confirmed',
-                AppTheme.successColor),
+            _summaryChip(
+                Icons.done_all, '$confirmed confirmed', AppTheme.successColor),
             const SizedBox(width: 8),
             _summaryChip(Icons.warning_amber, '$variances variances',
                 variances > 0 ? AppTheme.warningColor : Colors.grey),
             const Spacer(),
             ElevatedButton.icon(
-              onPressed:
-                  confirmed > 0 && !_isSubmitting ? _submitCount : null,
+              onPressed: confirmed > 0 && !_isSubmitting ? _submitCount : null,
               icon: const Icon(Icons.check_circle),
               label: const Text('Apply'),
             ),
@@ -604,8 +594,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
   }
 
   Widget _summaryChip(IconData icon, String label, Color color) => Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: color.withOpacity(0.12),
           borderRadius: BorderRadius.circular(20),
@@ -617,9 +606,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
             const SizedBox(width: 4),
             Text(label,
                 style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: color)),
+                    fontSize: 11, fontWeight: FontWeight.bold, color: color)),
           ],
         ),
       );
@@ -652,8 +639,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
       entry.scanned = true;
     });
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:
-          Text('${entry.product.name} counted: ${entry.counted.toInt()}'),
+      content: Text('${entry.product.name} counted: ${entry.counted.toInt()}'),
       duration: const Duration(seconds: 1),
     ));
   }
@@ -695,8 +681,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
   }
 
   void _editCount(CountEntry entry) {
-    final ctrl =
-        TextEditingController(text: entry.counted.toInt().toString());
+    final ctrl = TextEditingController(text: entry.counted.toInt().toString());
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -738,8 +723,8 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
         _entries.where((e) => e.confirmed && e.hasVariance).toList();
     if (toAdjust.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'No variances to apply — all counts match system stock.')));
+          content:
+              Text('No variances to apply — all counts match system stock.')));
       return;
     }
 
@@ -780,8 +765,7 @@ class _InventoryCountScreenState extends State<InventoryCountScreen>
     setState(() => _isSubmitting = false);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            '${toAdjust.length} adjustment(s) applied successfully'),
+        content: Text('${toAdjust.length} adjustment(s) applied successfully'),
         backgroundColor: AppTheme.successColor,
       ));
       Navigator.pop(context);

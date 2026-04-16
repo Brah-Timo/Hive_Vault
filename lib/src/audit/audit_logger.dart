@@ -81,8 +81,7 @@ class AuditLogger {
 
   /// Returns entries whose timestamp falls within [start]..[end].
   List<AuditEntry> getByTimeRange(DateTime start, DateTime end) => _log
-      .where((e) =>
-          e.timestamp.isAfter(start) && e.timestamp.isBefore(end))
+      .where((e) => e.timestamp.isAfter(start) && e.timestamp.isBefore(end))
       .toList(growable: false);
 
   /// Returns entries that recorded errors (action == [AuditAction.error]).
@@ -103,7 +102,10 @@ class AuditLogger {
       counts[entry.action.name] = (counts[entry.action.name] ?? 0) + 1;
       totalBytesOriginal += entry.originalSize ?? 0;
       totalBytesCompressed += entry.compressedSize ?? 0;
-      if (entry.fromCache) cacheHits++; else cacheMisses++;
+      if (entry.fromCache)
+        cacheHits++;
+      else
+        cacheMisses++;
       if (entry.elapsed != null) totalElapsed += entry.elapsed!;
     }
 

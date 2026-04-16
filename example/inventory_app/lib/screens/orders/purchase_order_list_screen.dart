@@ -41,9 +41,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
 
         // Apply filters
         if (_statusFilter != null) {
-          orders = orders
-              .where((o) => o.status == _statusFilter)
-              .toList();
+          orders = orders.where((o) => o.status == _statusFilter).toList();
         }
         if (_search.isNotEmpty) {
           final q = _search.toLowerCase();
@@ -72,8 +70,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                   final count = await prov.createReorderRequests();
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text('$count reorder request(s) created'),
+                    content: Text('$count reorder request(s) created'),
                   ));
                 },
               ),
@@ -116,8 +113,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) =>
-                                      PurchaseOrderDetailScreen(
-                                          order: order),
+                                      PurchaseOrderDetailScreen(order: order),
                                 ),
                               ),
                             );
@@ -172,8 +168,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
         children: [
           _statusChip(null, 'All (${allOrders.length})'),
           ...PurchaseOrderStatus.values.map((s) {
-            final count =
-                allOrders.where((o) => o.status == s).length;
+            final count = allOrders.where((o) => o.status == s).length;
             return _statusChip(s, '${s.label} ($count)');
           }),
         ],
@@ -183,9 +178,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
 
   Widget _statusChip(PurchaseOrderStatus? status, String label) {
     final isSelected = _statusFilter == status;
-    final color = status == null
-        ? AppTheme.primaryColor
-        : _statusColor(status);
+    final color = status == null ? AppTheme.primaryColor : _statusColor(status);
     return Padding(
       padding: const EdgeInsets.only(right: 6),
       child: FilterChip(
@@ -195,21 +188,18 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                 color: isSelected ? Colors.white : color,
                 fontWeight: FontWeight.w500)),
         selected: isSelected,
-        onSelected: (_) =>
-            setState(() => _statusFilter = status),
+        onSelected: (_) => setState(() => _statusFilter = status),
         backgroundColor: color.withOpacity(0.08),
         selectedColor: color,
         checkmarkColor: Colors.white,
-        side: BorderSide(
-            color: color.withOpacity(isSelected ? 1 : 0.3)),
+        side: BorderSide(color: color.withOpacity(isSelected ? 1 : 0.3)),
         padding: const EdgeInsets.symmetric(horizontal: 4),
         visualDensity: VisualDensity.compact,
       ),
     );
   }
 
-  Widget _buildSummaryBar(
-      BuildContext context, List<PurchaseOrder> all) {
+  Widget _buildSummaryBar(BuildContext context, List<PurchaseOrder> all) {
     final pending = all
         .where((o) =>
             o.status != PurchaseOrderStatus.fullyReceived &&
@@ -234,10 +224,9 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
   Widget _stat(String value, String label) => Column(
         children: [
           Text(value,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(label,
-              style: const TextStyle(fontSize: 11, color: Colors.grey)),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
         ],
       );
 
@@ -260,15 +249,13 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text('Filter by Status',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ),
             ListTile(
               leading: const Icon(Icons.all_inclusive),
               title: const Text('All Statuses'),
               trailing: _statusFilter == null
-                  ? const Icon(Icons.check,
-                      color: AppTheme.primaryColor)
+                  ? const Icon(Icons.check, color: AppTheme.primaryColor)
                   : null,
               onTap: () {
                 setState(() => _statusFilter = null);
@@ -279,8 +266,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                   leading: Icon(Icons.circle, color: _statusColor(s), size: 14),
                   title: Text(s.label),
                   trailing: _statusFilter == s
-                      ? const Icon(Icons.check,
-                          color: AppTheme.primaryColor)
+                      ? const Icon(Icons.check, color: AppTheme.primaryColor)
                       : null,
                   onTap: () {
                     setState(() => _statusFilter = s);
@@ -326,8 +312,7 @@ class _OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -343,8 +328,7 @@ class _OrderCard extends StatelessWidget {
                     children: [
                       Text(order.orderNumber,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15)),
+                              fontWeight: FontWeight.bold, fontSize: 15)),
                       const SizedBox(height: 2),
                       Text(order.supplierName,
                           style: const TextStyle(
@@ -353,13 +337,12 @@ class _OrderCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: _statusColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                        color: _statusColor.withOpacity(0.4)),
+                    border: Border.all(color: _statusColor.withOpacity(0.4)),
                   ),
                   child: Text(
                     order.status.label,
@@ -376,10 +359,9 @@ class _OrderCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _info('${order.totalItems} item(s)',
-                      Icons.inventory_outlined),
-                  _info(formatCurrency(order.totalAmount),
-                      Icons.attach_money),
+                  _info(
+                      '${order.totalItems} item(s)', Icons.inventory_outlined),
+                  _info(formatCurrency(order.totalAmount), Icons.attach_money),
                   _info(
                     DateFormat('dd MMM yy').format(order.orderDate),
                     Icons.calendar_today_outlined,
@@ -392,16 +374,15 @@ class _OrderCard extends StatelessWidget {
                 ],
               ),
               // Progress bar for partially received
-              if (order.status ==
-                  PurchaseOrderStatus.partiallyReceived) ...[
+              if (order.status == PurchaseOrderStatus.partiallyReceived) ...[
                 const SizedBox(height: 8),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
                     value: order.receivedProgress,
                     backgroundColor: Colors.grey.shade200,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                        Colors.amber),
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.amber),
                     minHeight: 4,
                   ),
                 ),
@@ -422,8 +403,7 @@ class _OrderCard extends StatelessWidget {
         children: [
           Icon(icon, size: 13, color: Colors.grey),
           const SizedBox(width: 4),
-          Text(text,
-              style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(text, style: const TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       );
 }

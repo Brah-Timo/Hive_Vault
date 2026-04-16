@@ -272,8 +272,7 @@ class VaultTransaction {
   }
 
   @override
-  String toString() =>
-      'VaultTransaction(id: $id, status: ${_status.name}, '
+  String toString() => 'VaultTransaction(id: $id, status: ${_status.name}, '
       'pendingOps: ${_wal.length})';
 }
 

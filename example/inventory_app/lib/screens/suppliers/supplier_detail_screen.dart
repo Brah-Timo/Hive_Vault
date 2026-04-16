@@ -24,14 +24,12 @@ class SupplierDetailScreen extends StatelessWidget {
     return Consumer<InventoryProvider>(
       builder: (context, prov, _) {
         // Get latest supplier data
-        final current = prov.suppliers
-                .where((s) => s.id == supplier.id)
-                .firstOrNull ??
-            supplier;
+        final current =
+            prov.suppliers.where((s) => s.id == supplier.id).firstOrNull ??
+                supplier;
 
-        final linkedProducts = prov.allProducts
-            .where((p) => p.supplierId == current.id)
-            .toList();
+        final linkedProducts =
+            prov.allProducts.where((p) => p.supplierId == current.id).toList();
 
         final linkedOrders = prov.orders
             .where((o) => o.supplierId == current.id)
@@ -128,7 +126,8 @@ class SupplierDetailScreen extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         s.rating.toStringAsFixed(1),
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -175,8 +174,7 @@ class SupplierDetailScreen extends StatelessWidget {
     if (s.taxNumber != null) {
       items.add(_contactRow(Icons.receipt_outlined, 'Tax: ${s.taxNumber}'));
     }
-    items.add(_contactRow(
-        Icons.schedule_outlined,
+    items.add(_contactRow(Icons.schedule_outlined,
         'Lead time: ${s.defaultLeadTimeDays.toInt()} days'));
 
     if (items.isEmpty) return const SizedBox.shrink();
@@ -323,8 +321,8 @@ class SupplierDetailScreen extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading:
-                const Icon(Icons.inventory_2_outlined, color: AppTheme.primaryColor),
+            leading: const Icon(Icons.inventory_2_outlined,
+                color: AppTheme.primaryColor),
             title: Text(
               'Linked Products (${products.length})',
               style: Theme.of(context)
@@ -345,7 +343,9 @@ class SupplierDetailScreen extends StatelessWidget {
                 child: Icon(
                   p.isLowStock ? Icons.warning_amber : Icons.check_circle,
                   size: 14,
-                  color: p.isLowStock ? AppTheme.warningColor : AppTheme.successColor,
+                  color: p.isLowStock
+                      ? AppTheme.warningColor
+                      : AppTheme.successColor,
                 ),
               ),
               title: Text(p.name, style: const TextStyle(fontSize: 13)),
@@ -395,8 +395,7 @@ class SupplierDetailScreen extends StatelessWidget {
             ),
           ),
           ...orders.take(5).map((o) {
-            final total =
-                o.lines.fold(0.0, (sum, l) => sum + l.lineTotal);
+            final total = o.lines.fold(0.0, (sum, l) => sum + l.lineTotal);
             return ListTile(
               dense: true,
               leading: CircleAvatar(
@@ -489,8 +488,7 @@ class SupplierDetailScreen extends StatelessWidget {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Delete Supplier'),
-        content: Text(
-            'Are you sure you want to delete "${supplier.name}"? '
+        content: Text('Are you sure you want to delete "${supplier.name}"? '
             'This will not remove linked products.'),
         actions: [
           TextButton(
@@ -553,8 +551,8 @@ class _SupplierEditFormState extends State<_SupplierEditForm> {
     _websiteCtrl = TextEditingController(text: s.website ?? '');
     _taxCtrl = TextEditingController(text: s.taxNumber ?? '');
     _notesCtrl = TextEditingController(text: s.notes ?? '');
-    _leadTimeCtrl = TextEditingController(
-        text: s.defaultLeadTimeDays.toStringAsFixed(0));
+    _leadTimeCtrl =
+        TextEditingController(text: s.defaultLeadTimeDays.toStringAsFixed(0));
     _rating = s.rating;
     _isActive = s.isActive;
   }
@@ -562,8 +560,15 @@ class _SupplierEditFormState extends State<_SupplierEditForm> {
   @override
   void dispose() {
     for (final c in [
-      _nameCtrl, _contactCtrl, _emailCtrl, _phoneCtrl,
-      _addressCtrl, _websiteCtrl, _taxCtrl, _notesCtrl, _leadTimeCtrl
+      _nameCtrl,
+      _contactCtrl,
+      _emailCtrl,
+      _phoneCtrl,
+      _addressCtrl,
+      _websiteCtrl,
+      _taxCtrl,
+      _notesCtrl,
+      _leadTimeCtrl
     ]) {
       c.dispose();
     }
@@ -654,8 +659,7 @@ class _SupplierEditFormState extends State<_SupplierEditForm> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child:
-                            CircularProgressIndicator(strokeWidth: 2),
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Text('Update Supplier'),
               ),
@@ -667,9 +671,9 @@ class _SupplierEditFormState extends State<_SupplierEditForm> {
   }
 
   Widget _field(TextEditingController ctrl, String label,
-      {int maxLines = 1,
-      String? Function(String?)? validator,
-      TextInputType? keyboardType}) =>
+          {int maxLines = 1,
+          String? Function(String?)? validator,
+          TextInputType? keyboardType}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: TextFormField(
@@ -697,8 +701,7 @@ class _SupplierEditFormState extends State<_SupplierEditForm> {
           _addressCtrl.text.trim().isEmpty ? null : _addressCtrl.text.trim(),
       website:
           _websiteCtrl.text.trim().isEmpty ? null : _websiteCtrl.text.trim(),
-      taxNumber:
-          _taxCtrl.text.trim().isEmpty ? null : _taxCtrl.text.trim(),
+      taxNumber: _taxCtrl.text.trim().isEmpty ? null : _taxCtrl.text.trim(),
       notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
       defaultLeadTimeDays: double.tryParse(_leadTimeCtrl.text) ?? 7,
       rating: _rating,

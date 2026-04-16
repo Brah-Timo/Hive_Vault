@@ -150,9 +150,8 @@ class BinaryProcessor {
     final encryptionFlag = bd.getUint8(2);
     final dataLen = bd.getUint32(3, Endian.big);
 
-    final expectedMinLen = kHeaderSize +
-        dataLen +
-        (enableIntegrityChecks ? 32 : 0);
+    final expectedMinLen =
+        kHeaderSize + dataLen + (enableIntegrityChecks ? 32 : 0);
 
     if (payload.length < expectedMinLen) {
       throw VaultPayloadException(
@@ -206,8 +205,7 @@ class BinaryProcessor {
 
   // ─── UTF-8 helpers ────────────────────────────────────────────────────────
 
-  static Uint8List _utf8Encode(String s) =>
-      Uint8List.fromList(utf8.encode(s));
+  static Uint8List _utf8Encode(String s) => Uint8List.fromList(utf8.encode(s));
 
   static String _utf8Decode(Uint8List bytes) => utf8.decode(bytes);
 }

@@ -7,7 +7,7 @@ enum PurchaseOrderStatus {
   draft,
   submitted,
   approved,
-  sent,         // Sent to supplier
+  sent, // Sent to supplier
   partiallyReceived,
   fullyReceived,
   cancelled,
@@ -105,8 +105,7 @@ class PurchaseOrder {
         createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
-  double get totalAmount =>
-      lines.fold(0, (sum, l) => sum + l.lineTotal);
+  double get totalAmount => lines.fold(0, (sum, l) => sum + l.lineTotal);
 
   int get totalItems => lines.length;
 

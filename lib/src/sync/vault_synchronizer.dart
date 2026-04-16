@@ -166,8 +166,7 @@ class VaultSynchronizer<T> {
   Box<String>? _metaBox;
 
   // Streams.
-  final StreamController<SyncEvent> _eventStream =
-      StreamController.broadcast();
+  final StreamController<SyncEvent> _eventStream = StreamController.broadcast();
   final StreamController<SyncResult> _resultStream =
       StreamController.broadcast();
 
@@ -350,8 +349,7 @@ class VaultSynchronizer<T> {
 
   // ── Private ───────────────────────────────────────────────────────────────
 
-  void _emit(SyncEventType type, String message,
-      [Map<String, dynamic>? data]) {
+  void _emit(SyncEventType type, String message, [Map<String, dynamic>? data]) {
     _eventStream.add(SyncEvent(
       type: type,
       message: message,
@@ -359,8 +357,7 @@ class VaultSynchronizer<T> {
     ));
   }
 
-  List<Map<String, String>> _splitBatches(
-      Map<String, String> all, int size) {
+  List<Map<String, String>> _splitBatches(Map<String, String> all, int size) {
     final batches = <Map<String, String>>[];
     final keys = all.keys.toList();
     for (int i = 0; i < keys.length; i += size) {

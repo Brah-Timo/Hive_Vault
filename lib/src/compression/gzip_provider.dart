@@ -15,8 +15,7 @@ import 'compression_provider.dart';
 import 'lz4_provider.dart'; // pure-Dart fallback for web
 
 // dart:io is only imported on non-web builds via conditional import shim.
-import '_io_codec_stub.dart'
-    if (dart.library.io) '_io_codec_native.dart';
+import '_io_codec_stub.dart' if (dart.library.io) '_io_codec_native.dart';
 
 /// GZip compression provider.
 ///
@@ -60,7 +59,8 @@ class GZipCompressionProvider extends CompressionProvider {
       return ioGzipDecompress(compressedData);
     } catch (e) {
       throw VaultDecompressionException(
-          'GZip decompression failed — data may be corrupt', cause: e);
+          'GZip decompression failed — data may be corrupt',
+          cause: e);
     }
   }
 

@@ -42,10 +42,8 @@ class CategoriesScreen extends StatelessWidget {
                   ),
                 )
               : GridView.builder(
-                  padding:
-                      const EdgeInsets.fromLTRB(12, 12, 12, 80),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 80),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
@@ -61,8 +59,7 @@ class CategoriesScreen extends StatelessWidget {
                     return _CategoryTile(
                       category: cat,
                       productCount: productCount,
-                      onEdit: () =>
-                          _showForm(context, prov, existing: cat),
+                      onEdit: () => _showForm(context, prov, existing: cat),
                       onDelete: productCount > 0
                           ? null
                           : () => _confirmDelete(context, prov, cat),
@@ -84,36 +81,31 @@ class CategoriesScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.vertical(top: Radius.circular(20))),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (_) => _CategoryForm(existing: existing),
     );
   }
 
-  void _confirmDelete(BuildContext context, InventoryProvider prov,
-      ProductCategory cat) {
+  void _confirmDelete(
+      BuildContext context, InventoryProvider prov, ProductCategory cat) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Delete Category'),
-        content:
-            Text('Delete "${cat.name}"? This cannot be undone.'),
+        content: Text('Delete "${cat.name}"? This cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style:
-                ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () async {
               Navigator.pop(context);
               await prov.deleteCategory(cat.id);
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content:
-                        Text('Category "${cat.name}" deleted')),
+                SnackBar(content: Text('Category "${cat.name}" deleted')),
               );
             },
             child: const Text('Delete'),
@@ -187,8 +179,7 @@ class _CategoryTile extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(4),
                             child: Icon(Icons.delete_outline,
-                                size: 16,
-                                color: Colors.red.shade400),
+                                size: 16, color: Colors.red.shade400),
                           ),
                         ),
                       ],
@@ -210,8 +201,8 @@ class _CategoryTile extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
                       color: category.color.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(8),
@@ -252,18 +243,25 @@ class _CategoryFormState extends State<_CategoryForm> {
   bool _isSaving = false;
 
   final _colors = [
-    0xFF1565C0, 0xFF00897B, 0xFF6A1B9A, 0xFFD32F2F,
-    0xFFF57C00, 0xFF2E7D32, 0xFF0288D1, 0xFF4E342E,
-    0xFFE65100, 0xFFD81B60, 0xFF00695C, 0xFF558B2F,
+    0xFF1565C0,
+    0xFF00897B,
+    0xFF6A1B9A,
+    0xFFD32F2F,
+    0xFFF57C00,
+    0xFF2E7D32,
+    0xFF0288D1,
+    0xFF4E342E,
+    0xFFE65100,
+    0xFFD81B60,
+    0xFF00695C,
+    0xFF558B2F,
   ];
 
   @override
   void initState() {
     super.initState();
-    _nameCtrl =
-        TextEditingController(text: widget.existing?.name ?? '');
-    _descCtrl = TextEditingController(
-        text: widget.existing?.description ?? '');
+    _nameCtrl = TextEditingController(text: widget.existing?.name ?? '');
+    _descCtrl = TextEditingController(text: widget.existing?.description ?? '');
     _colorValue = widget.existing?.colorValue ?? 0xFF2196F3;
   }
 
@@ -338,17 +336,15 @@ class _CategoryFormState extends State<_CategoryForm> {
                 controller: _descCtrl,
                 decoration: const InputDecoration(
                     labelText: 'Description (optional)',
-                    prefixIcon:
-                        Icon(Icons.description_outlined)),
+                    prefixIcon: Icon(Icons.description_outlined)),
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Category Color',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
               ),
               const SizedBox(height: 10),
               Wrap(
@@ -357,29 +353,23 @@ class _CategoryFormState extends State<_CategoryForm> {
                 children: _colors.map((c) {
                   final selected = c == _colorValue;
                   return GestureDetector(
-                    onTap: () =>
-                        setState(() => _colorValue = c),
+                    onTap: () => setState(() => _colorValue = c),
                     child: AnimatedContainer(
-                      duration:
-                          const Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
                         color: Color(c),
                         shape: BoxShape.circle,
                         border: selected
-                            ? Border.all(
-                                color: Colors.black,
-                                width: 3)
+                            ? Border.all(color: Colors.black, width: 3)
                             : null,
                         boxShadow: selected
                             ? [
                                 BoxShadow(
-                                  color: Color(c)
-                                      .withOpacity(0.4),
+                                  color: Color(c).withOpacity(0.4),
                                   blurRadius: 8,
-                                  offset:
-                                      const Offset(0, 2),
+                                  offset: const Offset(0, 2),
                                 )
                               ]
                             : null,
@@ -402,8 +392,7 @@ class _CategoryFormState extends State<_CategoryForm> {
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white))
+                              strokeWidth: 2, color: Colors.white))
                       : const Icon(Icons.save_outlined),
                   label: Text(widget.existing == null
                       ? 'Add Category'
@@ -425,9 +414,7 @@ class _CategoryFormState extends State<_CategoryForm> {
     final category = ProductCategory(
       id: widget.existing?.id ?? _uuid.v4(),
       name: _nameCtrl.text.trim(),
-      description: _descCtrl.text.trim().isEmpty
-          ? null
-          : _descCtrl.text.trim(),
+      description: _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
       colorValue: _colorValue,
       createdAt: widget.existing?.createdAt,
     );

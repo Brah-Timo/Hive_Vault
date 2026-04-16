@@ -12,32 +12,37 @@ import 'package:hive_vault/hive_vault.dart';
 void main() {
   group('Compression Benchmarks', () {
     // Fixtures
-    late Uint8List smallJson;   // ~500 bytes
-    late Uint8List mediumJson;  // ~5 KB
-    late Uint8List largeJson;   // ~50 KB
-    late Uint8List xlargeJson;  // ~200 KB
+    late Uint8List smallJson; // ~500 bytes
+    late Uint8List mediumJson; // ~5 KB
+    late Uint8List largeJson; // ~50 KB
+    late Uint8List xlargeJson; // ~200 KB
 
     setUpAll(() {
       smallJson = _jsonBytes(
         List.generate(10, (i) => {'id': i, 'name': 'Item $i'}),
       );
       mediumJson = _jsonBytes(
-        List.generate(100, (i) => {
-          'id': i,
-          'name': 'Product $i',
-          'price': i * 100.5,
-          'category': 'Cat-${i % 10}',
-          'description': 'Description for item number $i ' * 3,
-        }),
+        List.generate(
+            100,
+            (i) => {
+                  'id': i,
+                  'name': 'Product $i',
+                  'price': i * 100.5,
+                  'category': 'Cat-${i % 10}',
+                  'description': 'Description for item number $i ' * 3,
+                }),
       );
       largeJson = _jsonBytes(
-        List.generate(1000, (i) => {
-          'id': i,
-          'client': 'Client $i',
-          'amount': i * 999.99,
-          'date': '2026-0${(i % 9) + 1}-${(i % 28) + 1}',
-          'items': List.generate(3, (j) => {'sku': 'SKU-$j', 'qty': j + 1}),
-        }),
+        List.generate(
+            1000,
+            (i) => {
+                  'id': i,
+                  'client': 'Client $i',
+                  'amount': i * 999.99,
+                  'date': '2026-0${(i % 9) + 1}-${(i % 28) + 1}',
+                  'items':
+                      List.generate(3, (j) => {'sku': 'SKU-$j', 'qty': j + 1}),
+                }),
       );
       xlargeJson = _jsonBytes(
         List.generate(5000, (i) => {'id': i, 'data': 'payload-$i ' * 5}),
@@ -86,8 +91,9 @@ void main() {
     group('GZip vs Lz4 comparison (large JSON)', () {
       late Uint8List data;
       setUpAll(() => data = _jsonBytes(
-        List.generate(500, (i) => {'id': i, 'name': 'n$i', 'value': i * 1.5}),
-      ));
+            List.generate(
+                500, (i) => {'id': i, 'name': 'n$i', 'value': i * 1.5}),
+          ));
 
       test('GZip ratio > Lz4 ratio for text data', () {
         const gzip = GZipCompressionProvider(level: 6);

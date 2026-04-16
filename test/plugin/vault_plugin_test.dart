@@ -16,42 +16,100 @@ import '../../lib/src/audit/audit_entry.dart';
 class _StubVault implements SecureStorageInterface {
   final Map<String, dynamic> data = {};
 
-  @override Future<void> initialize() async {}
-  @override Future<void> close() async {}
-  @override Future<bool> secureContains(String k) async => data.containsKey(k);
-  @override Future<List<String>> getAllKeys() async => data.keys.toList();
-  @override Future<T?> secureGet<T>(String k) async => data[k] as T?;
-  @override Future<void> secureDelete(String k) async => data.remove(k);
-  @override Future<void> secureSave<T>(String k, T v, {SensitivityLevel? sensitivity, String? searchableText}) async => data[k] = v;
-  @override Future<void> secureSaveBatch(Map<String, dynamic> e, {SensitivityLevel? sensitivity}) async => data.addAll(e);
-  @override Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {for (final k in ks) if (data.containsKey(k)) k: data[k]};
-  @override Future<void> secureDeleteBatch(List<String> ks) async => ks.forEach(data.remove);
-  @override Future<List<T>> secureSearch<T>(String q) async => [];
-  @override Future<List<T>> secureSearchAny<T>(String q) async => [];
-  @override Future<List<T>> secureSearchPrefix<T>(String p) async => [];
-  @override Future<Set<String>> searchKeys(String q) async => {};
-  @override Future<void> rebuildIndex() async {}
-  @override Future<void> compact() async {}
-  @override void clearCache() {}
-  @override Future<Uint8List> exportEncrypted() async => Uint8List(0);
-  @override Future<void> importEncrypted(Uint8List d) async {}
-  @override Future<VaultStats> getStats() async => VaultStats(boxName: 'test', totalEntries: 0, cacheSize: 0, cacheCapacity: 0, cacheHitRatio: 0, compressionAlgorithm: 'None', encryptionAlgorithm: 'None', indexStats: const IndexStats.empty(), totalBytesSaved: 0, totalBytesWritten: 0, totalWrites: 0, totalReads: 0, totalSearches: 0, openedAt: DateTime.now());
-  @override List<AuditEntry> getAuditLog({int limit = 50}) => [];
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<void> close() async {}
+  @override
+  Future<bool> secureContains(String k) async => data.containsKey(k);
+  @override
+  Future<List<String>> getAllKeys() async => data.keys.toList();
+  @override
+  Future<T?> secureGet<T>(String k) async => data[k] as T?;
+  @override
+  Future<void> secureDelete(String k) async => data.remove(k);
+  @override
+  Future<void> secureSave<T>(String k, T v,
+          {SensitivityLevel? sensitivity, String? searchableText}) async =>
+      data[k] = v;
+  @override
+  Future<void> secureSaveBatch(Map<String, dynamic> e,
+          {SensitivityLevel? sensitivity}) async =>
+      data.addAll(e);
+  @override
+  Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {
+        for (final k in ks)
+          if (data.containsKey(k)) k: data[k]
+      };
+  @override
+  Future<void> secureDeleteBatch(List<String> ks) async =>
+      ks.forEach(data.remove);
+  @override
+  Future<List<T>> secureSearch<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchAny<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchPrefix<T>(String p) async => [];
+  @override
+  Future<Set<String>> searchKeys(String q) async => {};
+  @override
+  Future<void> rebuildIndex() async {}
+  @override
+  Future<void> compact() async {}
+  @override
+  void clearCache() {}
+  @override
+  Future<Uint8List> exportEncrypted() async => Uint8List(0);
+  @override
+  Future<void> importEncrypted(Uint8List d) async {}
+  @override
+  Future<VaultStats> getStats() async => VaultStats(
+      boxName: 'test',
+      totalEntries: 0,
+      cacheSize: 0,
+      cacheCapacity: 0,
+      cacheHitRatio: 0,
+      compressionAlgorithm: 'None',
+      encryptionAlgorithm: 'None',
+      indexStats: const IndexStats.empty(),
+      totalBytesSaved: 0,
+      totalBytesWritten: 0,
+      totalWrites: 0,
+      totalReads: 0,
+      totalSearches: 0,
+      openedAt: DateTime.now());
+  @override
+  List<AuditEntry> getAuditLog({int limit = 50}) => [];
 }
 
 // ── Spy plugin ────────────────────────────────────────────────────────────────
 
 class _SpyPlugin extends VaultPlugin {
-  @override String get name => 'spy';
+  @override
+  String get name => 'spy';
   final List<String> calls = [];
 
-  @override Future<void> beforeSave(PluginContext ctx) async => calls.add('beforeSave:${ctx.key}');
-  @override Future<void> afterSave(PluginContext ctx) async => calls.add('afterSave:${ctx.key}');
-  @override Future<void> beforeGet(PluginContext ctx) async => calls.add('beforeGet:${ctx.key}');
-  @override Future<void> afterGet(PluginContext ctx) async => calls.add('afterGet:${ctx.key}');
-  @override Future<void> beforeDelete(PluginContext ctx) async => calls.add('beforeDelete:${ctx.key}');
-  @override Future<void> afterDelete(PluginContext ctx) async => calls.add('afterDelete:${ctx.key}');
-  @override Future<void> onError(PluginContext ctx, Object e) async => calls.add('onError:${ctx.key}');
+  @override
+  Future<void> beforeSave(PluginContext ctx) async =>
+      calls.add('beforeSave:${ctx.key}');
+  @override
+  Future<void> afterSave(PluginContext ctx) async =>
+      calls.add('afterSave:${ctx.key}');
+  @override
+  Future<void> beforeGet(PluginContext ctx) async =>
+      calls.add('beforeGet:${ctx.key}');
+  @override
+  Future<void> afterGet(PluginContext ctx) async =>
+      calls.add('afterGet:${ctx.key}');
+  @override
+  Future<void> beforeDelete(PluginContext ctx) async =>
+      calls.add('beforeDelete:${ctx.key}');
+  @override
+  Future<void> afterDelete(PluginContext ctx) async =>
+      calls.add('afterDelete:${ctx.key}');
+  @override
+  Future<void> onError(PluginContext ctx, Object e) async =>
+      calls.add('onError:${ctx.key}');
 }
 
 void main() {
@@ -230,17 +288,22 @@ void main() {
 // ── Helper plugin stubs ───────────────────────────────────────────────────────
 
 class _CancelSavePlugin extends VaultPlugin {
-  @override String get name => 'cancel_save';
-  @override int get priority => 1;
-  @override Future<void> beforeSave(PluginContext ctx) async {
+  @override
+  String get name => 'cancel_save';
+  @override
+  int get priority => 1;
+  @override
+  Future<void> beforeSave(PluginContext ctx) async {
     ctx.cancelled = true;
     ctx.cancellationReason = 'test cancellation';
   }
 }
 
 class _CancelGetPlugin extends VaultPlugin {
-  @override String get name => 'cancel_get';
-  @override Future<void> beforeGet(PluginContext ctx) async {
+  @override
+  String get name => 'cancel_get';
+  @override
+  Future<void> beforeGet(PluginContext ctx) async {
     ctx.cancelled = true;
   }
 }

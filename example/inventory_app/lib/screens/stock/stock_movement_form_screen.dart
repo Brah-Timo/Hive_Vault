@@ -31,15 +31,13 @@ class _StockMovementFormScreenState extends State<StockMovementFormScreen> {
   Widget build(BuildContext context) {
     return Consumer<InventoryProvider>(
       builder: (context, prov, _) {
-        final products = prov.allProducts
-            .where((p) {
-              if (_query.isEmpty) return true;
-              final q = _query.toLowerCase();
-              return p.name.toLowerCase().contains(q) ||
-                  p.sku.toLowerCase().contains(q) ||
-                  p.barcode.toLowerCase().contains(q);
-            })
-            .toList()
+        final products = prov.allProducts.where((p) {
+          if (_query.isEmpty) return true;
+          final q = _query.toLowerCase();
+          return p.name.toLowerCase().contains(q) ||
+              p.sku.toLowerCase().contains(q) ||
+              p.barcode.toLowerCase().contains(q);
+        }).toList()
           ..sort((a, b) => a.name.compareTo(b.name));
 
         return Scaffold(
@@ -96,8 +94,7 @@ class _StockMovementFormScreenState extends State<StockMovementFormScreen> {
                             ),
                             title: Text(p.name,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                                    fontWeight: FontWeight.w600, fontSize: 14)),
                             subtitle: Text(
                               '${p.sku} • Stock: ${p.currentStock.toInt()} ${p.unit.name}',
                               style: const TextStyle(fontSize: 12),
@@ -148,8 +145,7 @@ class StockMovementFormSheet extends StatefulWidget {
   });
 
   @override
-  State<StockMovementFormSheet> createState() =>
-      _StockMovementFormSheetState();
+  State<StockMovementFormSheet> createState() => _StockMovementFormSheetState();
 }
 
 class _StockMovementFormSheetState extends State<StockMovementFormSheet> {
@@ -218,8 +214,8 @@ class _StockMovementFormSheetState extends State<StockMovementFormSheet> {
               const SizedBox(height: 4),
               Text(
                 'Current Stock: ${widget.product.currentStock.toInt()} ${widget.product.unit.name}',
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 16),
 
@@ -310,12 +306,9 @@ class _StockMovementFormSheetState extends State<StockMovementFormSheet> {
                           height: 18,
                           child: CircularProgressIndicator(
                               strokeWidth: 2, color: Colors.white))
-                      : Icon(_isPositive
-                          ? Icons.add_circle
-                          : Icons.remove_circle),
-                  label: Text(_isSaving
-                      ? 'Saving...'
-                      : '${_type.label} Stock'),
+                      : Icon(
+                          _isPositive ? Icons.add_circle : Icons.remove_circle),
+                  label: Text(_isSaving ? 'Saving...' : '${_type.label} Stock'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _isPositive ? Colors.green : Colors.red,
                   ),
@@ -339,8 +332,7 @@ class _StockMovementFormSheetState extends State<StockMovementFormSheet> {
       type: _type,
       quantity: double.parse(_qtyCtrl.text),
       reference: _refCtrl.text.trim().isEmpty ? null : _refCtrl.text.trim(),
-      notes:
-          _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
+      notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
     );
 
     setState(() => _isSaving = false);

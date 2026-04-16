@@ -25,9 +25,8 @@ class CategoryRepository extends VaultRepository<ProductCategory> {
   Future<ProductCategory?> getById(String id) => get('$_prefix$id');
 
   Future<List<ProductCategory>> getAllCategories() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     return maps.values

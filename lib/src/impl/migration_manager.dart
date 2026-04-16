@@ -69,8 +69,7 @@ class MigrationManager {
 
     final pending = _migrations
         .where((m) =>
-            m.fromVersion >= currentVersion &&
-            m.toVersion <= targetVersion)
+            m.fromVersion >= currentVersion && m.toVersion <= targetVersion)
         .toList()
       ..sort((a, b) => a.fromVersion.compareTo(b.fromVersion));
 

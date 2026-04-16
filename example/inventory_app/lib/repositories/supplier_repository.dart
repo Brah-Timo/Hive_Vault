@@ -24,9 +24,8 @@ class SupplierRepository extends VaultRepository<Supplier> {
   Future<Supplier?> getById(String id) => get('$_prefix$id');
 
   Future<List<Supplier>> getAllSuppliers() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     return maps.values

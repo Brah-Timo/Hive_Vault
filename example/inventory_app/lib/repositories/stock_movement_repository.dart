@@ -22,9 +22,8 @@ class StockMovementRepository extends VaultRepository<StockMovement> {
       '${item.type.label} ${item.reference ?? ''} ${item.notes ?? ''}';
 
   Future<List<StockMovement>> getAllMovements() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     final items = maps.values
@@ -50,8 +49,7 @@ class StockMovementRepository extends VaultRepository<StockMovement> {
       DateTime from, DateTime to) async {
     final all = await getAllMovements();
     return all
-        .where((m) =>
-            m.createdAt.isAfter(from) && m.createdAt.isBefore(to))
+        .where((m) => m.createdAt.isAfter(from) && m.createdAt.isBefore(to))
         .toList();
   }
 

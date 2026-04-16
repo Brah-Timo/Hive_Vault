@@ -31,8 +31,8 @@ class LruCache<K, V> {
   LruCache({required this.capacity}) {
     assert(capacity > 0, 'LruCache capacity must be > 0');
     _map = LinkedHashMap<K, V>(
-      // No custom hash/equals — uses default Dart equality.
-    );
+        // No custom hash/equals — uses default Dart equality.
+        );
   }
 
   // ─── Core operations ──────────────────────────────────────────────────────

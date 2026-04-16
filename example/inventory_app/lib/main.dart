@@ -75,39 +75,39 @@ Future<void> main() async {
   await notificationService.initialize();
 
   // ── Wire up repositories ──────────────────────────────────────────────
-  final productRepo   = ProductRepository(vaultService.productsVault);
-  final categoryRepo  = CategoryRepository(vaultService.categoriesVault);
-  final movementRepo  = StockMovementRepository(vaultService.movementsVault);
-  final supplierRepo  = SupplierRepository(vaultService.suppliersVault);
-  final orderRepo     = PurchaseOrderRepository(vaultService.ordersVault);
-  final alertRepo     = AlertRepository(vaultService.alertsVault);
+  final productRepo = ProductRepository(vaultService.productsVault);
+  final categoryRepo = CategoryRepository(vaultService.categoriesVault);
+  final movementRepo = StockMovementRepository(vaultService.movementsVault);
+  final supplierRepo = SupplierRepository(vaultService.suppliersVault);
+  final orderRepo = PurchaseOrderRepository(vaultService.ordersVault);
+  final alertRepo = AlertRepository(vaultService.alertsVault);
 
   // ── Wire up services ──────────────────────────────────────────────────
   final stockService = StockService(
-    productRepo:  productRepo,
+    productRepo: productRepo,
     movementRepo: movementRepo,
-    alertRepo:    alertRepo,
+    alertRepo: alertRepo,
   );
 
   final reportService = ReportService(
-    productRepo:  productRepo,
+    productRepo: productRepo,
     categoryRepo: categoryRepo,
     movementRepo: movementRepo,
-    orderRepo:    orderRepo,
-    alertRepo:    alertRepo,
+    orderRepo: orderRepo,
+    alertRepo: alertRepo,
     supplierRepo: supplierRepo,
   );
 
   // ── Create central provider ───────────────────────────────────────────
   final inventoryProvider = InventoryProvider(
-    productRepo:         productRepo,
-    categoryRepo:        categoryRepo,
-    movementRepo:        movementRepo,
-    supplierRepo:        supplierRepo,
-    orderRepo:           orderRepo,
-    alertRepo:           alertRepo,
-    stockService:        stockService,
-    reportService:       reportService,
+    productRepo: productRepo,
+    categoryRepo: categoryRepo,
+    movementRepo: movementRepo,
+    supplierRepo: supplierRepo,
+    orderRepo: orderRepo,
+    alertRepo: alertRepo,
+    stockService: stockService,
+    reportService: reportService,
     notificationService: notificationService,
   );
 
@@ -126,7 +126,7 @@ class InventoryApp extends StatefulWidget {
 class _InventoryAppState extends State<InventoryApp> {
   /// Show onboarding on very first launch (no products / categories yet).
   bool _checkingFirstRun = true;
-  bool _firstRun         = false;
+  bool _firstRun = false;
 
   @override
   void initState() {
@@ -140,8 +140,8 @@ class _InventoryAppState extends State<InventoryApp> {
         widget.provider.categories.isEmpty;
     if (mounted) {
       setState(() {
-        _firstRun          = isFirst;
-        _checkingFirstRun  = false;
+        _firstRun = isFirst;
+        _checkingFirstRun = false;
       });
     }
   }
@@ -159,85 +159,84 @@ class _InventoryAppState extends State<InventoryApp> {
       child: ValueListenableBuilder<ThemeMode>(
         valueListenable: themeNotifier,
         builder: (_, themeMode, __) => MaterialApp(
-        title: 'InventoryVault',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: themeMode,
+          title: 'InventoryVault',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeMode,
 
-        // ── Named route table ─────────────────────────────────────────────
-        // NOTE: AppRoutes.dashboard ('/') is intentionally omitted here
-        // because Flutter forbids registering '/' in routes when home: is set.
-        // The home: property below serves as the '/' entry point.
-        routes: {
-          AppRoutes.onboarding:        (_) => const OnboardingScreen(),
-          AppRoutes.products:          (_) => const ProductListScreen(),
-          AppRoutes.productForm:       (_) => const ProductFormScreen(),
-          AppRoutes.scanner:           (_) => const ScannerScreen(),
-          AppRoutes.categories:        (_) => const CategoriesScreen(),
-          AppRoutes.stockMovements:    (_) => const StockMovementsScreen(),
-          AppRoutes.alerts:            (_) => const AlertsScreen(),
-          AppRoutes.purchaseOrders:    (_) => const PurchaseOrderListScreen(),
-          AppRoutes.purchaseOrderForm: (_) => const PurchaseOrderFormScreen(),
-          AppRoutes.suppliers:         (_) => const SuppliersScreen(),
-          AppRoutes.reports:           (_) => const ReportsScreen(),
-          AppRoutes.settings:          (_) => const SettingsScreen(),
-          AppRoutes.inventoryCount:    (_) => const InventoryCountScreen(),
-          AppRoutes.search:            (_) => const GlobalSearchScreen(),
-          AppRoutes.team:              (_) => const TeamScreen(),
-          // Parameterised routes use onGenerateRoute (see below)
-        },
+          // ── Named route table ─────────────────────────────────────────────
+          // NOTE: AppRoutes.dashboard ('/') is intentionally omitted here
+          // because Flutter forbids registering '/' in routes when home: is set.
+          // The home: property below serves as the '/' entry point.
+          routes: {
+            AppRoutes.onboarding: (_) => const OnboardingScreen(),
+            AppRoutes.products: (_) => const ProductListScreen(),
+            AppRoutes.productForm: (_) => const ProductFormScreen(),
+            AppRoutes.scanner: (_) => const ScannerScreen(),
+            AppRoutes.categories: (_) => const CategoriesScreen(),
+            AppRoutes.stockMovements: (_) => const StockMovementsScreen(),
+            AppRoutes.alerts: (_) => const AlertsScreen(),
+            AppRoutes.purchaseOrders: (_) => const PurchaseOrderListScreen(),
+            AppRoutes.purchaseOrderForm: (_) => const PurchaseOrderFormScreen(),
+            AppRoutes.suppliers: (_) => const SuppliersScreen(),
+            AppRoutes.reports: (_) => const ReportsScreen(),
+            AppRoutes.settings: (_) => const SettingsScreen(),
+            AppRoutes.inventoryCount: (_) => const InventoryCountScreen(),
+            AppRoutes.search: (_) => const GlobalSearchScreen(),
+            AppRoutes.team: (_) => const TeamScreen(),
+            // Parameterised routes use onGenerateRoute (see below)
+          },
 
-        // ── Parameterised / argument-based routes ─────────────────────────
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case AppRoutes.productDetail:
-              final product = settings.arguments as dynamic;
-              return MaterialPageRoute(
-                builder: (_) => ProductDetailScreen(product: product),
-                settings: settings,
-              );
+          // ── Parameterised / argument-based routes ─────────────────────────
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case AppRoutes.productDetail:
+                final product = settings.arguments as dynamic;
+                return MaterialPageRoute(
+                  builder: (_) => ProductDetailScreen(product: product),
+                  settings: settings,
+                );
 
-            case AppRoutes.supplierDetail:
-              final supplier = settings.arguments as dynamic;
-              return MaterialPageRoute(
-                builder: (_) => SupplierDetailScreen(supplier: supplier),
-                settings: settings,
-              );
+              case AppRoutes.supplierDetail:
+                final supplier = settings.arguments as dynamic;
+                return MaterialPageRoute(
+                  builder: (_) => SupplierDetailScreen(supplier: supplier),
+                  settings: settings,
+                );
 
-            case AppRoutes.purchaseOrderDetail:
-              final order = settings.arguments as dynamic;
-              return MaterialPageRoute(
-                builder: (_) => PurchaseOrderDetailScreen(order: order),
-                settings: settings,
-              );
+              case AppRoutes.purchaseOrderDetail:
+                final order = settings.arguments as dynamic;
+                return MaterialPageRoute(
+                  builder: (_) => PurchaseOrderDetailScreen(order: order),
+                  settings: settings,
+                );
 
-            case AppRoutes.auth:
-              return MaterialPageRoute(
-                builder: (authCtx) => AuthScreen(
-                  mode: AuthMode.verify,
-                  onSuccess: () => Navigator.of(authCtx)
-                      .pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => const MainShell()),
-                    (_) => false,
+              case AppRoutes.auth:
+                return MaterialPageRoute(
+                  builder: (authCtx) => AuthScreen(
+                    mode: AuthMode.verify,
+                    onSuccess: () => Navigator.of(authCtx).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const MainShell()),
+                      (_) => false,
+                    ),
                   ),
-                ),
-                settings: settings,
-              );
+                  settings: settings,
+                );
 
-            default:
-              return null; // fall through to routes table
-          }
-        },
+              default:
+                return null; // fall through to routes table
+            }
+          },
 
-        // ── Decide initial screen ─────────────────────────────────────────
-        home: _checkingFirstRun
-            ? const _SplashScreen()
-            : _firstRun
-                ? const OnboardingScreen()
-                : const MainShell(),
+          // ── Decide initial screen ─────────────────────────────────────────
+          home: _checkingFirstRun
+              ? const _SplashScreen()
+              : _firstRun
+                  ? const OnboardingScreen()
+                  : const MainShell(),
 
-        builder: (context, child) => child ?? const SizedBox.shrink(),
+          builder: (context, child) => child ?? const SizedBox.shrink(),
         ), // MaterialApp
       ), // ValueListenableBuilder
     );

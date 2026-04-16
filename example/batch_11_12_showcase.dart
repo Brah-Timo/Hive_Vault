@@ -46,33 +46,71 @@ class InMemoryVault implements SecureStorageInterface {
   final Map<String, dynamic> _store = {};
   InMemoryVault(this.boxName);
 
-  @override Future<void> initialize() async {}
-  @override Future<void> close() async {}
-  @override Future<bool> secureContains(String k) async => _store.containsKey(k);
-  @override Future<List<String>> getAllKeys() async => _store.keys.toList();
-  @override Future<T?> secureGet<T>(String k) async => _store[k] as T?;
-  @override Future<void> secureDelete(String k) async => _store.remove(k);
-  @override Future<void> secureSave<T>(String k, T v, {SensitivityLevel? sensitivity, String? searchableText}) async => _store[k] = v;
-  @override Future<void> secureSaveBatch(Map<String, dynamic> e, {SensitivityLevel? sensitivity}) async => _store.addAll(e);
-  @override Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {for (final k in ks) if (_store.containsKey(k)) k: _store[k]};
-  @override Future<void> secureDeleteBatch(List<String> ks) async => ks.forEach(_store.remove);
-  @override Future<List<T>> secureSearch<T>(String q) async => [];
-  @override Future<List<T>> secureSearchAny<T>(String q) async => [];
-  @override Future<List<T>> secureSearchPrefix<T>(String p) async => [];
-  @override Future<Set<String>> searchKeys(String q) async => {};
-  @override Future<void> rebuildIndex() async {}
-  @override Future<void> compact() async {}
-  @override void clearCache() {}
-  @override Future<Uint8List> exportEncrypted() async => Uint8List(0);
-  @override Future<void> importEncrypted(Uint8List d) async {}
-  @override Future<VaultStats> getStats() async => VaultStats(
-    boxName: boxName, totalEntries: _store.length, cacheSize: 0,
-    cacheCapacity: 0, cacheHitRatio: 0.0, compressionAlgorithm: 'None',
-    encryptionAlgorithm: 'AES-GCM', indexStats: const IndexStats.empty(),
-    totalBytesSaved: 0, totalBytesWritten: 0, totalWrites: 0,
-    totalReads: 0, totalSearches: 0, openedAt: DateTime.now(),
-  );
-  @override List<AuditEntry> getAuditLog({int limit = 50}) => [];
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<void> close() async {}
+  @override
+  Future<bool> secureContains(String k) async => _store.containsKey(k);
+  @override
+  Future<List<String>> getAllKeys() async => _store.keys.toList();
+  @override
+  Future<T?> secureGet<T>(String k) async => _store[k] as T?;
+  @override
+  Future<void> secureDelete(String k) async => _store.remove(k);
+  @override
+  Future<void> secureSave<T>(String k, T v,
+          {SensitivityLevel? sensitivity, String? searchableText}) async =>
+      _store[k] = v;
+  @override
+  Future<void> secureSaveBatch(Map<String, dynamic> e,
+          {SensitivityLevel? sensitivity}) async =>
+      _store.addAll(e);
+  @override
+  Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {
+        for (final k in ks)
+          if (_store.containsKey(k)) k: _store[k]
+      };
+  @override
+  Future<void> secureDeleteBatch(List<String> ks) async =>
+      ks.forEach(_store.remove);
+  @override
+  Future<List<T>> secureSearch<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchAny<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchPrefix<T>(String p) async => [];
+  @override
+  Future<Set<String>> searchKeys(String q) async => {};
+  @override
+  Future<void> rebuildIndex() async {}
+  @override
+  Future<void> compact() async {}
+  @override
+  void clearCache() {}
+  @override
+  Future<Uint8List> exportEncrypted() async => Uint8List(0);
+  @override
+  Future<void> importEncrypted(Uint8List d) async {}
+  @override
+  Future<VaultStats> getStats() async => VaultStats(
+        boxName: boxName,
+        totalEntries: _store.length,
+        cacheSize: 0,
+        cacheCapacity: 0,
+        cacheHitRatio: 0.0,
+        compressionAlgorithm: 'None',
+        encryptionAlgorithm: 'AES-GCM',
+        indexStats: const IndexStats.empty(),
+        totalBytesSaved: 0,
+        totalBytesWritten: 0,
+        totalWrites: 0,
+        totalReads: 0,
+        totalSearches: 0,
+        openedAt: DateTime.now(),
+      );
+  @override
+  List<AuditEntry> getAuditLog({int limit = 50}) => [];
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -90,12 +128,42 @@ Future<void> main() async {
   // ── Seed data ───────────────────────────────────────────────────────────
 
   final employees = [
-    {'id': '1', 'name': 'Alice',   'dept': 'Engineering', 'salary': 95000, 'active': true},
-    {'id': '2', 'name': 'Bob',     'dept': 'Engineering', 'salary': 72000, 'active': true},
-    {'id': '3', 'name': 'Charlie', 'dept': 'Sales',       'salary': 65000, 'active': true},
-    {'id': '4', 'name': 'Diana',   'dept': 'Engineering', 'salary': 110000,'active': true},
-    {'id': '5', 'name': 'Eve',     'dept': 'HR',          'salary': 58000, 'active': false},
-    {'id': '6', 'name': 'Frank',   'dept': 'Sales',       'salary': 71000, 'active': true},
+    {
+      'id': '1',
+      'name': 'Alice',
+      'dept': 'Engineering',
+      'salary': 95000,
+      'active': true
+    },
+    {
+      'id': '2',
+      'name': 'Bob',
+      'dept': 'Engineering',
+      'salary': 72000,
+      'active': true
+    },
+    {
+      'id': '3',
+      'name': 'Charlie',
+      'dept': 'Sales',
+      'salary': 65000,
+      'active': true
+    },
+    {
+      'id': '4',
+      'name': 'Diana',
+      'dept': 'Engineering',
+      'salary': 110000,
+      'active': true
+    },
+    {'id': '5', 'name': 'Eve', 'dept': 'HR', 'salary': 58000, 'active': false},
+    {
+      'id': '6',
+      'name': 'Frank',
+      'dept': 'Sales',
+      'salary': 71000,
+      'active': true
+    },
   ];
   for (final emp in employees) {
     await vault.secureSave('emp:${emp['id']}', emp);
@@ -108,8 +176,10 @@ Future<void> main() async {
 
   // Filter: Engineering dept + salary > 80k, sort by salary desc, limit 3.
   final qResult = await VaultQuery<Map<String, dynamic>>()
-      .where('dept').equals('Engineering')
-      .and('salary').greaterThan(80000)
+      .where('dept')
+      .equals('Engineering')
+      .and('salary')
+      .greaterThan(80000)
       .orderByDesc('salary')
       .limit(3)
       .execute(vault);
@@ -118,22 +188,32 @@ Future<void> main() async {
   for (final emp in qResult.records) {
     print('  ${emp['name']}: \$${emp['salary']}');
   }
-  print('  Total matches: ${qResult.totalCount}, hasMore: ${qResult.hasMore}\n');
+  print(
+      '  Total matches: ${qResult.totalCount}, hasMore: ${qResult.hasMore}\n');
 
   // Prefix scan + OR filter.
   final orResult = await VaultQuery<Map<String, dynamic>>()
       .keyPrefix('emp:')
-      .where('dept').equals('Sales')
-      .or('dept').equals('HR')
+      .where('dept')
+      .equals('Sales')
+      .or('dept')
+      .equals('HR')
       .orderBy('name')
       .execute(vault);
-  print('Sales OR HR employees: ${orResult.records.map((e) => e['name']).join(', ')}\n');
+  print(
+      'Sales OR HR employees: ${orResult.records.map((e) => e['name']).join(', ')}\n');
 
   // Pagination demo.
   final page1 = await VaultQuery<Map<String, dynamic>>()
-      .orderBy('salary').limit(2).offset(0).execute(vault);
+      .orderBy('salary')
+      .limit(2)
+      .offset(0)
+      .execute(vault);
   final page2 = await VaultQuery<Map<String, dynamic>>()
-      .orderBy('salary').limit(2).offset(2).execute(vault);
+      .orderBy('salary')
+      .limit(2)
+      .offset(2)
+      .execute(vault);
   print('Page 1: ${page1.records.map((e) => e['name']).join(', ')}');
   print('Page 2: ${page2.records.map((e) => e['name']).join(', ')}\n');
 
@@ -146,11 +226,24 @@ Future<void> main() async {
 
   // Atomic multi-write.
   final receipt = await txManager.runInTransaction((tx) async {
-    tx.write('emp:7', {'id': '7', 'name': 'Grace', 'dept': 'Engineering', 'salary': 88000, 'active': true});
-    tx.write('emp:8', {'id': '8', 'name': 'Hank',  'dept': 'Sales',       'salary': 62000, 'active': true});
+    tx.write('emp:7', {
+      'id': '7',
+      'name': 'Grace',
+      'dept': 'Engineering',
+      'salary': 88000,
+      'active': true
+    });
+    tx.write('emp:8', {
+      'id': '8',
+      'name': 'Hank',
+      'dept': 'Sales',
+      'salary': 62000,
+      'active': true
+    });
     tx.delete('emp:5'); // Remove inactive employee.
   });
-  print('Transaction committed: writes=${receipt.writes}, deletes=${receipt.deletes}, '
+  print(
+      'Transaction committed: writes=${receipt.writes}, deletes=${receipt.deletes}, '
       'elapsed=${receipt.elapsed.inMilliseconds}ms');
 
   // Demonstrate rollback.
@@ -159,7 +252,8 @@ Future<void> main() async {
   final sp = tx2.savepoint('before-dangerous-op');
   tx2.write('danger', 'this will be rolled back');
   tx2.rollbackToSavepoint(sp);
-  print('After savepoint rollback, pendingOps=${tx2.pendingOperations} (only temp:key remains)');
+  print(
+      'After savepoint rollback, pendingOps=${tx2.pendingOperations} (only temp:key remains)');
   await tx2.rollback();
   print('Full rollback — temp:key not persisted: '
       '${!(await vault.secureContains('temp:key'))}\n');
@@ -171,21 +265,26 @@ Future<void> main() async {
 
   final timer = TimingPlugin();
   final pluggable = PluggableVault(inner: InMemoryVault('plugin_demo'))
-    ..use(SchemaValidationPlugin(requiredFields: {'name': String, 'salary': int}))
+    ..use(
+        SchemaValidationPlugin(requiredFields: {'name': String, 'salary': int}))
     ..use(FieldMaskingPlugin(maskedFields: {'ssn', 'password'}))
     ..use(timer)
     ..use(ConsoleLoggingPlugin(verbose: true));
 
   await pluggable.initialize();
   await pluggable.secureSave('emp:p1', {
-    'name': 'Ivy', 'salary': 75000,
-    'ssn': '999-99-9999', 'password': 'hunter2',
+    'name': 'Ivy',
+    'salary': 75000,
+    'ssn': '999-99-9999',
+    'password': 'hunter2',
   });
 
   final saved = await pluggable.secureGet<Map>('emp:p1');
-  print('After field masking — SSN: ${saved?['ssn']}, Password: ${saved?['password']}');
+  print(
+      'After field masking — SSN: ${saved?['ssn']}, Password: ${saved?['password']}');
   print('Avg save latency: ${timer.averageUs('save').toStringAsFixed(1)} µs');
-  print('Registered plugins: ${pluggable.plugins.all.map((p) => p.name).join(', ')}\n');
+  print(
+      'Registered plugins: ${pluggable.plugins.all.map((p) => p.name).join(', ')}\n');
 
   // ════════════════════════════════════════════════════════════════════════
   //  4. OBSERVABILITY & METRICS
@@ -194,19 +293,25 @@ Future<void> main() async {
 
   final metrics = VaultMetrics(vaultName: 'showcase');
   for (int i = 0; i < 20; i++) {
-    metrics.recordOperation(MetricOperation.write, durationUs: 800 + i * 50, bytes: 256);
-    metrics.recordOperation(MetricOperation.read, durationUs: 200 + i * 10, bytes: 256, fromCache: i % 3 == 0);
+    metrics.recordOperation(MetricOperation.write,
+        durationUs: 800 + i * 50, bytes: 256);
+    metrics.recordOperation(MetricOperation.read,
+        durationUs: 200 + i * 10, bytes: 256, fromCache: i % 3 == 0);
   }
-  metrics.recordOperation(MetricOperation.search, durationUs: 15000, bytes: 0, isError: false);
+  metrics.recordOperation(MetricOperation.search,
+      durationUs: 15000, bytes: 0, isError: false);
   metrics.recordOperation(MetricOperation.write, durationUs: 0, isError: true);
 
   final snap = metrics.snapshot();
   print('Metrics snapshot:');
-  print('  Writes: ${snap.counters['write']}  Reads: ${snap.counters['read']}  Searches: ${snap.counters['search']}');
+  print(
+      '  Writes: ${snap.counters['write']}  Reads: ${snap.counters['read']}  Searches: ${snap.counters['search']}');
   print('  Error rate: ${(snap.errorRate * 100).toStringAsFixed(1)}%');
-  print('  Cache hit ratio: ${(metrics.cacheHitRatio * 100).toStringAsFixed(1)}%');
+  print(
+      '  Cache hit ratio: ${(metrics.cacheHitRatio * 100).toStringAsFixed(1)}%');
   final wh = metrics.histogramFor(MetricOperation.write);
-  print('  Write latency — p50: ${wh.p50}µs  p95: ${wh.p95}µs  p99: ${wh.p99}µs');
+  print(
+      '  Write latency — p50: ${wh.p50}µs  p95: ${wh.p95}µs  p99: ${wh.p99}µs');
   print('  Total errors: ${metrics.totalErrors}\n');
 
   // Prometheus export.
@@ -222,7 +327,8 @@ Future<void> main() async {
 
   final shards = List.generate(
     3,
-    (i) => ShardDescriptor(index: i, boxName: 'shard_$i', vault: InMemoryVault('shard_$i')),
+    (i) => ShardDescriptor(
+        index: i, boxName: 'shard_$i', vault: InMemoryVault('shard_$i')),
   );
   final shardManager = ShardManager(
     shards: shards,
@@ -231,13 +337,16 @@ Future<void> main() async {
   await shardManager.initialize();
 
   await shardManager.secureSaveBatch({
-    'user:1': {'name': 'Alice'}, 'user:2': {'name': 'Bob'},
-    'order:101': {'total': 199.99}, 'order:102': {'total': 49.99},
+    'user:1': {'name': 'Alice'},
+    'user:2': {'name': 'Bob'},
+    'order:101': {'total': 199.99},
+    'order:102': {'total': 49.99},
     'config:theme': {'mode': 'dark'},
   });
 
   final balance = await shardManager.balanceReport();
-  print('Shard balance: ${balance.entries.map((e) => '${e.key}:${e.value}').join(', ')}');
+  print(
+      'Shard balance: ${balance.entries.map((e) => '${e.key}:${e.value}').join(', ')}');
 
   final allKeys = await shardManager.getAllKeys();
   print('Total keys across all shards: ${allKeys.length}');
@@ -252,23 +361,31 @@ Future<void> main() async {
   final bucket = TokenBucket(capacity: 5, refillRate: 10);
   int allowed = 0, rejected = 0;
   for (int i = 0; i < 10; i++) {
-    if (bucket.tryConsume()) allowed++; else rejected++;
+    if (bucket.tryConsume())
+      allowed++;
+    else
+      rejected++;
   }
   print('TokenBucket(capacity:5): allowed=$allowed, rejected=$rejected');
 
-  final sliding = SlidingWindowLimiter(maxRequests: 3, window: Duration(seconds: 1));
+  final sliding =
+      SlidingWindowLimiter(maxRequests: 3, window: Duration(seconds: 1));
   int swAllowed = 0;
-  for (int i = 0; i < 5; i++) { if (sliding.tryAcquire()) swAllowed++; }
+  for (int i = 0; i < 5; i++) {
+    if (sliding.tryAcquire()) swAllowed++;
+  }
   print('SlidingWindow(3/sec): allowed $swAllowed/5 requests');
 
   final perKey = PerKeyRateLimiter(capacity: 2, refillRate: 5);
-  print('PerKeyLimiter user:1: ${perKey.tryConsume('user:1')} ${perKey.tryConsume('user:1')} ${perKey.tryConsume('user:1')} (expect: true true false)');
+  print(
+      'PerKeyLimiter user:1: ${perKey.tryConsume('user:1')} ${perKey.tryConsume('user:1')} ${perKey.tryConsume('user:1')} (expect: true true false)');
   print('PerKey active buckets: ${perKey.activeBuckets}');
 
   final vaultLimiter = VaultRateLimiter.mobile();
   vaultLimiter.checkWrite();
   vaultLimiter.checkRead();
-  print('VaultRateLimiter.mobile() — write/read checks passed. Violations: ${vaultLimiter.violationCount}\n');
+  print(
+      'VaultRateLimiter.mobile() — write/read checks passed. Violations: ${vaultLimiter.violationCount}\n');
 
   // ════════════════════════════════════════════════════════════════════════
   //  7. CONFLICT RESOLUTION
@@ -278,29 +395,39 @@ Future<void> main() async {
   final now = DateTime.now();
   final local = VersionedValue<Map<String, dynamic>>(
     value: {'name': 'Alice', 'score': 100, 'city': 'London'},
-    sourceId: 'device-A', timestamp: now, version: 3,
+    sourceId: 'device-A',
+    timestamp: now,
+    version: 3,
     vectorClock: {'device-A': 3, 'device-B': 1},
   );
   final remote = VersionedValue<Map<String, dynamic>>(
     value: {'name': 'Alice', 'score': 120, 'email': 'alice@example.com'},
-    sourceId: 'device-B', timestamp: now.add(Duration(seconds: 5)), version: 4,
+    sourceId: 'device-B',
+    timestamp: now.add(Duration(seconds: 5)),
+    version: 4,
     vectorClock: {'device-A': 2, 'device-B': 4},
   );
-  final conflict = VaultConflict<Map<String, dynamic>>(key: 'user:alice', local: local, remote: remote);
+  final conflict = VaultConflict<Map<String, dynamic>>(
+      key: 'user:alice', local: local, remote: remote);
 
   // LWW
-  final lwwRes = await LastWriteWinsResolver<Map<String, dynamic>>().resolve(conflict);
-  print('LWW strategy: ${lwwRes.strategy.name} — score=${lwwRes.resolvedValue['score']}');
+  final lwwRes =
+      await LastWriteWinsResolver<Map<String, dynamic>>().resolve(conflict);
+  print(
+      'LWW strategy: ${lwwRes.strategy.name} — score=${lwwRes.resolvedValue['score']}');
 
   // Field merge
   final mergeRes = await FieldMergeResolver(
     localPriorityFields: {'city'},
   ).resolve(conflict);
-  print('Field merge: score=${mergeRes.resolvedValue['score']}, city=${mergeRes.resolvedValue['city']}, email=${mergeRes.resolvedValue['email']}');
+  print(
+      'Field merge: score=${mergeRes.resolvedValue['score']}, city=${mergeRes.resolvedValue['city']}, email=${mergeRes.resolvedValue['email']}');
 
   // Vector clock
-  final vvRes = await VersionVectorResolver<Map<String, dynamic>>().resolve(conflict);
-  print('Vector clock: strategy=${vvRes.strategy.name} (remote vector dominates)\n');
+  final vvRes =
+      await VersionVectorResolver<Map<String, dynamic>>().resolve(conflict);
+  print(
+      'Vector clock: strategy=${vvRes.strategy.name} (remote vector dominates)\n');
 
   // ════════════════════════════════════════════════════════════════════════
   //  8. KEY ROTATION SCHEDULER (metadata only — no Hive box in this demo)

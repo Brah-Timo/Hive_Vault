@@ -6,8 +6,6 @@ import 'vault_repository.dart';
 class AlertRepository extends VaultRepository<StockAlert> {
   AlertRepository(super.vault);
 
-
-
   static const _prefix = 'alert:';
 
   @override
@@ -20,9 +18,8 @@ class AlertRepository extends VaultRepository<StockAlert> {
   StockAlert fromMap(Map<String, dynamic> map) => StockAlert.fromMap(map);
 
   Future<List<StockAlert>> getAllAlerts() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     final alerts = maps.values
@@ -66,11 +63,10 @@ class AlertRepository extends VaultRepository<StockAlert> {
     }
   }
 
-  Future<bool> alertExistsForProduct(
-      String productId, AlertType type) async {
+  Future<bool> alertExistsForProduct(String productId, AlertType type) async {
     final all = await getActiveAlerts();
-    return all.any((a) =>
-        a.productId == productId && a.type == type && !a.isDismissed);
+    return all.any(
+        (a) => a.productId == productId && a.type == type && !a.isDismissed);
   }
 
   Future<void> deleteOldAlerts({int keepDays = 30}) async {

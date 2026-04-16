@@ -24,7 +24,7 @@ void main() {
         engine.indexEntry(
           'KEY-$i',
           'Invoice $i client Ahmed Mohamed amount ${i * 100} '
-          'product item category sector region',
+              'product item category sector region',
         );
       }
     }

@@ -53,8 +53,7 @@ class Lz4CompressionProvider extends CompressionProvider {
       return _lz4BlockDecompress(payload, header.originalSize);
     } catch (e) {
       if (e is VaultDecompressionException) rethrow;
-      throw VaultDecompressionException(
-          'Lz4 decompression failed', cause: e);
+      throw VaultDecompressionException('Lz4 decompression failed', cause: e);
     }
   }
 
@@ -149,10 +148,8 @@ class Lz4CompressionProvider extends CompressionProvider {
     }
 
     int _hash4(int p) {
-      final v = src[p] |
-          (src[p + 1] << 8) |
-          (src[p + 2] << 16) |
-          (src[p + 3] << 24);
+      final v =
+          src[p] | (src[p + 1] << 8) | (src[p + 2] << 16) | (src[p + 3] << 24);
       return ((v * 0x9E3779B9) >> _hashShift) & (_hashTableSize - 1);
     }
 

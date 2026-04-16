@@ -18,27 +18,70 @@ class _StubVault implements SecureStorageInterface {
   final Map<String, dynamic> data = {};
   _StubVault(this.name);
 
-  @override Future<void> initialize() async {}
-  @override Future<void> close() async {}
-  @override Future<bool> secureContains(String k) async => data.containsKey(k);
-  @override Future<List<String>> getAllKeys() async => data.keys.toList();
-  @override Future<T?> secureGet<T>(String k) async => data[k] as T?;
-  @override Future<void> secureDelete(String k) async => data.remove(k);
-  @override Future<void> secureSave<T>(String k, T v, {SensitivityLevel? sensitivity, String? searchableText}) async => data[k] = v;
-  @override Future<void> secureSaveBatch(Map<String, dynamic> e, {SensitivityLevel? sensitivity}) async => data.addAll(e);
-  @override Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {for (final k in ks) if (data.containsKey(k)) k: data[k]};
-  @override Future<void> secureDeleteBatch(List<String> ks) async => ks.forEach(data.remove);
-  @override Future<List<T>> secureSearch<T>(String q) async => [];
-  @override Future<List<T>> secureSearchAny<T>(String q) async => [];
-  @override Future<List<T>> secureSearchPrefix<T>(String p) async => [];
-  @override Future<Set<String>> searchKeys(String q) async => {};
-  @override Future<void> rebuildIndex() async {}
-  @override Future<void> compact() async {}
-  @override void clearCache() {}
-  @override Future<Uint8List> exportEncrypted() async => Uint8List(0);
-  @override Future<void> importEncrypted(Uint8List d) async {}
-  @override Future<VaultStats> getStats() async => VaultStats(boxName: name, totalEntries: data.length, cacheSize: 0, cacheCapacity: 0, cacheHitRatio: 0, compressionAlgorithm: 'None', encryptionAlgorithm: 'None', indexStats: const IndexStats.empty(), totalBytesSaved: 0, totalBytesWritten: 0, totalWrites: 0, totalReads: 0, totalSearches: 0, openedAt: DateTime.now());
-  @override List<AuditEntry> getAuditLog({int limit = 50}) => [];
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<void> close() async {}
+  @override
+  Future<bool> secureContains(String k) async => data.containsKey(k);
+  @override
+  Future<List<String>> getAllKeys() async => data.keys.toList();
+  @override
+  Future<T?> secureGet<T>(String k) async => data[k] as T?;
+  @override
+  Future<void> secureDelete(String k) async => data.remove(k);
+  @override
+  Future<void> secureSave<T>(String k, T v,
+          {SensitivityLevel? sensitivity, String? searchableText}) async =>
+      data[k] = v;
+  @override
+  Future<void> secureSaveBatch(Map<String, dynamic> e,
+          {SensitivityLevel? sensitivity}) async =>
+      data.addAll(e);
+  @override
+  Future<Map<String, dynamic>> secureGetBatch(List<String> ks) async => {
+        for (final k in ks)
+          if (data.containsKey(k)) k: data[k]
+      };
+  @override
+  Future<void> secureDeleteBatch(List<String> ks) async =>
+      ks.forEach(data.remove);
+  @override
+  Future<List<T>> secureSearch<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchAny<T>(String q) async => [];
+  @override
+  Future<List<T>> secureSearchPrefix<T>(String p) async => [];
+  @override
+  Future<Set<String>> searchKeys(String q) async => {};
+  @override
+  Future<void> rebuildIndex() async {}
+  @override
+  Future<void> compact() async {}
+  @override
+  void clearCache() {}
+  @override
+  Future<Uint8List> exportEncrypted() async => Uint8List(0);
+  @override
+  Future<void> importEncrypted(Uint8List d) async {}
+  @override
+  Future<VaultStats> getStats() async => VaultStats(
+      boxName: name,
+      totalEntries: data.length,
+      cacheSize: 0,
+      cacheCapacity: 0,
+      cacheHitRatio: 0,
+      compressionAlgorithm: 'None',
+      encryptionAlgorithm: 'None',
+      indexStats: const IndexStats.empty(),
+      totalBytesSaved: 0,
+      totalBytesWritten: 0,
+      totalWrites: 0,
+      totalReads: 0,
+      totalSearches: 0,
+      openedAt: DateTime.now());
+  @override
+  List<AuditEntry> getAuditLog({int limit = 50}) => [];
 }
 
 List<ShardDescriptor> _makeShards(int count) => List.generate(

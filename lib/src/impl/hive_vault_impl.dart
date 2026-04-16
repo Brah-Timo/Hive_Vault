@@ -150,8 +150,7 @@ class HiveVaultImpl implements SecureStorageInterface {
         } else {
           compressionFlag = _compressor.headerFlag;
         }
-        processedBytes =
-            await _bg.compress(rawBytes, _compressor);
+        processedBytes = await _bg.compress(rawBytes, _compressor);
       } else {
         compressionFlag = CompressionFlag.none;
         processedBytes = rawBytes;
@@ -182,8 +181,7 @@ class HiveVaultImpl implements SecureStorageInterface {
 
       // 6 — Update in-memory index.
       if (config.indexing.enableAutoIndexing) {
-        final text = searchableText ??
-            _extractSearchableText(value);
+        final text = searchableText ?? _extractSearchableText(value);
         if (text.isNotEmpty) {
           _index.indexEntry(key, text);
         }
@@ -539,7 +537,8 @@ class HiveVaultImpl implements SecureStorageInterface {
       final Map<String, dynamic> importMap = jsonDecode(jsonStr);
 
       for (final entry in importMap.entries) {
-        final payload = Uint8List.fromList(base64.decode(entry.value as String));
+        final payload =
+            Uint8List.fromList(base64.decode(entry.value as String));
         await _box.put(entry.key, payload);
       }
 
@@ -635,9 +634,7 @@ class HiveVaultImpl implements SecureStorageInterface {
     }
     if (value is Map) {
       // Generic map — convert to string
-      return value.values
-          .whereType<String>()
-          .join(' ');
+      return value.values.whereType<String>().join(' ');
     }
     return '';
   }

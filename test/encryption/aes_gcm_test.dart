@@ -49,8 +49,8 @@ void main() {
       });
 
       test('round-trip: Arabic text', () async {
-        final text = utf8.encode(
-            'رقم الحساب البنكي: CPA 123456789 — رمز NIF: 987654321');
+        final text = utf8
+            .encode('رقم الحساب البنكي: CPA 123456789 — رمز NIF: 987654321');
         final cipher = await provider.encrypt(Uint8List.fromList(text));
         final decrypted = await provider.decrypt(cipher);
         expect(decrypted, equals(text));
@@ -59,7 +59,9 @@ void main() {
 
     // ── Security ──────────────────────────────────────────────────────────────
     group('Security', () {
-      test('same plaintext produces different ciphertext each time (nonce randomness)', () async {
+      test(
+          'same plaintext produces different ciphertext each time (nonce randomness)',
+          () async {
         final plain = utf8.encode('password: super_secret');
         final c1 = await provider.encrypt(Uint8List.fromList(plain));
         final c2 = await provider.encrypt(Uint8List.fromList(plain));

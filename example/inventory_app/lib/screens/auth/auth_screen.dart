@@ -131,11 +131,16 @@ class _AuthScreenState extends State<AuthScreen>
         if (_attempts >= 5) {
           setState(() => _isLocked = true);
           await Future.delayed(const Duration(seconds: 30));
-          if (mounted) setState(() { _isLocked = false; _attempts = 0; });
+          if (mounted)
+            setState(() {
+              _isLocked = false;
+              _attempts = 0;
+            });
         }
         _triggerError();
       }
-    } else if (widget.mode == AuthMode.setup || widget.mode == AuthMode.change) {
+    } else if (widget.mode == AuthMode.setup ||
+        widget.mode == AuthMode.change) {
       if (!_isConfirming) {
         setState(() => _isConfirming = true);
       } else {
@@ -215,7 +220,9 @@ class _AuthScreenState extends State<AuthScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _isLocked ? 'Too many attempts. Wait 30 seconds.' : _subtitle,
+                    _isLocked
+                        ? 'Too many attempts. Wait 30 seconds.'
+                        : _subtitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: _isLocked ? Colors.red.shade200 : Colors.white70,
@@ -228,7 +235,8 @@ class _AuthScreenState extends State<AuthScreen>
                     animation: _shakeAnimation,
                     builder: (context, child) {
                       return Transform.translate(
-                        offset: Offset(_shakeAnimation.value * (_error ? 1 : 0), 0),
+                        offset:
+                            Offset(_shakeAnimation.value * (_error ? 1 : 0), 0),
                         child: child,
                       );
                     },
@@ -247,9 +255,8 @@ class _AuthScreenState extends State<AuthScreen>
                                 ? Colors.white
                                 : Colors.white.withOpacity(0.3),
                             border: Border.all(
-                              color: _error
-                                  ? Colors.red.shade300
-                                  : Colors.white54,
+                              color:
+                                  _error ? Colors.red.shade300 : Colors.white54,
                               width: 2,
                             ),
                           ),
@@ -300,7 +307,8 @@ class _AuthScreenState extends State<AuthScreen>
   Widget _buildKeyRow(List<String> digits) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: digits.map((d) => _DigitKey(digit: d, onTap: _onDigit)).toList(),
+      children:
+          digits.map((d) => _DigitKey(digit: d, onTap: _onDigit)).toList(),
     );
   }
 
@@ -331,8 +339,8 @@ class _AuthScreenState extends State<AuthScreen>
               customBorder: const CircleBorder(),
               onTap: _onDelete,
               child: const Center(
-                child: Icon(Icons.backspace_outlined,
-                    color: Colors.red, size: 24),
+                child:
+                    Icon(Icons.backspace_outlined, color: Colors.red, size: 24),
               ),
             ),
           ),

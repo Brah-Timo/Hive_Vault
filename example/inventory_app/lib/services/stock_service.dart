@@ -70,8 +70,7 @@ class StockService {
     await _productRepo.updateStock(productId, stockAfter);
 
     // Generate alerts if needed
-    await _checkAndGenerateAlerts(
-        product.copyWith(currentStock: stockAfter));
+    await _checkAndGenerateAlerts(product.copyWith(currentStock: stockAfter));
 
     return movement;
   }

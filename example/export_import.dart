@@ -18,7 +18,8 @@ Future<void> main() async {
   print('HiveVault — Export/Import Demo\n════════════════════════════\n');
 
   // ── Vault A: populate with data ───────────────────────────────────────────
-  final vaultA = await VaultFactory.open('vault_a', config: VaultConfig.debug());
+  final vaultA =
+      await VaultFactory.open('vault_a', config: VaultConfig.debug());
 
   for (var i = 1; i <= 5; i++) {
     await vaultA.secureSave(
@@ -35,12 +36,15 @@ Future<void> main() async {
   await vaultA.close();
 
   // ── Vault B: fresh empty vault ────────────────────────────────────────────
-  final vaultB = await VaultFactory.open('vault_b', config: VaultConfig.debug());
-  print('   Vault B before import: ${(await vaultB.getStats()).totalEntries} entries.');
+  final vaultB =
+      await VaultFactory.open('vault_b', config: VaultConfig.debug());
+  print(
+      '   Vault B before import: ${(await vaultB.getStats()).totalEntries} entries.');
 
   // ── Import ────────────────────────────────────────────────────────────────
   await vaultB.importEncrypted(exportBlob);
-  print('   Vault B after import : ${(await vaultB.getStats()).totalEntries} entries.\n');
+  print(
+      '   Vault B after import : ${(await vaultB.getStats()).totalEntries} entries.\n');
 
   // ── Verify data integrity ─────────────────────────────────────────────────
   print('🔍 Verifying all records in Vault B:');
@@ -62,5 +66,6 @@ Future<void> main() async {
   await vaultB.close();
   await VaultFactory.closeAll();
 
-  print('\n${allOk ? "✅" : "❌"} Export/Import demo ${allOk ? "PASSED" : "FAILED"}.');
+  print(
+      '\n${allOk ? "✅" : "❌"} Export/Import demo ${allOk ? "PASSED" : "FAILED"}.');
 }

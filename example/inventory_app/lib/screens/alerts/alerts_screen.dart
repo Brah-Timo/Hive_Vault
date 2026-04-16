@@ -18,8 +18,7 @@ class AlertsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<InventoryProvider>(
       builder: (context, prov, _) {
-        final active =
-            prov.alerts.where((a) => !a.isDismissed).toList();
+        final active = prov.alerts.where((a) => !a.isDismissed).toList();
         final critical =
             active.where((a) => a.severity == AlertSeverity.critical).length;
         final warnings =
@@ -34,8 +33,8 @@ class AlertsScreen extends StatelessWidget {
               if (prov.unreadAlertCount > 0)
                 TextButton.icon(
                   onPressed: prov.markAllAlertsRead,
-                  icon: const Icon(Icons.done_all,
-                      color: Colors.white, size: 18),
+                  icon:
+                      const Icon(Icons.done_all, color: Colors.white, size: 18),
                   label: const Text('Read All',
                       style: TextStyle(color: Colors.white)),
                 ),
@@ -62,11 +61,9 @@ class AlertsScreen extends StatelessWidget {
                         onRefresh: prov.loadAll,
                         child: ListView.builder(
                           itemCount: active.length,
-                          itemBuilder: (context, i) =>
-                              _AlertTile(
+                          itemBuilder: (context, i) => _AlertTile(
                             alert: active[i],
-                            onDismiss: () =>
-                                prov.dismissAlert(active[i].id),
+                            onDismiss: () => prov.dismissAlert(active[i].id),
                             onMarkRead: () async {
                               // Mark single alert read by reusing markAll
                               // (individual mark available via alert repo)
@@ -93,23 +90,19 @@ class AlertsScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
       child: Row(
         children: [
-          _chip(Icons.error, '$critical Critical',
-              AppTheme.errorColor),
+          _chip(Icons.error, '$critical Critical', AppTheme.errorColor),
           const SizedBox(width: 8),
-          _chip(Icons.warning_amber, '$warnings Warnings',
-              AppTheme.warningColor),
+          _chip(
+              Icons.warning_amber, '$warnings Warnings', AppTheme.warningColor),
           const SizedBox(width: 8),
-          _chip(Icons.info_outline, '$info Info',
-              AppTheme.infoColor),
+          _chip(Icons.info_outline, '$info Info', AppTheme.infoColor),
         ],
       ),
     );
   }
 
-  Widget _chip(IconData icon, String label, Color color) =>
-      Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 10, vertical: 5),
+  Widget _chip(IconData icon, String label, Color color) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
@@ -122,21 +115,16 @@ class AlertsScreen extends StatelessWidget {
             const SizedBox(width: 4),
             Text(label,
                 style: TextStyle(
-                    fontSize: 11,
-                    color: color,
-                    fontWeight: FontWeight.bold)),
+                    fontSize: 11, color: color, fontWeight: FontWeight.bold)),
           ],
         ),
       );
 
-  Future<void> _runScan(
-      BuildContext context, InventoryProvider prov) async {
+  Future<void> _runScan(BuildContext context, InventoryProvider prov) async {
     final count = await prov.runAlertScan();
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content:
-              Text('Scan complete: $count new alert(s) found')),
+      SnackBar(content: Text('Scan complete: $count new alert(s) found')),
     );
   }
 }
@@ -170,17 +158,15 @@ class _AlertTile extends StatelessWidget {
       ),
       onDismissed: (_) => onDismiss(),
       child: Card(
-        margin: const EdgeInsets.symmetric(
-            horizontal: 12, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: isUnread
-              ? BorderSide(color: color, width: 1.5)
-              : BorderSide.none,
+          side:
+              isUnread ? BorderSide(color: color, width: 1.5) : BorderSide.none,
         ),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14, vertical: 6),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           leading: CircleAvatar(
             backgroundColor: color.withOpacity(0.12),
             child: Icon(
@@ -195,9 +181,7 @@ class _AlertTile extends StatelessWidget {
                 child: Text(
                   alert.productName,
                   style: TextStyle(
-                    fontWeight: isUnread
-                        ? FontWeight.bold
-                        : FontWeight.w500,
+                    fontWeight: isUnread ? FontWeight.bold : FontWeight.w500,
                     fontSize: 14,
                   ),
                 ),
@@ -227,8 +211,7 @@ class _AlertTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     _timeAgo(alert.createdAt),
-                    style: const TextStyle(
-                        fontSize: 10, color: Colors.grey),
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
                   ),
                 ],
               ),
@@ -282,18 +265,15 @@ class _AlertTile extends StatelessWidget {
   Widget _severityBadge(AlertSeverity s) {
     final color = _severityColor(s);
     return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: 7, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         s.label,
-        style: TextStyle(
-            fontSize: 10,
-            color: color,
-            fontWeight: FontWeight.bold),
+        style:
+            TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.bold),
       ),
     );
   }

@@ -77,9 +77,9 @@ void main() {
     test('tracks hits and misses correctly', () {
       final cache = InstrumentedLruCache<String, int>(maxSize: 5);
       cache.put('x', 10);
-      cache.get('x');   // hit
-      cache.get('x');   // hit
-      cache.get('y');   // miss
+      cache.get('x'); // hit
+      cache.get('x'); // hit
+      cache.get('y'); // miss
       expect(cache.hits, equals(2));
       expect(cache.misses, equals(1));
     });

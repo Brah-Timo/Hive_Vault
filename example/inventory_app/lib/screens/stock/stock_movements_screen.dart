@@ -38,7 +38,9 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
     var list = List<StockMovement>.from(prov.movements);
     if (_search.isNotEmpty) {
       final q = _search.toLowerCase();
-      final names = {for (final p in prov.allProducts) p.id: p.name.toLowerCase()};
+      final names = {
+        for (final p in prov.allProducts) p.id: p.name.toLowerCase()
+      };
       list = list
           .where((m) =>
               (names[m.productId]?.contains(q) ?? false) ||
@@ -61,7 +63,10 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
   }
 
   bool get _hasFilters =>
-      _typeFilter != null || _fromDate != null || _toDate != null || _search.isNotEmpty;
+      _typeFilter != null ||
+      _fromDate != null ||
+      _toDate != null ||
+      _search.isNotEmpty;
 
   void _clearFilters() {
     setState(() {
@@ -202,10 +207,8 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
                   AppTheme.primaryColor,
                   () => setState(() => _fromDate = null)),
             if (_toDate != null)
-              _chip(
-                  'To: ${DateFormat('dd/MM').format(_toDate!)}',
-                  AppTheme.primaryColor,
-                  () => setState(() => _toDate = null)),
+              _chip('To: ${DateFormat('dd/MM').format(_toDate!)}',
+                  AppTheme.primaryColor, () => setState(() => _toDate = null)),
             const SizedBox(width: 4),
             ActionChip(
               label: const Text('Clear All'),
@@ -221,8 +224,7 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
   Widget _chip(String label, Color color, VoidCallback onRemove) => Padding(
         padding: const EdgeInsets.only(right: 6),
         child: Chip(
-          label: Text(label,
-              style: TextStyle(fontSize: 11, color: color)),
+          label: Text(label, style: TextStyle(fontSize: 11, color: color)),
           deleteIcon: const Icon(Icons.close, size: 14),
           onDeleted: onRemove,
           backgroundColor: color.withOpacity(0.08),
@@ -234,16 +236,26 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
       );
 
   Widget _buildSummaryRow(List<StockMovement> list) {
-    final totalIn = list.where((m) => m.type.isPositive).fold(0.0, (s, m) => s + m.quantity);
-    final totalOut = list.where((m) => !m.type.isPositive).fold(0.0, (s, m) => s + m.quantity);
+    final totalIn = list
+        .where((m) => m.type.isPositive)
+        .fold(0.0, (s, m) => s + m.quantity);
+    final totalOut = list
+        .where((m) => !m.type.isPositive)
+        .fold(0.0, (s, m) => s + m.quantity);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Row(children: [
-        Expanded(child: _summaryPill('${list.length} records', Icons.list_alt, Colors.blueGrey)),
+        Expanded(
+            child: _summaryPill(
+                '${list.length} records', Icons.list_alt, Colors.blueGrey)),
         const SizedBox(width: 8),
-        Expanded(child: _summaryPill('+${totalIn.toInt()} IN', Icons.arrow_downward, Colors.green)),
+        Expanded(
+            child: _summaryPill(
+                '+${totalIn.toInt()} IN', Icons.arrow_downward, Colors.green)),
         const SizedBox(width: 8),
-        Expanded(child: _summaryPill('-${totalOut.toInt()} OUT', Icons.arrow_upward, Colors.red)),
+        Expanded(
+            child: _summaryPill(
+                '-${totalOut.toInt()} OUT', Icons.arrow_upward, Colors.red)),
       ]),
     );
   }
@@ -353,8 +365,8 @@ class _StockMovementsScreenState extends State<StockMovementsScreen> {
 
   Future<void> _exportPdf(List<StockMovement> movements) async {
     if (movements.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('No movements to export')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No movements to export')));
       return;
     }
     setState(() => _exporting = true);
@@ -378,9 +390,7 @@ class _MovementTile extends StatelessWidget {
   final String productName;
   final VoidCallback onTap;
   const _MovementTile(
-      {required this.movement,
-      required this.productName,
-      required this.onTap});
+      {required this.movement, required this.productName, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -488,24 +498,26 @@ class _MovementDetail extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                        color: color.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(6)),
-                    child: Text(m.type.label,
-                        style: TextStyle(
-                            color: color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12)),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(productName,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 14)),
-                ]),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                            color: color.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Text(m.type.label,
+                            style: TextStyle(
+                                color: color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12)),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(productName,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 14)),
+                    ]),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Text('${isPos ? '+' : '-'}${m.quantity.toInt()}',
@@ -514,8 +526,8 @@ class _MovementDetail extends StatelessWidget {
                         fontSize: 28,
                         color: color)),
                 Text('units',
-                    style: TextStyle(
-                        fontSize: 11, color: color.withOpacity(0.7))),
+                    style:
+                        TextStyle(fontSize: 11, color: color.withOpacity(0.7))),
               ]),
             ]),
           ),

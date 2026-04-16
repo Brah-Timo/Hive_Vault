@@ -18,10 +18,8 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
     return Consumer<InventoryProvider>(
       builder: (context, prov, _) {
         // Get fresh order
-        final current = prov.orders
-                .where((o) => o.id == order.id)
-                .firstOrNull ??
-            order;
+        final current =
+            prov.orders.where((o) => o.id == order.id).firstOrNull ?? order;
 
         return Scaffold(
           appBar: AppBar(
@@ -73,8 +71,8 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
                       ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(20),
@@ -94,12 +92,10 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
             _row('Supplier', order.supplierName),
             _row('Order Date', formatDate(order.orderDate)),
             if (order.expectedDelivery != null)
-              _row('Expected Delivery',
-                  formatDate(order.expectedDelivery!)),
+              _row('Expected Delivery', formatDate(order.expectedDelivery!)),
             if (order.receivedDate != null)
               _row('Received Date', formatDate(order.receivedDate!)),
-            if (order.createdBy != null)
-              _row('Created By', order.createdBy!),
+            if (order.createdBy != null) _row('Created By', order.createdBy!),
             if (order.approvedBy != null)
               _row('Approved By', order.approvedBy!),
             if (order.notes != null && order.notes!.isNotEmpty)
@@ -137,8 +133,7 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
                             Text(
                               line.productName,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13),
+                                  fontWeight: FontWeight.w600, fontSize: 13),
                             ),
                             Text(
                               'SKU: ${line.sku}',
@@ -168,8 +163,7 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
                           Text(
                             formatCurrency(line.lineTotal),
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13),
+                                fontWeight: FontWeight.bold, fontSize: 13),
                           ),
                         ],
                       ),
@@ -235,8 +229,7 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
             'Mark as Sent to Supplier',
             Icons.local_shipping_outlined,
             AppTheme.primaryColor,
-            () => _updateStatus(
-                context, prov, order, PurchaseOrderStatus.sent),
+            () => _updateStatus(context, prov, order, PurchaseOrderStatus.sent),
           ),
         if (order.canReceive)
           _actionBtn(
@@ -278,15 +271,14 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
                   onPressed: onPressed,
                   icon: Icon(icon, color: color),
                   label: Text(label, style: TextStyle(color: color)),
-                  style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: color)),
+                  style:
+                      OutlinedButton.styleFrom(side: BorderSide(color: color)),
                 )
               : ElevatedButton.icon(
                   onPressed: onPressed,
                   icon: Icon(icon),
                   label: Text(label),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: color),
+                  style: ElevatedButton.styleFrom(backgroundColor: color),
                 ),
         ),
       );
@@ -300,8 +292,7 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
     await prov.updateOrderStatus(order.id, status);
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text('Order status updated to: ${status.label}')),
+      SnackBar(content: Text('Order status updated to: ${status.label}')),
     );
   }
 
@@ -309,8 +300,8 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
       BuildContext context, InventoryProvider prov, PurchaseOrder order) {
     final quantities = <String, TextEditingController>{
       for (final line in order.lines)
-        line.productId: TextEditingController(
-            text: line.pendingQty.toStringAsFixed(0))
+        line.productId:
+            TextEditingController(text: line.pendingQty.toStringAsFixed(0))
     };
 
     showDialog(
@@ -356,15 +347,13 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
             onPressed: () async {
               final received = {
                 for (final entry in quantities.entries)
-                  entry.key:
-                      double.tryParse(entry.value.text) ?? 0,
+                  entry.key: double.tryParse(entry.value.text) ?? 0,
               };
               Navigator.pop(context);
               await prov.receiveOrder(order, received);
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text('Goods receipt recorded!')),
+                const SnackBar(content: Text('Goods receipt recorded!')),
               );
             },
             child: const Text('Confirm Receipt'),
@@ -388,8 +377,8 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, fontSize: 13),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
               ),
             ),
           ],

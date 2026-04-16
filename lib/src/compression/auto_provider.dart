@@ -40,7 +40,8 @@ class AutoCompressionProvider extends CompressionProvider {
   String get algorithmName => 'Auto';
 
   @override
-  int get headerFlag => kCompressionGZip; // flag is set by the actual provider used
+  int get headerFlag =>
+      kCompressionGZip; // flag is set by the actual provider used
 
   // ── Compress ──────────────────────────────────────────────────────────────
 
@@ -92,7 +93,7 @@ class AutoCompressionProvider extends CompressionProvider {
         return _none.decompress(compressedData);
       } catch (e) {
         throw CompressionException(
-          'AutoCompressionProvider: could not detect compression format.', e);
+            'AutoCompressionProvider: could not detect compression format.', e);
       }
     }
   }
@@ -108,20 +109,20 @@ class AutoCompressionProvider extends CompressionProvider {
         return _lz4.decompress(compressedData);
       default:
         throw CompressionException(
-          'AutoCompressionProvider: unknown compression flag $flag.');
+            'AutoCompressionProvider: unknown compression flag $flag.');
     }
   }
 
   @override
   double estimateRatio(int originalSize) {
     if (originalSize < _minSize) return 0.0;
-    if (originalSize >= _sizeThreshold) return _gzip.estimateRatio(originalSize);
+    if (originalSize >= _sizeThreshold)
+      return _gzip.estimateRatio(originalSize);
     return _lz4.estimateRatio(originalSize);
   }
 
   @override
-  bool canDetect(Uint8List data) =>
-      _isGZipHeader(data);
+  bool canDetect(Uint8List data) => _isGZipHeader(data);
 
   bool _isGZipHeader(Uint8List data) =>
       data.length >= 2 && data[0] == kGZipByte0 && data[1] == kGZipByte1;

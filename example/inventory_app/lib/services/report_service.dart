@@ -100,8 +100,7 @@ class ReportService {
               minimumStock: p.minimumStock,
               reorderPoint: p.reorderPoint,
               reorderQty: p.reorderQty,
-              supplierName:
-                  p.supplierId != null ? supMap[p.supplierId] : null,
+              supplierName: p.supplierId != null ? supMap[p.supplierId] : null,
               costPrice: p.costPrice,
             ))
         .toList()
@@ -154,8 +153,9 @@ class ReportService {
 
   Future<List<LowStockItem>> getReorderReport() async {
     final products = await _productRepo.getAllProducts();
-    final activeProducts =
-        products.where((p) => p.status == ProductStatus.active && p.needsReorder).toList();
+    final activeProducts = products
+        .where((p) => p.status == ProductStatus.active && p.needsReorder)
+        .toList();
     final categories = await _categoryRepo.getAllCategories();
     final suppliers = await _supplierRepo.getAllSuppliers();
     final catMap = {for (final c in categories) c.id: c.name};
@@ -171,8 +171,7 @@ class ReportService {
               minimumStock: p.minimumStock,
               reorderPoint: p.reorderPoint,
               reorderQty: p.reorderQty,
-              supplierName:
-                  p.supplierId != null ? supMap[p.supplierId] : null,
+              supplierName: p.supplierId != null ? supMap[p.supplierId] : null,
               costPrice: p.costPrice,
             ))
         .toList();

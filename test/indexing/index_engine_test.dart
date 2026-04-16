@@ -243,7 +243,8 @@ void main() {
 
     test('performance: search 10,000 entries in < 5ms', () {
       for (int i = 0; i < 10000; i++) {
-        engine.indexEntry('KEY-$i', 'Invoice $i client Ahmed amount ${i * 100}');
+        engine.indexEntry(
+            'KEY-$i', 'Invoice $i client Ahmed amount ${i * 100}');
       }
       final sw = Stopwatch()..start();
       final results = engine.searchAll('ahmed invoice');

@@ -25,10 +25,10 @@ class StockStatusBadge extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: compact ? 8 : 10,
-        vertical:  compact ? 3 : 5,
+        vertical: compact ? 3 : 5,
       ),
       decoration: BoxDecoration(
-        color:  color.withAlpha(31),  // ~12%
+        color: color.withAlpha(31), // ~12%
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color.withAlpha(77)), // ~30%
       ),
@@ -44,8 +44,8 @@ class StockStatusBadge extends StatelessWidget {
           Text(
             product.stockStatusLabel,
             style: TextStyle(
-              color:      color,
-              fontSize:   compact ? 10 : 11,
+              color: color,
+              fontSize: compact ? 10 : 11,
               fontWeight: FontWeight.w600,
             ),
           ),

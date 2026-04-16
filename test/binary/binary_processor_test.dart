@@ -56,7 +56,8 @@ void main() {
   group('BinaryProcessor — bytesToObject', () {
     test('deserialises to String', () {
       final bytes = Uint8List.fromList(utf8.encode('Hello World'));
-      expect(BinaryProcessor.bytesToObject<String>(bytes), equals('Hello World'));
+      expect(
+          BinaryProcessor.bytesToObject<String>(bytes), equals('Hello World'));
     });
 
     test('deserialises to Map', () {
@@ -75,7 +76,8 @@ void main() {
   group('BinaryProcessor — createPayload / parsePayload', () {
     late BinaryProcessor processor;
 
-    setUp(() => processor = const BinaryProcessor(enableIntegrityChecks: false));
+    setUp(
+        () => processor = const BinaryProcessor(enableIntegrityChecks: false));
 
     test('creates payload with correct header values', () async {
       final data = Uint8List.fromList([10, 20, 30]);

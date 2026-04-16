@@ -103,7 +103,8 @@ void main() async {
   final expiry = ttl.getExpiry('TOKEN-ABC');
   final remaining = ttl.getRemaining('TOKEN-ABC');
   print('  Token expires at: ${expiry?.toIso8601String()}');
-  print('  Time remaining: ${remaining?.inHours}h ${remaining?.inMinutes.remainder(60)}m');
+  print(
+      '  Time remaining: ${remaining?.inHours}h ${remaining?.inMinutes.remainder(60)}m');
   print('  Is expired: ${ttl.isExpired('TOKEN-ABC')}');
 
   // Save a token with very short TTL (already expired)
@@ -164,7 +165,8 @@ void main() async {
     'REC-003': {'type': 'receipt', 'amount': 5000},
   });
 
-  print('  Source vault: ${(await sourceVault.getStats()).totalEntries} entries');
+  print(
+      '  Source vault: ${(await sourceVault.getStats()).totalEntries} entries');
 
   // Export
   final archive = await sourceVault.exportEncrypted();

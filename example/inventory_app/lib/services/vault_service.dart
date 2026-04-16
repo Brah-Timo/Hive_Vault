@@ -14,13 +14,13 @@ import 'package:hive_vault/hive_vault.dart';
 
 /// Named box identifiers for each HiveVault instance.
 class AppVaults {
-  static const products   = 'inv_products';
+  static const products = 'inv_products';
   static const categories = 'inv_categories';
-  static const movements  = 'inv_movements';
-  static const suppliers  = 'inv_suppliers';
-  static const orders     = 'inv_orders';
-  static const alerts     = 'inv_alerts';
-  static const settings   = 'inv_settings';
+  static const movements = 'inv_movements';
+  static const suppliers = 'inv_suppliers';
+  static const orders = 'inv_orders';
+  static const alerts = 'inv_alerts';
+  static const settings = 'inv_settings';
 }
 
 /// Centralised singleton that owns all HiveVault instances.
@@ -244,6 +244,5 @@ class VaultService {
     _instance = null;
   }
 
-  Future<VaultStats> getCombinedStats() async =>
-      productsVault.getStats();
+  Future<VaultStats> getCombinedStats() async => productsVault.getStats();
 }

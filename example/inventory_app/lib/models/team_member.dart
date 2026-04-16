@@ -6,10 +6,10 @@
 
 /// Roles in the inventory system.
 enum UserRole {
-  admin,       // Full access — all CRUD + reports + settings
-  manager,     // View + edit products, orders, stock movements; no settings
-  operator,    // Stock movements and scanning only
-  viewer,      // Read-only access
+  admin, // Full access — all CRUD + reports + settings
+  manager, // View + edit products, orders, stock movements; no settings
+  operator, // Stock movements and scanning only
+  viewer, // Read-only access
 }
 
 extension UserRoleX on UserRole {
@@ -29,8 +29,7 @@ extension UserRoleX on UserRole {
 
   bool get canEdit => this == UserRole.admin || this == UserRole.manager;
   bool get canManageStock => this != UserRole.viewer;
-  bool get canViewReports =>
-      this == UserRole.admin || this == UserRole.manager;
+  bool get canViewReports => this == UserRole.admin || this == UserRole.manager;
   bool get canAccessSettings => this == UserRole.admin;
 }
 

@@ -69,8 +69,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
             children: [
               // Search bar
               Padding(
-                padding:
-                    const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
                 child: TextField(
                   controller: _searchCtrl,
                   decoration: InputDecoration(
@@ -86,12 +85,9 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                           )
                         : null,
                     isDense: true,
-                    contentPadding:
-                        const EdgeInsets.symmetric(
-                            vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   ),
-                  onChanged: (v) =>
-                      setState(() => _query = v.trim()),
+                  onChanged: (v) => setState(() => _query = v.trim()),
                 ),
               ),
 
@@ -108,49 +104,40 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                             : 'Try a different search term',
                         action: _query.isEmpty
                             ? ElevatedButton.icon(
-                                onPressed: () =>
-                                    _showForm(context, prov),
+                                onPressed: () => _showForm(context, prov),
                                 icon: const Icon(Icons.add),
-                                label:
-                                    const Text('Add Supplier'),
+                                label: const Text('Add Supplier'),
                               )
                             : TextButton(
                                 onPressed: () {
                                   _searchCtrl.clear();
                                   setState(() => _query = '');
                                 },
-                                child:
-                                    const Text('Clear Search'),
+                                child: const Text('Clear Search'),
                               ),
                       )
                     : RefreshIndicator(
                         onRefresh: prov.loadAll,
                         child: ListView.builder(
-                          padding:
-                              const EdgeInsets.only(bottom: 80),
+                          padding: const EdgeInsets.only(bottom: 80),
                           itemCount: filtered.length,
                           itemBuilder: (context, index) {
                             final s = filtered[index];
                             return _SupplierCard(
                               supplier: s,
                               productCount: prov.allProducts
-                                  .where((p) =>
-                                      p.supplierId == s.id)
+                                  .where((p) => p.supplierId == s.id)
                                   .length,
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) =>
-                                      SupplierDetailScreen(
-                                          supplier: s),
+                                      SupplierDetailScreen(supplier: s),
                                 ),
                               ),
-                              onEdit: () => _showForm(
-                                  context, prov,
-                                  existing: s),
-                              onDelete: () =>
-                                  _confirmDelete(
-                                      context, prov, s),
+                              onEdit: () =>
+                                  _showForm(context, prov, existing: s),
+                              onDelete: () => _confirmDelete(context, prov, s),
                             );
                           },
                         ),
@@ -175,8 +162,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
       isScrollControlled: true,
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.vertical(top: Radius.circular(20))),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (sheetCtx) => ChangeNotifierProvider.value(
         value: prov,
         child: _SupplierForm(existing: existing),
@@ -184,11 +170,10 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
     );
   }
 
-  void _confirmDelete(BuildContext context,
-      InventoryProvider prov, Supplier s) {
-    final productCount = prov.allProducts
-        .where((p) => p.supplierId == s.id)
-        .length;
+  void _confirmDelete(
+      BuildContext context, InventoryProvider prov, Supplier s) {
+    final productCount =
+        prov.allProducts.where((p) => p.supplierId == s.id).length;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -205,8 +190,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                 decoration: BoxDecoration(
                   color: Colors.orange.shade50,
                   borderRadius: BorderRadius.circular(8),
-                  border:
-                      Border.all(color: Colors.orange.shade200),
+                  border: Border.all(color: Colors.orange.shade200),
                 ),
                 child: Row(
                   children: [
@@ -217,8 +201,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                       child: Text(
                         '$productCount product(s) are linked to this supplier. '
                         'The supplier reference will be removed.',
-                        style:
-                            const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                   ],
@@ -233,16 +216,13 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () async {
               Navigator.pop(context);
               await prov.deleteSupplier(s.id);
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content:
-                        Text('Supplier "${s.name}" deleted')),
+                SnackBar(content: Text('Supplier "${s.name}" deleted')),
               );
             },
             child: const Text('Delete'),
@@ -274,10 +254,8 @@ class _SupplierCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = supplier;
     return Card(
-      margin:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -288,8 +266,7 @@ class _SupplierCard extends StatelessWidget {
               // Avatar
               CircleAvatar(
                 radius: 26,
-                backgroundColor:
-                    AppTheme.primaryColor.withOpacity(0.12),
+                backgroundColor: AppTheme.primaryColor.withOpacity(0.12),
                 child: Text(
                   s.name.substring(0, 1).toUpperCase(),
                   style: const TextStyle(
@@ -312,25 +289,20 @@ class _SupplierCard extends StatelessWidget {
                           child: Text(
                             s.name,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                                fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                         ),
                         if (!s.isActive)
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: Colors.grey.shade100,
-                              borderRadius:
-                                  BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             child: const Text('Inactive',
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey)),
+                                    fontSize: 10, color: Colors.grey)),
                           ),
                       ],
                     ),
@@ -359,10 +331,8 @@ class _SupplierCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor
-                                .withOpacity(0.08),
-                            borderRadius:
-                                BorderRadius.circular(6),
+                            color: AppTheme.primaryColor.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             '$productCount product${productCount != 1 ? 's' : ''}',
@@ -379,8 +349,8 @@ class _SupplierCard extends StatelessWidget {
                         const SizedBox(width: 2),
                         Text(
                           '${s.defaultLeadTimeDays.toInt()}d lead',
-                          style: const TextStyle(
-                              fontSize: 10, color: Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -393,8 +363,7 @@ class _SupplierCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.edit_outlined,
-                        size: 18),
+                    icon: const Icon(Icons.edit_outlined, size: 18),
                     tooltip: 'Edit',
                     onPressed: onEdit,
                     padding: const EdgeInsets.all(6),
@@ -450,16 +419,12 @@ class _SupplierFormState extends State<_SupplierForm> {
     super.initState();
     final s = widget.existing;
     _nameCtrl = TextEditingController(text: s?.name ?? '');
-    _contactCtrl =
-        TextEditingController(text: s?.contactName ?? '');
+    _contactCtrl = TextEditingController(text: s?.contactName ?? '');
     _emailCtrl = TextEditingController(text: s?.email ?? '');
     _phoneCtrl = TextEditingController(text: s?.phone ?? '');
-    _addressCtrl =
-        TextEditingController(text: s?.address ?? '');
-    _websiteCtrl =
-        TextEditingController(text: s?.website ?? '');
-    _taxCtrl =
-        TextEditingController(text: s?.taxNumber ?? '');
+    _addressCtrl = TextEditingController(text: s?.address ?? '');
+    _websiteCtrl = TextEditingController(text: s?.website ?? '');
+    _taxCtrl = TextEditingController(text: s?.taxNumber ?? '');
     _notesCtrl = TextEditingController(text: s?.notes ?? '');
     _leadTimeCtrl = TextEditingController(
         text: s?.defaultLeadTimeDays.toStringAsFixed(0) ?? '7');
@@ -470,8 +435,14 @@ class _SupplierFormState extends State<_SupplierForm> {
   @override
   void dispose() {
     for (final c in [
-      _nameCtrl, _contactCtrl, _emailCtrl, _phoneCtrl,
-      _addressCtrl, _websiteCtrl, _taxCtrl, _notesCtrl,
+      _nameCtrl,
+      _contactCtrl,
+      _emailCtrl,
+      _phoneCtrl,
+      _addressCtrl,
+      _websiteCtrl,
+      _taxCtrl,
+      _notesCtrl,
       _leadTimeCtrl
     ]) {
       c.dispose();
@@ -491,10 +462,7 @@ class _SupplierFormState extends State<_SupplierForm> {
         child: ListView(
           controller: scrollCtrl,
           padding: EdgeInsets.fromLTRB(
-              20,
-              16,
-              20,
-              MediaQuery.of(context).viewInsets.bottom + 24),
+              20, 16, 20, MediaQuery.of(context).viewInsets.bottom + 24),
           children: [
             Center(
               child: Container(
@@ -508,9 +476,7 @@ class _SupplierFormState extends State<_SupplierForm> {
             ),
             const SizedBox(height: 16),
             Text(
-              widget.existing == null
-                  ? 'Add Supplier'
-                  : 'Edit Supplier',
+              widget.existing == null ? 'Add Supplier' : 'Edit Supplier',
               style: Theme.of(context)
                   .textTheme
                   .titleLarge
@@ -519,22 +485,17 @@ class _SupplierFormState extends State<_SupplierForm> {
             const SizedBox(height: 16),
             _field(_nameCtrl, 'Supplier Name *',
                 icon: Icons.business_outlined,
-                validator: (v) =>
-                    v!.isEmpty ? 'Required' : null),
-            _field(_contactCtrl, 'Contact Person',
-                icon: Icons.person_outline),
+                validator: (v) => v!.isEmpty ? 'Required' : null),
+            _field(_contactCtrl, 'Contact Person', icon: Icons.person_outline),
             _field(_emailCtrl, 'Email',
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress),
             _field(_phoneCtrl, 'Phone',
-                icon: Icons.phone_outlined,
-                keyboardType: TextInputType.phone),
+                icon: Icons.phone_outlined, keyboardType: TextInputType.phone),
             _field(_addressCtrl, 'Address',
-                icon: Icons.location_on_outlined,
-                maxLines: 2),
+                icon: Icons.location_on_outlined, maxLines: 2),
             _field(_websiteCtrl, 'Website',
-                icon: Icons.language_outlined,
-                keyboardType: TextInputType.url),
+                icon: Icons.language_outlined, keyboardType: TextInputType.url),
             _field(_taxCtrl, 'Tax / VAT Number',
                 icon: Icons.receipt_long_outlined),
             _field(_leadTimeCtrl, 'Lead Time (days)',
@@ -546,16 +507,14 @@ class _SupplierFormState extends State<_SupplierForm> {
 
             // Rating
             const Text('Rating',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, fontSize: 14)),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
             const SizedBox(height: 8),
             Row(
               children: [
                 ...List.generate(
                   5,
                   (i) => GestureDetector(
-                    onTap: () => setState(
-                        () => _rating = (i + 1).toDouble()),
+                    onTap: () => setState(() => _rating = (i + 1).toDouble()),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 4),
                       child: Icon(
@@ -580,8 +539,8 @@ class _SupplierFormState extends State<_SupplierForm> {
             // Active toggle
             SwitchListTile(
               title: const Text('Active Supplier'),
-              subtitle: const Text(
-                  'Inactive suppliers won\'t appear in new orders'),
+              subtitle:
+                  const Text('Inactive suppliers won\'t appear in new orders'),
               value: _isActive,
               onChanged: (v) => setState(() => _isActive = v),
               contentPadding: EdgeInsets.zero,
@@ -597,8 +556,7 @@ class _SupplierFormState extends State<_SupplierForm> {
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white))
+                            strokeWidth: 2, color: Colors.white))
                     : const Icon(Icons.save_outlined),
                 label: Text(widget.existing == null
                     ? 'Add Supplier'
@@ -641,29 +599,17 @@ class _SupplierFormState extends State<_SupplierForm> {
     final supplier = Supplier(
       id: widget.existing?.id ?? _uuid.v4(),
       name: _nameCtrl.text.trim(),
-      contactName: _contactCtrl.text.trim().isEmpty
-          ? null
-          : _contactCtrl.text.trim(),
-      email: _emailCtrl.text.trim().isEmpty
-          ? null
-          : _emailCtrl.text.trim(),
-      phone: _phoneCtrl.text.trim().isEmpty
-          ? null
-          : _phoneCtrl.text.trim(),
-      address: _addressCtrl.text.trim().isEmpty
-          ? null
-          : _addressCtrl.text.trim(),
-      website: _websiteCtrl.text.trim().isEmpty
-          ? null
-          : _websiteCtrl.text.trim(),
-      taxNumber: _taxCtrl.text.trim().isEmpty
-          ? null
-          : _taxCtrl.text.trim(),
-      notes: _notesCtrl.text.trim().isEmpty
-          ? null
-          : _notesCtrl.text.trim(),
-      defaultLeadTimeDays:
-          double.tryParse(_leadTimeCtrl.text) ?? 7,
+      contactName:
+          _contactCtrl.text.trim().isEmpty ? null : _contactCtrl.text.trim(),
+      email: _emailCtrl.text.trim().isEmpty ? null : _emailCtrl.text.trim(),
+      phone: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
+      address:
+          _addressCtrl.text.trim().isEmpty ? null : _addressCtrl.text.trim(),
+      website:
+          _websiteCtrl.text.trim().isEmpty ? null : _websiteCtrl.text.trim(),
+      taxNumber: _taxCtrl.text.trim().isEmpty ? null : _taxCtrl.text.trim(),
+      notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
+      defaultLeadTimeDays: double.tryParse(_leadTimeCtrl.text) ?? 7,
       rating: _rating,
       isActive: _isActive,
       createdAt: widget.existing?.createdAt,

@@ -79,15 +79,21 @@ class QueryPredicate {
       case ComparisonOp.lessThanOrEqual:
         return _compareValues(fieldValue, value) <= 0;
       case ComparisonOp.contains:
-        return fieldValue?.toString().toLowerCase()
+        return fieldValue
+                ?.toString()
+                .toLowerCase()
                 .contains(value.toString().toLowerCase()) ??
             false;
       case ComparisonOp.startsWith:
-        return fieldValue?.toString().toLowerCase()
+        return fieldValue
+                ?.toString()
+                .toLowerCase()
                 .startsWith(value.toString().toLowerCase()) ??
             false;
       case ComparisonOp.endsWith:
-        return fieldValue?.toString().toLowerCase()
+        return fieldValue
+                ?.toString()
+                .toLowerCase()
                 .endsWith(value.toString().toLowerCase()) ??
             false;
       case ComparisonOp.isIn:
@@ -133,7 +139,8 @@ class QueryPredicate {
   }
 
   @override
-  String toString() => '${combinator.name.toUpperCase()} $field ${op.name} $value';
+  String toString() =>
+      '${combinator.name.toUpperCase()} $field ${op.name} $value';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -225,17 +232,28 @@ class FieldBuilder<T> {
 
   FieldBuilder(this._field, this._query, this._combinator);
 
-  VaultQuery<T> equals(dynamic value) => _addPredicate(ComparisonOp.equals, value);
-  VaultQuery<T> notEquals(dynamic value) => _addPredicate(ComparisonOp.notEquals, value);
-  VaultQuery<T> greaterThan(dynamic value) => _addPredicate(ComparisonOp.greaterThan, value);
-  VaultQuery<T> greaterThanOrEqual(dynamic value) => _addPredicate(ComparisonOp.greaterThanOrEqual, value);
-  VaultQuery<T> lessThan(dynamic value) => _addPredicate(ComparisonOp.lessThan, value);
-  VaultQuery<T> lessThanOrEqual(dynamic value) => _addPredicate(ComparisonOp.lessThanOrEqual, value);
-  VaultQuery<T> contains(String value) => _addPredicate(ComparisonOp.contains, value);
-  VaultQuery<T> startsWith(String value) => _addPredicate(ComparisonOp.startsWith, value);
-  VaultQuery<T> endsWith(String value) => _addPredicate(ComparisonOp.endsWith, value);
-  VaultQuery<T> isIn(List<dynamic> values) => _addPredicate(ComparisonOp.isIn, values);
-  VaultQuery<T> isNotIn(List<dynamic> values) => _addPredicate(ComparisonOp.isNotIn, values);
+  VaultQuery<T> equals(dynamic value) =>
+      _addPredicate(ComparisonOp.equals, value);
+  VaultQuery<T> notEquals(dynamic value) =>
+      _addPredicate(ComparisonOp.notEquals, value);
+  VaultQuery<T> greaterThan(dynamic value) =>
+      _addPredicate(ComparisonOp.greaterThan, value);
+  VaultQuery<T> greaterThanOrEqual(dynamic value) =>
+      _addPredicate(ComparisonOp.greaterThanOrEqual, value);
+  VaultQuery<T> lessThan(dynamic value) =>
+      _addPredicate(ComparisonOp.lessThan, value);
+  VaultQuery<T> lessThanOrEqual(dynamic value) =>
+      _addPredicate(ComparisonOp.lessThanOrEqual, value);
+  VaultQuery<T> contains(String value) =>
+      _addPredicate(ComparisonOp.contains, value);
+  VaultQuery<T> startsWith(String value) =>
+      _addPredicate(ComparisonOp.startsWith, value);
+  VaultQuery<T> endsWith(String value) =>
+      _addPredicate(ComparisonOp.endsWith, value);
+  VaultQuery<T> isIn(List<dynamic> values) =>
+      _addPredicate(ComparisonOp.isIn, values);
+  VaultQuery<T> isNotIn(List<dynamic> values) =>
+      _addPredicate(ComparisonOp.isNotIn, values);
   VaultQuery<T> isNull() => _addPredicate(ComparisonOp.isNull, null);
   VaultQuery<T> isNotNull() => _addPredicate(ComparisonOp.isNotNull, null);
   VaultQuery<T> between(dynamic lower, dynamic upper) =>
@@ -294,8 +312,7 @@ class QueryResult<T> {
     this.limit,
   });
 
-  bool get hasMore =>
-      limit != null && (offset + records.length) < totalCount;
+  bool get hasMore => limit != null && (offset + records.length) < totalCount;
 
   int get nextOffset => offset + records.length;
 
@@ -419,15 +436,13 @@ class VaultQuery<T> {
       final raw = await vault.secureGet<dynamic>(key);
       if (raw == null) continue;
 
-      final record = raw is Map<String, dynamic>
-          ? raw
-          : <String, dynamic>{'__value': raw};
+      final record =
+          raw is Map<String, dynamic> ? raw : <String, dynamic>{'__value': raw};
 
       if (_matchesPredicates(record)) {
         // Apply projection.
-        final projected = _projection != null
-            ? _projection!.apply(record)
-            : record;
+        final projected =
+            _projection != null ? _projection!.apply(record) : record;
 
         matches.add(_KeyedRecord<T>(key, projected as T, record));
       }

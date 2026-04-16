@@ -76,8 +76,7 @@ class CompressionConfig {
         );
 
   /// No compression — for debug builds or already-compressed binary data.
-  const CompressionConfig.disabled()
-      : this(strategy: CompressionStrategy.none);
+  const CompressionConfig.disabled() : this(strategy: CompressionStrategy.none);
 
   // ─── Equality & copy ─────────────────────────────────────────────────────
 

@@ -101,7 +101,8 @@ class VaultHealthChecker {
         issues.add(HealthIssue(
           severity: HealthSeverity.warning,
           code: 'LOW_CACHE_HIT_RATIO',
-          message: 'Cache hit ratio is ${(stats.cacheHitRatio * 100).toStringAsFixed(1)}% '
+          message:
+              'Cache hit ratio is ${(stats.cacheHitRatio * 100).toStringAsFixed(1)}% '
               '(threshold: ${(_lowCacheHitRatioThreshold * 100).toStringAsFixed(0)}%)',
           recommendation: 'Consider increasing memoryCacheSize in VaultConfig.',
         ));
@@ -122,7 +123,8 @@ class VaultHealthChecker {
         code: 'LARGE_INDEX',
         message: 'Index contains ${stats.indexStats.totalEntries} entries '
             '(memory: ${stats.indexStats.memoryLabel})',
-        recommendation: 'Consider using indexableFields to limit indexed fields.',
+        recommendation:
+            'Consider using indexableFields to limit indexed fields.',
       ));
     }
 
@@ -161,7 +163,8 @@ class VaultHealthChecker {
         code: 'PARTIAL_INDEX',
         message: 'Only $indexedEntries/$totalEntries entries are indexed. '
             'Entries saved without searchableText may not be searchable.',
-        recommendation: 'Call rebuildIndex() or provide searchableText on save.',
+        recommendation:
+            'Call rebuildIndex() or provide searchableText on save.',
       ));
     }
 

@@ -10,8 +10,7 @@ import 'package:provider/provider.dart';
 import '../../providers/inventory_provider.dart';
 import '../../services/vault_service.dart';
 import '../../services/auth_service.dart';
-import '../../theme/app_theme.dart'
-    show AppTheme, themeNotifier;
+import '../../theme/app_theme.dart' show AppTheme, themeNotifier;
 import '../../utils/formatters.dart';
 import '../auth/auth_screen.dart';
 
@@ -43,7 +42,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Map<String, dynamic>? _vaultStats;
 
   final List<String> _currencies = [
-    'USD', 'EUR', 'GBP', 'SAR', 'AED', 'EGP', 'JPY', 'CNY', 'INR'
+    'USD',
+    'EUR',
+    'GBP',
+    'SAR',
+    'AED',
+    'EGP',
+    'JPY',
+    'CNY',
+    'INR'
   ];
 
   @override
@@ -68,9 +75,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _pinEnabled = AuthService.instance.isPinEnabled;
         // Apply persisted theme immediately
         themeNotifier.value = switch (_themeMode) {
-          'light'  => ThemeMode.light,
-          'dark'   => ThemeMode.dark,
-          _        => ThemeMode.system,
+          'light' => ThemeMode.light,
+          'dark' => ThemeMode.dark,
+          _ => ThemeMode.system,
         };
       });
     }
@@ -167,9 +174,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onSelectionChanged: (v) {
                     setState(() => _themeMode = v.first);
                     themeNotifier.value = switch (v.first) {
-                      'light'  => ThemeMode.light,
-                      'dark'   => ThemeMode.dark,
-                      _        => ThemeMode.system,
+                      'light' => ThemeMode.light,
+                      'dark' => ThemeMode.dark,
+                      _ => ThemeMode.system,
                     };
                   },
                   style: const ButtonStyle(
@@ -282,8 +289,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             title: const Text('Encryption'),
             subtitle: const Text('AES-256-GCM — All data encrypted at rest'),
-            trailing: const Icon(Icons.verified_user,
-                color: AppTheme.successColor),
+            trailing:
+                const Icon(Icons.verified_user, color: AppTheme.successColor),
           ),
           ListTile(
             leading: CircleAvatar(
@@ -314,13 +321,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 )
               else if (_vaultStats != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(children: [
-                    _statRow('Total Items',
-                        '${_vaultStats!['totalItems']}'),
-                    _statRow(
-                        'Cache Hit Rate',
+                    _statRow('Total Items', '${_vaultStats!['totalItems']}'),
+                    _statRow('Cache Hit Rate',
                         '${(_vaultStats!['cacheHitRate'] as double? ?? 0.0).toStringAsFixed(1)}%'),
                     _statRow('Avg Read',
                         '${(_vaultStats!['avgReadMs'] as double? ?? 0.0).toStringAsFixed(2)} ms'),
@@ -344,8 +349,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.orange.withOpacity(0.12),
-              child: const Icon(Icons.data_object,
-                  color: Colors.orange, size: 20),
+              child:
+                  const Icon(Icons.data_object, color: Colors.orange, size: 20),
             ),
             title: const Text('Load Demo Data'),
             subtitle: const Text('Seed sample products for testing'),
@@ -399,8 +404,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             title: const Text('Clear All Data',
                 style: TextStyle(color: AppTheme.errorColor)),
-            subtitle:
-                const Text('Delete all products, movements and alerts'),
+            subtitle: const Text('Delete all products, movements and alerts'),
             onTap: _confirmClearData,
           ),
 
@@ -433,12 +437,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const CircleAvatar(
               backgroundColor: Color(0x1A1565C0),
-              child: Icon(Icons.code,
-                  color: AppTheme.primaryColor, size: 20),
+              child: Icon(Icons.code, color: AppTheme.primaryColor, size: 20),
             ),
             title: const Text('InventoryVault'),
-            subtitle: const Text(
-                'Flutter + HiveVault • MIT License\n'
+            subtitle: const Text('Flutter + HiveVault • MIT License\n'
                 'Offline-first • AES-256-GCM encrypted'),
           ),
           ListTile(
@@ -488,8 +490,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               color: Colors.white.withOpacity(0.15),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.inventory_2,
-                color: Colors.white, size: 32),
+            child: const Icon(Icons.inventory_2, color: Colors.white, size: 32),
           ),
           const SizedBox(width: 16),
           const Expanded(
@@ -509,8 +510,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Icon(Icons.lock, size: 12, color: Colors.white70),
                     SizedBox(width: 4),
                     Text('AES-256-GCM encrypted',
-                        style: TextStyle(
-                            color: Colors.white70, fontSize: 11)),
+                        style: TextStyle(color: Colors.white70, fontSize: 11)),
                   ],
                 ),
               ],
@@ -562,8 +562,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(label,
                 style: const TextStyle(color: Colors.grey, fontSize: 13)),
             Text(value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 13)),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
           ],
         ),
       );
@@ -590,8 +590,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text('Select Currency',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ),
             Flexible(
               child: ListView(
@@ -660,8 +659,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK')),
+              onPressed: () => Navigator.pop(context), child: const Text('OK')),
         ],
       ),
     );
@@ -679,8 +677,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK')),
+              onPressed: () => Navigator.pop(context), child: const Text('OK')),
         ],
       ),
     );
@@ -709,8 +706,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         context: context,
         builder: (_) => AlertDialog(
           title: const Text('Disable PIN?'),
-          content:
-              const Text('Remove PIN protection from the app?'),
+          content: const Text('Remove PIN protection from the app?'),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context, false),
@@ -812,8 +808,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _auditRow('Total Searches', '${stats.totalSearches}'),
                     _auditRow('Cache Hit Rate',
                         '${(stats.cacheHitRatio * 100).toStringAsFixed(1)}%'),
-                    _auditRow('Cache',
-                        '${stats.cacheSize}/${stats.cacheCapacity}'),
+                    _auditRow(
+                        'Cache', '${stats.cacheSize}/${stats.cacheCapacity}'),
                     _auditRow('Compression',
                         '${stats.compressionAlgorithm} (${stats.compressionRatioLabel} saved)'),
                     _auditRow('Encryption', stats.encryptionAlgorithm),
@@ -848,8 +844,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(label,
                 style: const TextStyle(color: Colors.grey, fontSize: 13)),
             Text(value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 13)),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
           ],
         ),
       );

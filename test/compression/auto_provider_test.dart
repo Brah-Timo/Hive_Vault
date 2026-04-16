@@ -35,7 +35,8 @@ void main() {
     // ── Round-trip: medium data ───────────────────────────────────────────
 
     test('round-trip: medium JSON (Lz4 path)', () {
-      final data = _utf8(jsonEncode({'name': 'Ahmed', 'items': List.generate(20, (i) => i)}));
+      final data = _utf8(
+          jsonEncode({'name': 'Ahmed', 'items': List.generate(20, (i) => i)}));
       final compressed = auto.compress(data);
       final restored = auto.decompress(compressed);
       expect(restored, equals(data));
@@ -44,7 +45,8 @@ void main() {
     // ── Round-trip: large data ────────────────────────────────────────────
 
     test('round-trip: large JSON (GZip path)', () {
-      final list = List.generate(200, (i) => {'id': i, 'name': 'Product $i', 'price': i * 100.5});
+      final list = List.generate(
+          200, (i) => {'id': i, 'name': 'Product $i', 'price': i * 100.5});
       final data = _utf8(jsonEncode(list));
       expect(data.length, greaterThanOrEqualTo(1024));
       final compressed = auto.compress(data);

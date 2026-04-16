@@ -19,7 +19,17 @@ import 'dart:math' as math;
 //  Operation type enum
 // ═══════════════════════════════════════════════════════════════════════════
 
-enum MetricOperation { read, write, delete, search, batchRead, batchWrite, batchDelete, export, import }
+enum MetricOperation {
+  read,
+  write,
+  delete,
+  search,
+  batchRead,
+  batchWrite,
+  batchDelete,
+  export,
+  import
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  Histogram
@@ -29,13 +39,13 @@ enum MetricOperation { read, write, delete, search, batchRead, batchWrite, batch
 class LatencyHistogram {
   // Bucket upper bounds in microseconds.
   static const List<int> _bucketBounds = [
-    100,    // 0.1 ms
-    500,    // 0.5 ms
-    1000,   // 1 ms
-    5000,   // 5 ms
-    10000,  // 10 ms
-    25000,  // 25 ms
-    50000,  // 50 ms
+    100, // 0.1 ms
+    500, // 0.5 ms
+    1000, // 1 ms
+    5000, // 5 ms
+    10000, // 10 ms
+    25000, // 25 ms
+    50000, // 50 ms
     100000, // 100 ms
     250000, // 250 ms
     500000, // 500 ms
@@ -163,8 +173,7 @@ class MetricsSnapshot {
   MetricsSnapshot delta(MetricsSnapshot previous) {
     final deltaCounters = <String, int>{};
     for (final key in counters.keys) {
-      deltaCounters[key] =
-          (counters[key] ?? 0) - (previous.counters[key] ?? 0);
+      deltaCounters[key] = (counters[key] ?? 0) - (previous.counters[key] ?? 0);
     }
     return MetricsSnapshot(
       capturedAt: capturedAt,
@@ -256,8 +265,10 @@ class VaultMetrics {
 
     if (op == MetricOperation.read || op == MetricOperation.batchRead) {
       _totalBytesRead.increment(bytes);
-      if (fromCache) _cacheHitCounter.increment();
-      else _cacheMissCounter.increment();
+      if (fromCache)
+        _cacheHitCounter.increment();
+      else
+        _cacheMissCounter.increment();
     }
     if (op == MetricOperation.write || op == MetricOperation.batchWrite) {
       _totalBytesWritten.increment(bytes);
@@ -276,8 +287,7 @@ class VaultMetrics {
     return MetricsSnapshot(
       capturedAt: DateTime.now(),
       counters: {
-        for (final e in _opCounters.entries)
-          e.key.name: e.value.value,
+        for (final e in _opCounters.entries) e.key.name: e.value.value,
         'errors': errors,
         'cacheHits': _cacheHitCounter.value,
         'cacheMisses': _cacheMissCounter.value,
@@ -300,7 +310,8 @@ class VaultMetrics {
   // ── Periodic snapshots ────────────────────────────────────────────────────
 
   /// Starts emitting snapshots every [interval] on [snapshots] stream.
-  void startPeriodicSnapshots({Duration interval = const Duration(seconds: 60)}) {
+  void startPeriodicSnapshots(
+      {Duration interval = const Duration(seconds: 60)}) {
     _periodicTimer?.cancel();
     _periodicTimer = Timer.periodic(interval, (_) {
       final snap = snapshot();
@@ -320,23 +331,30 @@ class VaultMetrics {
   String toPrometheusText() {
     final snap = snapshot();
     final buf = StringBuffer();
-    final prefix = 'hive_vault_${vaultName.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '_')}';
+    final prefix =
+        'hive_vault_${vaultName.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '_')}';
 
     buf.writeln('# HELP ${prefix}_operations_total Total operations by type');
     buf.writeln('# TYPE ${prefix}_operations_total counter');
     for (final e in snap.counters.entries) {
-      buf.writeln('${prefix}_operations_total{operation="${e.key}"} ${e.value}');
+      buf.writeln(
+          '${prefix}_operations_total{operation="${e.key}"} ${e.value}');
     }
 
     buf.writeln('# HELP ${prefix}_latency_microseconds Operation latency');
     buf.writeln('# TYPE ${prefix}_latency_microseconds summary');
     for (final e in snap.histograms.entries) {
       final h = e.value;
-      buf.writeln('${prefix}_latency_microseconds{operation="${e.key}",quantile="0.5"} ${h['p50Us']}');
-      buf.writeln('${prefix}_latency_microseconds{operation="${e.key}",quantile="0.95"} ${h['p95Us']}');
-      buf.writeln('${prefix}_latency_microseconds{operation="${e.key}",quantile="0.99"} ${h['p99Us']}');
-      buf.writeln('${prefix}_latency_microseconds_sum{operation="${e.key}"} ${(h['meanUs'] as int) * (h['count'] as int)}');
-      buf.writeln('${prefix}_latency_microseconds_count{operation="${e.key}"} ${h['count']}');
+      buf.writeln(
+          '${prefix}_latency_microseconds{operation="${e.key}",quantile="0.5"} ${h['p50Us']}');
+      buf.writeln(
+          '${prefix}_latency_microseconds{operation="${e.key}",quantile="0.95"} ${h['p95Us']}');
+      buf.writeln(
+          '${prefix}_latency_microseconds{operation="${e.key}",quantile="0.99"} ${h['p99Us']}');
+      buf.writeln(
+          '${prefix}_latency_microseconds_sum{operation="${e.key}"} ${(h['meanUs'] as int) * (h['count'] as int)}');
+      buf.writeln(
+          '${prefix}_latency_microseconds_count{operation="${e.key}"} ${h['count']}');
     }
 
     buf.writeln('# HELP ${prefix}_error_rate Current error rate (0-1)');

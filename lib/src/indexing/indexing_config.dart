@@ -42,7 +42,6 @@ class IndexingConfig {
   final List<String> indexableFields;
 
   @override
-  String toString() =>
-      'IndexingConfig(autoIndex=$enableAutoIndexing, '
+  String toString() => 'IndexingConfig(autoIndex=$enableAutoIndexing, '
       'minTokenLen=$minimumTokenLength, prefix=$enablePrefixSearch)';
 }

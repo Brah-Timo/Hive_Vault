@@ -37,8 +37,7 @@ class PdfService {
   }
 
   /// Print a stock movement report.
-  static Future<void> printMovementReport(
-      List<StockMovement> movements) async {
+  static Future<void> printMovementReport(List<StockMovement> movements) async {
     final doc = pw.Document();
     doc.addPage(_buildMovementPage(movements));
     await Printing.layoutPdf(onLayout: (_) async => doc.save());
@@ -64,7 +63,15 @@ class PdfService {
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.grey300),
             children: [
-              _tableHeader(['Product', 'SKU', 'Category', 'Current', 'Min', 'Reorder Qty', 'Supplier']),
+              _tableHeader([
+                'Product',
+                'SKU',
+                'Category',
+                'Current',
+                'Min',
+                'Reorder Qty',
+                'Supplier'
+              ]),
               ...items.map((item) => _tableRow([
                     item.name,
                     item.sku,
@@ -99,7 +106,15 @@ class PdfService {
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.grey300),
             children: [
-              _tableHeader(['Product', 'SKU', 'Qty', 'Cost Price', 'Sell Price', 'Cost Value', 'Sell Value']),
+              _tableHeader([
+                'Product',
+                'SKU',
+                'Qty',
+                'Cost Price',
+                'Sell Price',
+                'Cost Value',
+                'Sell Value'
+              ]),
               ...items.map((item) => _tableRow([
                     item.name,
                     item.sku,
@@ -110,7 +125,11 @@ class PdfService {
                     _currency.format(item.sellingValue),
                   ])),
               _tableRow([
-                'TOTAL', '', '', '', '',
+                'TOTAL',
+                '',
+                '',
+                '',
+                '',
                 _currency.format(totalCost),
                 _currency.format(totalSell),
               ], bold: true),
@@ -118,7 +137,8 @@ class PdfService {
           ),
           pw.SizedBox(height: 16),
           pw.Row(children: [
-            pw.Text('Gross Profit: ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Gross Profit: ',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Text(_currency.format(totalSell - totalCost)),
           ]),
           pw.SizedBox(height: 8),
@@ -140,12 +160,17 @@ class PdfService {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                pw.Text('Supplier: ${order.supplierName}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                pw.Text('Order Date: ${DateFormat('dd MMM yyyy').format(order.orderDate)}'),
-                if (order.expectedDelivery != null)
-                  pw.Text('Expected: ${DateFormat('dd MMM yyyy').format(order.expectedDelivery!)}'),
-              ]),
+              pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Supplier: ${order.supplierName}',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.Text(
+                        'Order Date: ${DateFormat('dd MMM yyyy').format(order.orderDate)}'),
+                    if (order.expectedDelivery != null)
+                      pw.Text(
+                          'Expected: ${DateFormat('dd MMM yyyy').format(order.expectedDelivery!)}'),
+                  ]),
               pw.Container(
                 padding: const pw.EdgeInsets.all(8),
                 decoration: pw.BoxDecoration(
@@ -154,7 +179,8 @@ class PdfService {
                 ),
                 child: pw.Text(
                   order.status.label,
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.blue800),
+                  style: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold, color: PdfColors.blue800),
                 ),
               ),
             ],
@@ -163,7 +189,14 @@ class PdfService {
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.grey300),
             children: [
-              _tableHeader(['Product', 'SKU', 'Ordered Qty', 'Received', 'Unit Cost', 'Total']),
+              _tableHeader([
+                'Product',
+                'SKU',
+                'Ordered Qty',
+                'Received',
+                'Unit Cost',
+                'Total'
+              ]),
               ...order.lines.map((line) => _tableRow([
                     line.productName,
                     line.sku,
@@ -173,7 +206,11 @@ class PdfService {
                     _currency.format(line.lineTotal),
                   ])),
               _tableRow([
-                'TOTAL', '', '', '', '',
+                'TOTAL',
+                '',
+                '',
+                '',
+                '',
                 _currency.format(order.totalAmount),
               ], bold: true),
             ],
@@ -206,7 +243,8 @@ class PdfService {
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.grey300),
             children: [
-              _tableHeader(['Date', 'Type', 'Qty', 'Before', 'After', 'Reference']),
+              _tableHeader(
+                  ['Date', 'Type', 'Qty', 'Before', 'After', 'Reference']),
               ...movements.take(50).map((m) => _tableRow([
                     DateFormat('dd/MM/yy HH:mm').format(m.createdAt),
                     m.type.label,
@@ -234,8 +272,8 @@ class PdfService {
             children: [
               pw.Text(
                 title,
-                style: pw.TextStyle(
-                    fontSize: 22, fontWeight: pw.FontWeight.bold),
+                style:
+                    pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
                 'InventoryVault',

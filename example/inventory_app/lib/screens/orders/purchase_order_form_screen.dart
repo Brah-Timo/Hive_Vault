@@ -26,8 +26,7 @@ class PurchaseOrderFormScreen extends StatefulWidget {
       _PurchaseOrderFormScreenState();
 }
 
-class _PurchaseOrderFormScreenState
-    extends State<PurchaseOrderFormScreen> {
+class _PurchaseOrderFormScreenState extends State<PurchaseOrderFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _uuid = const Uuid();
   final _notesCtrl = TextEditingController();
@@ -107,12 +106,11 @@ class _PurchaseOrderFormScreenState
                         .where((s) => s.isActive)
                         .map((s) => DropdownMenuItem(
                               value: s.id,
-                              child: Text(s.name,
-                                  overflow: TextOverflow.ellipsis),
+                              child:
+                                  Text(s.name, overflow: TextOverflow.ellipsis),
                             ))
                         .toList(),
-                    onChanged: (v) =>
-                        setState(() => _selectedSupplierId = v),
+                    onChanged: (v) => setState(() => _selectedSupplierId = v),
                     validator: (v) =>
                         v == null ? 'Please select a supplier' : null,
                     hint: const Text('Select supplier…'),
@@ -270,10 +268,9 @@ class _PurchaseOrderFormScreenState
 
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
-                  onPressed:
-                      (_isSaving || _lines.isEmpty || !hasSuppliers)
-                          ? null
-                          : () => _save(prov),
+                  onPressed: (_isSaving || _lines.isEmpty || !hasSuppliers)
+                      ? null
+                      : () => _save(prov),
                   icon: _isSaving
                       ? const SizedBox(
                           width: 18,
@@ -326,8 +323,7 @@ class _PurchaseOrderFormScreenState
                   ? null
                   : () {
                       // Prevent duplicates
-                      if (_lines
-                          .any((l) => l.product.id == selected!.id)) {
+                      if (_lines.any((l) => l.product.id == selected!.id)) {
                         Navigator.pop(ctx);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
@@ -340,11 +336,9 @@ class _PurchaseOrderFormScreenState
                         _lines.add(_LineEntry(
                           product: selected!,
                           qtyCtrl: TextEditingController(
-                              text: selected!.reorderQty
-                                  .toStringAsFixed(0)),
+                              text: selected!.reorderQty.toStringAsFixed(0)),
                           costCtrl: TextEditingController(
-                              text: selected!.costPrice
-                                  .toStringAsFixed(2)),
+                              text: selected!.costPrice.toStringAsFixed(2)),
                         ));
                       });
                     },
@@ -367,8 +361,7 @@ class _PurchaseOrderFormScreenState
     }
     if (_lines.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Please add at least one product')));
+          const SnackBar(content: Text('Please add at least one product')));
       return;
     }
 
@@ -382,19 +375,17 @@ class _PurchaseOrderFormScreenState
       supplierName: supplier?.name ?? 'Unknown',
       orderDate: _orderDate,
       expectedDelivery: _expectedDelivery,
-      notes: _notesCtrl.text.trim().isEmpty
-          ? null
-          : _notesCtrl.text.trim(),
+      notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
       createdBy: 'current_user',
       lines: _lines
           .map((l) => PurchaseOrderLine(
                 productId: l.product.id,
                 productName: l.product.name,
                 sku: l.product.sku,
-                orderedQty: double.tryParse(l.qtyCtrl.text) ??
-                    l.product.reorderQty,
-                unitCost: double.tryParse(l.costCtrl.text) ??
-                    l.product.costPrice,
+                orderedQty:
+                    double.tryParse(l.qtyCtrl.text) ?? l.product.reorderQty,
+                unitCost:
+                    double.tryParse(l.costCtrl.text) ?? l.product.costPrice,
               ))
           .toList(),
     );
@@ -405,12 +396,11 @@ class _PurchaseOrderFormScreenState
 
     if (ok) {
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Purchase order created successfully!')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Purchase order created successfully!')));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${prov.error}')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error: ${prov.error}')));
     }
   }
 }
@@ -441,8 +431,7 @@ class _NoSupplierCard extends StatelessWidget {
               const Expanded(
                 child: Text(
                   'No suppliers yet',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             ],
@@ -482,9 +471,7 @@ class _LineCard extends StatelessWidget {
   final VoidCallback onRemove;
   final VoidCallback onChanged;
   const _LineCard(
-      {required this.line,
-      required this.onRemove,
-      required this.onChanged});
+      {required this.line, required this.onRemove, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -502,12 +489,10 @@ class _LineCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(line.product.name,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 IconButton(
-                  icon:
-                      const Icon(Icons.remove_circle, color: Colors.red),
+                  icon: const Icon(Icons.remove_circle, color: Colors.red),
                   onPressed: onRemove,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -523,8 +508,8 @@ class _LineCard extends StatelessWidget {
                   child: TextFormField(
                     controller: line.qtyCtrl,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Qty', isDense: true),
+                    decoration:
+                        const InputDecoration(labelText: 'Qty', isDense: true),
                     onChanged: (_) => onChanged(),
                     validator: (v) {
                       final n = double.tryParse(v ?? '');
@@ -536,8 +521,8 @@ class _LineCard extends StatelessWidget {
                 Expanded(
                   child: TextFormField(
                     controller: line.costCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(
                         labelText: 'Unit Cost (\$)', isDense: true),
                     onChanged: (_) => onChanged(),
@@ -548,8 +533,7 @@ class _LineCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const Text('Total',
-                        style:
-                            TextStyle(fontSize: 10, color: Colors.grey)),
+                        style: TextStyle(fontSize: 10, color: Colors.grey)),
                     Text(
                       '\$${(qty * cost).toStringAsFixed(2)}',
                       style: const TextStyle(
@@ -574,9 +558,7 @@ class _LineEntry {
   final TextEditingController qtyCtrl;
   final TextEditingController costCtrl;
   _LineEntry(
-      {required this.product,
-      required this.qtyCtrl,
-      required this.costCtrl});
+      {required this.product, required this.qtyCtrl, required this.costCtrl});
   void dispose() {
     qtyCtrl.dispose();
     costCtrl.dispose();

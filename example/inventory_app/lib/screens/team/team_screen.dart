@@ -203,8 +203,7 @@ class _MemberCard extends StatelessWidget {
             ),
             if (!member.isActive)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(6),
@@ -220,12 +219,10 @@ class _MemberCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(member.email,
-                style:
-                    const TextStyle(fontSize: 12, color: Colors.grey)),
+                style: const TextStyle(fontSize: 12, color: Colors.grey)),
             const SizedBox(height: 4),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: _roleColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
@@ -340,12 +337,11 @@ class _MemberFormState extends State<_MemberForm> {
               _field(_nameCtrl, 'Full Name *',
                   validator: (v) => v!.isEmpty ? 'Required' : null),
               _field(_emailCtrl, 'Email *',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (v) {
-                    if (v!.isEmpty) return 'Required';
-                    if (!v.contains('@')) return 'Invalid email';
-                    return null;
-                  }),
+                  keyboardType: TextInputType.emailAddress, validator: (v) {
+                if (v!.isEmpty) return 'Required';
+                if (!v.contains('@')) return 'Invalid email';
+                return null;
+              }),
               _field(_phoneCtrl, 'Phone', keyboardType: TextInputType.phone),
               // Role dropdown
               DropdownButtonFormField<UserRole>(
@@ -379,9 +375,8 @@ class _MemberFormState extends State<_MemberForm> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _save,
-                  child: Text(widget.existing == null
-                      ? 'Add Member'
-                      : 'Update Member'),
+                  child: Text(
+                      widget.existing == null ? 'Add Member' : 'Update Member'),
                 ),
               ),
             ],
@@ -392,9 +387,9 @@ class _MemberFormState extends State<_MemberForm> {
   }
 
   Widget _field(TextEditingController ctrl, String label,
-      {int maxLines = 1,
-      String? Function(String?)? validator,
-      TextInputType? keyboardType}) =>
+          {int maxLines = 1,
+          String? Function(String?)? validator,
+          TextInputType? keyboardType}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: TextFormField(
@@ -413,10 +408,8 @@ class _MemberFormState extends State<_MemberForm> {
       name: _nameCtrl.text.trim(),
       email: _emailCtrl.text.trim(),
       role: _role,
-      phone:
-          _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
-      notes:
-          _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
+      phone: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
+      notes: _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
       isActive: widget.existing?.isActive ?? true,
       createdAt: widget.existing?.createdAt,
     );

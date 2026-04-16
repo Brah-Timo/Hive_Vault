@@ -87,7 +87,8 @@ class AutoCompressionProvider extends CompressionProvider {
   @override
   double estimateRatio(int originalSize) {
     if (originalSize < _tinyThreshold) return 0.0;
-    if (originalSize >= largeThreshold) return _gzip.estimateRatio(originalSize);
+    if (originalSize >= largeThreshold)
+      return _gzip.estimateRatio(originalSize);
     return _lz4.estimateRatio(originalSize);
   }
 

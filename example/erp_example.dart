@@ -82,9 +82,7 @@ class Invoice {
         date: DateTime.parse(m['date']),
         amount: (m['amount'] as num).toDouble(),
         tax: (m['tax'] as num).toDouble(),
-        items: (m['items'] as List)
-            .map((i) => InvoiceItem.fromMap(i))
-            .toList(),
+        items: (m['items'] as List).map((i) => InvoiceItem.fromMap(i)).toList(),
         status: m['status'],
       );
 
@@ -100,8 +98,7 @@ class Invoice {
         'status': status,
       };
 
-  String get searchText =>
-      '$number $clientCode $clientName '
+  String get searchText => '$number $clientCode $clientName '
       '${items.map((i) => i.name).join(' ')} '
       '${date.year} ${date.month}';
 }
@@ -290,8 +287,10 @@ void main() async {
       amount: 125000.0,
       tax: 9.0,
       items: [
-        const InvoiceItem(sku: 'LAPTOP', name: 'Laptop Pro', qty: 2, price: 55000),
-        const InvoiceItem(sku: 'PRINT', name: 'Laser Printer', qty: 1, price: 15000),
+        const InvoiceItem(
+            sku: 'LAPTOP', name: 'Laptop Pro', qty: 2, price: 55000),
+        const InvoiceItem(
+            sku: 'PRINT', name: 'Laser Printer', qty: 1, price: 15000),
       ],
       status: 'PENDING',
     ),
@@ -303,7 +302,8 @@ void main() async {
       amount: 78500.0,
       tax: 9.0,
       items: [
-        const InvoiceItem(sku: 'MONITOR', name: '4K Monitor', qty: 3, price: 22500),
+        const InvoiceItem(
+            sku: 'MONITOR', name: '4K Monitor', qty: 3, price: 22500),
       ],
       status: 'PAID',
     ),
@@ -315,7 +315,8 @@ void main() async {
       amount: 34000.0,
       tax: 9.0,
       items: [
-        const InvoiceItem(sku: 'KB', name: 'Wireless Keyboard', qty: 10, price: 2800),
+        const InvoiceItem(
+            sku: 'KB', name: 'Wireless Keyboard', qty: 10, price: 2800),
       ],
       status: 'PENDING',
     ),

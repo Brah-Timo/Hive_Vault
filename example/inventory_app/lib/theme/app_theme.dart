@@ -8,23 +8,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 /// Global theme mode notifier — updated by SettingsScreen and persisted
 /// via InventoryProvider settings. Defaults to [ThemeMode.system].
-final ValueNotifier<ThemeMode> themeNotifier =
-    ValueNotifier(ThemeMode.system);
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.system);
 
 class AppTheme {
   // ── Brand colours ─────────────────────────────────────────────────────────
-  static const primaryColor   = Color(0xFF1565C0);   // Deep Blue
-  static const secondaryColor = Color(0xFF00897B);   // Teal
-  static const errorColor     = Color(0xFFD32F2F);
-  static const warningColor   = Color(0xFFF57C00);
-  static const successColor   = Color(0xFF388E3C);
-  static const infoColor      = Color(0xFF0288D1);
+  static const primaryColor = Color(0xFF1565C0); // Deep Blue
+  static const secondaryColor = Color(0xFF00897B); // Teal
+  static const errorColor = Color(0xFFD32F2F);
+  static const warningColor = Color(0xFFF57C00);
+  static const successColor = Color(0xFF388E3C);
+  static const infoColor = Color(0xFF0288D1);
 
   // ── Status colours ────────────────────────────────────────────────────────
   static const outOfStockColor = Color(0xFFD32F2F);
-  static const lowStockColor   = Color(0xFFF57C00);
-  static const inStockColor    = Color(0xFF388E3C);
-  static const overstockColor  = Color(0xFF6A1B9A);
+  static const lowStockColor = Color(0xFFF57C00);
+  static const inStockColor = Color(0xFF388E3C);
+  static const overstockColor = Color(0xFF6A1B9A);
 
   // ── Light theme ───────────────────────────────────────────────────────────
   static ThemeData get lightTheme {
@@ -75,7 +74,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: primaryColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         hintStyle: TextStyle(color: Colors.grey.shade400),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -152,7 +152,9 @@ class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected) ? primaryColor : Colors.grey.shade400),
+            states.contains(WidgetState.selected)
+                ? primaryColor
+                : Colors.grey.shade400),
         trackColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(WidgetState.selected)
                 ? const Color(0x661565C0)
@@ -210,9 +212,9 @@ class AppTheme {
   /// Maps a stock status label to its corresponding [Color].
   static Color stockStatusColor(String status) => switch (status) {
         'Out of Stock' => outOfStockColor,
-        'Low Stock'    => lowStockColor,
-        'Overstocked'  => overstockColor,
-        _              => inStockColor,
+        'Low Stock' => lowStockColor,
+        'Overstocked' => overstockColor,
+        _ => inStockColor,
       };
 
   /// Gradient used for hero headers/banners throughout the app.

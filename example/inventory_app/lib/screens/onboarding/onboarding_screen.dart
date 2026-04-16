@@ -30,8 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       color: Color(0xFF1565C0),
       gradientEnd: Color(0xFF1E88E5),
       title: 'Welcome to InventoryVault',
-      body:
-          'A complete offline-first inventory management system. '
+      body: 'A complete offline-first inventory management system. '
           'All data stays on your device, encrypted with AES-256-GCM.',
       feature1: '🔒 Bank-grade encryption',
       feature2: '📱 100% offline-first',
@@ -42,8 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       color: Color(0xFF00897B),
       gradientEnd: Color(0xFF00ACC1),
       title: 'Barcode-Based Tracking',
-      body:
-          'Scan EAN-13, UPC-A, QR codes, or enter barcodes manually to '
+      body: 'Scan EAN-13, UPC-A, QR codes, or enter barcodes manually to '
           'look up products, record stock movements, and run counts.',
       feature1: '📸 Camera barcode scanning',
       feature2: '✏️ Manual barcode entry',
@@ -54,8 +52,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       color: Color(0xFFF57C00),
       gradientEnd: Color(0xFFFFB300),
       title: 'Smart Alerts',
-      body:
-          'Automatic low-stock, out-of-stock, and reorder notifications. '
+      body: 'Automatic low-stock, out-of-stock, and reorder notifications. '
           'Set custom thresholds per product and get notified instantly.',
       feature1: '🔔 Push notifications',
       feature2: '📉 Low-stock alerts',
@@ -66,8 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       color: Color(0xFF6A1B9A),
       gradientEnd: Color(0xFF8E24AA),
       title: 'Reports & Analytics',
-      body:
-          'Low-stock, valuation, movement history, and reorder reports '
+      body: 'Low-stock, valuation, movement history, and reorder reports '
           'with interactive charts. Export to PDF and share instantly.',
       feature1: '📊 Interactive charts',
       feature2: '📄 PDF export',
@@ -78,8 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       color: Color(0xFF388E3C),
       gradientEnd: Color(0xFF43A047),
       title: 'Purchase Orders',
-      body:
-          'Create and manage purchase orders with a 7-stage workflow. '
+      body: 'Create and manage purchase orders with a 7-stage workflow. '
           'Receive goods, track partial deliveries, and auto-update stock.',
       feature1: '📋 7 order statuses',
       feature2: '🚚 Receive workflow',
@@ -191,11 +186,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     _fadeController.forward();
                   },
                   itemCount: _pages.length,
-                  itemBuilder: (context, i) =>
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: _pages[i].build(context, size),
-                      ),
+                  itemBuilder: (context, i) => FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: _pages[i].build(context, size),
+                  ),
                 ),
               ),
 
@@ -211,8 +205,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         final active = i == _currentPage;
                         return AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          margin:
-                              const EdgeInsets.symmetric(horizontal: 4),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
                           width: active ? 28 : 8,
                           height: 8,
                           decoration: BoxDecoration(
@@ -249,11 +242,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: page.color,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                             textStyle: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -264,15 +255,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           onPressed: _loadingDemo
                               ? null
                               : () => _enterApp(loadDemo: false),
-                          icon: const Icon(
-                              Icons.play_arrow_rounded),
+                          icon: const Icon(Icons.play_arrow_rounded),
                           label: const Text('Start Fresh (Empty)'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            side:
-                                const BorderSide(color: Colors.white60),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14),
+                            side: const BorderSide(color: Colors.white60),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                         ),
                       ),
@@ -285,20 +273,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: page.color,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                             textStyle: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
                               Text('Next'),
                               SizedBox(width: 8),
-                              Icon(Icons.arrow_forward_rounded,
-                                  size: 18),
+                              Icon(Icons.arrow_forward_rounded, size: 18),
                             ],
                           ),
                         ),
@@ -394,13 +378,12 @@ class _OnboardingData {
             alignment: WrapAlignment.center,
             children: [feature1, feature2, feature3].map((f) {
               return Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: Colors.white.withOpacity(0.3)),
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Text(
                   f,

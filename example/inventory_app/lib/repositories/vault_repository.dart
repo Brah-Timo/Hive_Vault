@@ -50,12 +50,8 @@ abstract class VaultRepository<T> {
 
   Future<List<T>> getAll() async {
     final keys = await vault.getAllKeys();
-    final maps =
-        await vault.secureGetBatch(keys);
-    return maps.values
-        .whereType<Map<String, dynamic>>()
-        .map(fromMap)
-        .toList();
+    final maps = await vault.secureGetBatch(keys);
+    return maps.values.whereType<Map<String, dynamic>>().map(fromMap).toList();
   }
 
   Future<List<T>> search(String query) async {

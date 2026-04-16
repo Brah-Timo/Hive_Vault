@@ -128,7 +128,8 @@ void main() {
     });
 
     test('error counter increments with isError=true', () {
-      metrics.recordOperation(MetricOperation.write, durationUs: 0, isError: true);
+      metrics.recordOperation(MetricOperation.write,
+          durationUs: 0, isError: true);
       expect(metrics.totalErrors, equals(1));
     });
 
@@ -139,15 +140,19 @@ void main() {
 
     test('error rate computed from error/total ops', () {
       metrics.recordOperation(MetricOperation.read, durationUs: 100);
-      metrics.recordOperation(MetricOperation.read, durationUs: 100, isError: true);
+      metrics.recordOperation(MetricOperation.read,
+          durationUs: 100, isError: true);
       final snap = metrics.snapshot();
       expect(snap.errorRate, closeTo(0.5, 0.01));
     });
 
     test('cache hit ratio from fromCache flag', () {
-      metrics.recordOperation(MetricOperation.read, durationUs: 100, fromCache: true);
-      metrics.recordOperation(MetricOperation.read, durationUs: 100, fromCache: false);
-      metrics.recordOperation(MetricOperation.read, durationUs: 100, fromCache: true);
+      metrics.recordOperation(MetricOperation.read,
+          durationUs: 100, fromCache: true);
+      metrics.recordOperation(MetricOperation.read,
+          durationUs: 100, fromCache: false);
+      metrics.recordOperation(MetricOperation.read,
+          durationUs: 100, fromCache: true);
       expect(metrics.cacheHitRatio, closeTo(2 / 3, 0.01));
     });
 

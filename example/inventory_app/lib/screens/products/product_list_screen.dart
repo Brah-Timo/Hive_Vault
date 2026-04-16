@@ -69,12 +69,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final list = List<Product>.from(input);
     switch (_sortOption) {
       case _SortOption.nameAsc:
-        list.sort((a, b) =>
-            a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        list.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
         break;
       case _SortOption.nameDesc:
-        list.sort((a, b) =>
-            b.name.toLowerCase().compareTo(a.name.toLowerCase()));
+        list.sort(
+            (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
         break;
       case _SortOption.stockAsc:
         list.sort((a, b) => a.currentStock.compareTo(b.currentStock));
@@ -137,19 +137,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       const SizedBox(width: 6),
                       Text(
                         'Sorted by: ${_sortOption.label}',
-                        style: const TextStyle(
-                            fontSize: 11, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 11, color: Colors.grey),
                       ),
                       const Spacer(),
                       TextButton(
-                        onPressed: () => setState(
-                            () => _sortOption = _SortOption.nameAsc),
+                        onPressed: () =>
+                            setState(() => _sortOption = _SortOption.nameAsc),
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                           minimumSize: const Size(40, 24),
                         ),
-                        child: const Text('Reset',
-                            style: TextStyle(fontSize: 11)),
+                        child:
+                            const Text('Reset', style: TextStyle(fontSize: 11)),
                       ),
                     ],
                   ),
@@ -186,17 +186,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           itemCount: sorted.length,
                           itemBuilder: (context, index) {
                             final product = sorted[index];
-                            final cat =
-                                prov.categoryById(product.categoryId);
+                            final cat = prov.categoryById(product.categoryId);
                             return ProductCard(
                               product: product,
                               categoryName: cat?.name,
-                              onTap: () =>
-                                  _viewProduct(context, product),
-                              onEdit: () =>
-                                  _editProduct(context, product),
-                              onAddStock: () =>
-                                  _addStock(context, product),
+                              onTap: () => _viewProduct(context, product),
+                              onEdit: () => _editProduct(context, product),
+                              onAddStock: () => _addStock(context, product),
                               onDelete: () =>
                                   _confirmDelete(context, prov, product),
                             );
@@ -211,8 +207,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             children: [
               FloatingActionButton.small(
                 heroTag: 'scanFab',
-                onPressed: () =>
-                    Navigator.pushNamed(context, '/scanner'),
+                onPressed: () => Navigator.pushNamed(context, '/scanner'),
                 tooltip: 'Scan Barcode',
                 child: const Icon(Icons.qr_code_scanner),
               ),
@@ -256,8 +251,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Widget _buildFilterChips(BuildContext context, InventoryProvider prov) {
-    final hasFilter = prov.selectedCategoryFilter != null ||
-        prov.statusFilter != null;
+    final hasFilter =
+        prov.selectedCategoryFilter != null || prov.statusFilter != null;
 
     if (prov.categories.isEmpty && !hasFilter) return const SizedBox.shrink();
 
@@ -320,16 +315,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
   void _editProduct(BuildContext context, Product product) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (_) => ProductFormScreen(product: product)),
+      MaterialPageRoute(builder: (_) => ProductFormScreen(product: product)),
     );
   }
 
   void _viewProduct(BuildContext context, Product product) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (_) => ProductDetailScreen(product: product)),
+      MaterialPageRoute(builder: (_) => ProductDetailScreen(product: product)),
     );
   }
 
@@ -390,8 +383,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           children: [
             const SizedBox(height: 8),
             const Text('Filter by Status',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 8),
             ...ProductStatus.values.map((status) => ListTile(
                   title: Text(status.name.toUpperCase()),
@@ -435,8 +427,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
               children: [
                 const SizedBox(height: 12),
                 const Text('Sort Products',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 8),
                 ..._SortOption.values.map((opt) => RadioListTile<_SortOption>(
                       title: Row(

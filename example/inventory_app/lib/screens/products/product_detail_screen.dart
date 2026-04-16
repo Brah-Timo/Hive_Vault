@@ -22,10 +22,9 @@ class ProductDetailScreen extends StatelessWidget {
     return Consumer<InventoryProvider>(
       builder: (context, prov, _) {
         // Get latest product data
-        final current = prov.allProducts
-                .where((p) => p.id == product.id)
-                .firstOrNull ??
-            product;
+        final current =
+            prov.allProducts.where((p) => p.id == product.id).firstOrNull ??
+                product;
         final category = prov.categoryById(current.categoryId);
         final supplier = current.supplierId != null
             ? prov.supplierById(current.supplierId!)
@@ -57,7 +56,8 @@ class ProductDetailScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 _buildPricingSection(context, current),
                 const SizedBox(height: 12),
-                _buildInfoSection(context, current, category?.name, supplier?.name),
+                _buildInfoSection(
+                    context, current, category?.name, supplier?.name),
                 const SizedBox(height: 12),
                 _buildBarcodeSection(context, current),
                 const SizedBox(height: 12),
@@ -98,10 +98,7 @@ class ProductDetailScreen extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primary
-                    .withOpacity(0.1),
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
@@ -141,8 +138,8 @@ class ProductDetailScreen extends StatelessWidget {
       title: 'Stock Levels',
       icon: Icons.bar_chart_outlined,
       children: [
-        _stockBar(context, 'Current Stock',
-            p.currentStock, p.maximumStock, _stockColor(p)),
+        _stockBar(context, 'Current Stock', p.currentStock, p.maximumStock,
+            _stockColor(p)),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -193,8 +190,8 @@ class ProductDetailScreen extends StatelessWidget {
             Text(label, style: const TextStyle(fontSize: 12)),
             Text(
               '${current.toInt()} / ${max.toInt()}',
-              style:
-                  TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color),
+              style: TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.bold, color: color),
             ),
           ],
         ),
@@ -232,12 +229,11 @@ class ProductDetailScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _priceTile('Cost Price', formatCurrency(p.costPrice),
-                Colors.red.shade700),
+            _priceTile(
+                'Cost Price', formatCurrency(p.costPrice), Colors.red.shade700),
             _priceTile('Selling Price', formatCurrency(p.sellingPrice),
                 Colors.green.shade700),
-            _priceTile('Margin', formatPercent(p.margin),
-                Colors.blue.shade700),
+            _priceTile('Margin', formatPercent(p.margin), Colors.blue.shade700),
           ],
         ),
         const Divider(),
@@ -356,8 +352,7 @@ class ProductDetailScreen extends StatelessWidget {
                           ? Icons.arrow_downward
                           : Icons.arrow_upward,
                       size: 14,
-                      color:
-                          m.type.isPositive ? Colors.green : Colors.red,
+                      color: m.type.isPositive ? Colors.green : Colors.red,
                     ),
                   ),
                   title: Text(
@@ -381,7 +376,8 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                       Text(
                         '→ ${m.stockAfter.toInt()}',
-                        style: const TextStyle(fontSize: 11, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 11, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -438,8 +434,8 @@ class ProductDetailScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, fontSize: 13),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
               ),
             ),
           ],
@@ -452,8 +448,7 @@ class ProductDetailScreen extends StatelessWidget {
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (_) =>
-          StockMovementFormSheet(product: p, preferIn: isIn),
+      builder: (_) => StockMovementFormSheet(product: p, preferIn: isIn),
     );
   }
 }

@@ -43,18 +43,25 @@ class PayloadInfo {
 
   String get compressionLabel {
     switch (compressionFlag) {
-      case CompressionFlag.gzip:    return 'GZip';
-      case CompressionFlag.lz4:     return 'Lz4';
-      case CompressionFlag.deflate: return 'Deflate';
-      default:                      return 'None';
+      case CompressionFlag.gzip:
+        return 'GZip';
+      case CompressionFlag.lz4:
+        return 'Lz4';
+      case CompressionFlag.deflate:
+        return 'Deflate';
+      default:
+        return 'None';
     }
   }
 
   String get encryptionLabel {
     switch (encryptionFlag) {
-      case EncryptionFlag.aesGcm: return 'AES-256-GCM';
-      case EncryptionFlag.aesCbc: return 'AES-256-CBC';
-      default:                    return 'None';
+      case EncryptionFlag.aesGcm:
+        return 'AES-256-GCM';
+      case EncryptionFlag.aesCbc:
+        return 'AES-256-CBC';
+      default:
+        return 'None';
     }
   }
 

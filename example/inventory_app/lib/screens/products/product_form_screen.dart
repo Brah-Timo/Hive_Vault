@@ -58,12 +58,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         TextEditingController(text: p?.reorderPoint.toStringAsFixed(0) ?? '10');
     _reorderQtyCtrl =
         TextEditingController(text: p?.reorderQty.toStringAsFixed(0) ?? '50');
-    _maxStockCtrl =
-        TextEditingController(text: p?.maximumStock.toStringAsFixed(0) ?? '500');
+    _maxStockCtrl = TextEditingController(
+        text: p?.maximumStock.toStringAsFixed(0) ?? '500');
     _costCtrl =
         TextEditingController(text: p?.costPrice.toStringAsFixed(2) ?? '0.00');
-    _sellCtrl =
-        TextEditingController(text: p?.sellingPrice.toStringAsFixed(2) ?? '0.00');
+    _sellCtrl = TextEditingController(
+        text: p?.sellingPrice.toStringAsFixed(2) ?? '0.00');
     _selectedCategoryId = p?.categoryId;
     _selectedSupplierId = p?.supplierId;
     _unit = p?.unit ?? UnitOfMeasure.pieces;
@@ -73,9 +73,18 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   @override
   void dispose() {
     for (final c in [
-      _nameCtrl, _skuCtrl, _barcodeCtrl, _descCtrl, _locationCtrl,
-      _currentStockCtrl, _minStockCtrl, _reorderPointCtrl, _reorderQtyCtrl,
-      _maxStockCtrl, _costCtrl, _sellCtrl,
+      _nameCtrl,
+      _skuCtrl,
+      _barcodeCtrl,
+      _descCtrl,
+      _locationCtrl,
+      _currentStockCtrl,
+      _minStockCtrl,
+      _reorderPointCtrl,
+      _reorderQtyCtrl,
+      _maxStockCtrl,
+      _costCtrl,
+      _sellCtrl,
     ]) {
       c.dispose();
     }
@@ -115,8 +124,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               children: [
                 _sectionHeader('Basic Information'),
                 _field(_nameCtrl, 'Product Name *',
-                    validator: (v) =>
-                        v!.isEmpty ? 'Required' : null),
+                    validator: (v) => v!.isEmpty ? 'Required' : null),
                 _field(_skuCtrl, 'SKU *',
                     validator: (v) => v!.isEmpty ? 'Required' : null),
                 _field(_barcodeCtrl, 'Barcode (EAN/UPC)',
@@ -124,14 +132,13 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       icon: const Icon(Icons.qr_code_scanner),
                       onPressed: () =>
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Scan barcode using the Scanner tab'),
-                            ),
-                          ),
+                        const SnackBar(
+                          content: Text('Scan barcode using the Scanner tab'),
+                        ),
+                      ),
                     )),
                 _field(_descCtrl, 'Description', maxLines: 2),
                 _field(_locationCtrl, 'Warehouse Location (e.g. A-01-03)'),
-
                 const SizedBox(height: 16),
                 _sectionHeader('Classification'),
                 _dropdownField<String?>(
@@ -143,8 +150,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                             child: Text(c.name),
                           ))
                       .toList(),
-                  onChanged: (v) =>
-                      setState(() => _selectedCategoryId = v),
+                  onChanged: (v) => setState(() => _selectedCategoryId = v),
                   validator: (v) => v == null ? 'Select a category' : null,
                 ),
                 _dropdownField<String?>(
@@ -158,8 +164,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                           child: Text(s.name),
                         )),
                   ],
-                  onChanged: (v) =>
-                      setState(() => _selectedSupplierId = v),
+                  onChanged: (v) => setState(() => _selectedSupplierId = v),
                 ),
                 _dropdownField<UnitOfMeasure>(
                   label: 'Unit of Measure',
@@ -183,7 +188,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       .toList(),
                   onChanged: (v) => setState(() => _status = v!),
                 ),
-
                 const SizedBox(height: 16),
                 _sectionHeader('Stock Levels'),
                 Row(
@@ -210,21 +214,21 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 ),
                 _field(_maxStockCtrl, 'Maximum Stock',
                     keyboardType: TextInputType.number),
-
                 const SizedBox(height: 16),
                 _sectionHeader('Pricing'),
                 Row(
                   children: [
                     Expanded(
                         child: _field(_costCtrl, 'Cost Price (\$)',
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true))),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true))),
                     const SizedBox(width: 12),
                     Expanded(
                         child: _field(_sellCtrl, 'Selling Price (\$)',
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true))),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true))),
                   ],
                 ),
-
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _isSaving ? null : () => _save(prov),
@@ -255,9 +259,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         child: Text(
           title,
           style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.grey),
+              fontWeight: FontWeight.bold, fontSize: 14, color: Colors.grey),
         ),
       );
 
@@ -319,12 +321,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       barcode: _barcodeCtrl.text.trim(),
       categoryId: _selectedCategoryId!,
       supplierId: _selectedSupplierId,
-      description: _descCtrl.text.trim().isEmpty
-          ? null
-          : _descCtrl.text.trim(),
-      location: _locationCtrl.text.trim().isEmpty
-          ? null
-          : _locationCtrl.text.trim(),
+      description: _descCtrl.text.trim().isEmpty ? null : _descCtrl.text.trim(),
+      location:
+          _locationCtrl.text.trim().isEmpty ? null : _locationCtrl.text.trim(),
       currentStock: double.tryParse(_currentStockCtrl.text) ?? 0,
       minimumStock: double.tryParse(_minStockCtrl.text) ?? 5,
       reorderPoint: double.tryParse(_reorderPointCtrl.text) ?? 10,
@@ -344,8 +343,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text(isEditing ? 'Product updated!' : 'Product added!')),
+            content: Text(isEditing ? 'Product updated!' : 'Product added!')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -359,7 +357,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Delete Product?'),
-        content: Text('Are you sure you want to delete ${widget.product!.name}?'),
+        content:
+            Text('Are you sure you want to delete ${widget.product!.name}?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

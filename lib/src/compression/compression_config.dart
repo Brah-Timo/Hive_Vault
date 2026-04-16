@@ -49,7 +49,6 @@ class CompressionConfig {
   final int isolateThreshold;
 
   @override
-  String toString() =>
-      'CompressionConfig(strategy=${strategy.name}, '
+  String toString() => 'CompressionConfig(strategy=${strategy.name}, '
       'minSize=$minimumSizeForCompression, gzipLevel=$gzipLevel)';
 }

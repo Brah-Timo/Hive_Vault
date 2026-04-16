@@ -224,7 +224,8 @@ class PerKeyRateLimiter {
     _evictStale();
     final entry = _buckets.putIfAbsent(
       key,
-      () => _BucketEntry(TokenBucket(capacity: capacity, refillRate: refillRate)),
+      () =>
+          _BucketEntry(TokenBucket(capacity: capacity, refillRate: refillRate)),
     );
     entry.lastAccess = DateTime.now();
     return entry.bucket.tryConsume(cost: cost);

@@ -212,15 +212,18 @@ void main() {
   group('Search', () {
     setUp(() async {
       await vault.secureSave(
-        'INV-001', _invoice1,
+        'INV-001',
+        _invoice1,
         searchableText: 'INV-2026-001 Ahmed Mekraji Laptop Printer invoice',
       );
       await vault.secureSave(
-        'INV-002', _invoice2,
+        'INV-002',
+        _invoice2,
         searchableText: 'INV-2026-002 Mohamed Djelloul Monitor invoice',
       );
       await vault.secureSave(
-        'INV-003', _invoice3,
+        'INV-003',
+        _invoice3,
         searchableText: 'INV-2026-003 Karima Boudiaf Keyboard invoice',
       );
     });
@@ -287,7 +290,8 @@ void main() {
   group('rebuildIndex', () {
     test('rebuilds index — search works after rebuild', () async {
       await vault.secureSave(
-        'RB-001', {'name': 'Rebuild Test'},
+        'RB-001',
+        {'name': 'Rebuild Test'},
         searchableText: 'unique rebuild test token',
       );
       await vault.rebuildIndex();
@@ -351,7 +355,8 @@ void main() {
   // ════════════════════════════════════════════════════════════════════════════
 
   group('LRU Cache', () {
-    test('second read is served from cache (fromCache = true in audit)', () async {
+    test('second read is served from cache (fromCache = true in audit)',
+        () async {
       final cacheVault = await HiveVault.create(
         boxName: 'cache_test_${DateTime.now().microsecondsSinceEpoch}',
         config: VaultConfig.debug().copyWith(

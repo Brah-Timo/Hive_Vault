@@ -64,8 +64,7 @@ class KeyRotationPolicy {
       : this(rotationInterval: const Duration(hours: 24));
 
   /// Count-based: rotate every 10 000 operations.
-  const KeyRotationPolicy.countBased()
-      : this(maxEncryptOperations: 10000);
+  const KeyRotationPolicy.countBased() : this(maxEncryptOperations: 10000);
 
   /// Manual — only rotate when [KeyRotationScheduler.rotateNow] is called.
   const KeyRotationPolicy.manual()
@@ -129,7 +128,8 @@ class KeyRotationEvent {
 // ═══════════════════════════════════════════════════════════════════════════
 
 /// Callback that generates a new [EncryptionProvider] for the next key generation.
-typedef KeyProviderFactory = Future<EncryptionProvider> Function(int generation);
+typedef KeyProviderFactory = Future<EncryptionProvider> Function(
+    int generation);
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  Scheduler
@@ -239,11 +239,11 @@ class KeyRotationScheduler {
 
     if (policy.isCountBased &&
         _encryptOpsSinceLastRotation >= policy.maxEncryptOperations!) {
-      await _triggerRotation('count-based (${_encryptOpsSinceLastRotation} ops)');
+      await _triggerRotation(
+          'count-based (${_encryptOpsSinceLastRotation} ops)');
     } else if (policy.isSizeBased &&
         _bytesSinceLastRotation >= policy.maxBytesEncrypted!) {
-      await _triggerRotation(
-          'size-based (${_bytesSinceLastRotation} bytes)');
+      await _triggerRotation('size-based (${_bytesSinceLastRotation} bytes)');
     }
   }
 

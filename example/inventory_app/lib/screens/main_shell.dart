@@ -118,9 +118,7 @@ class _MainShellState extends State<MainShell> {
             children: [
               Icon(
                 isActive ? activeIcon : icon,
-                color: isActive
-                    ? AppTheme.primaryColor
-                    : Colors.grey.shade500,
+                color: isActive ? AppTheme.primaryColor : Colors.grey.shade500,
                 size: 22,
               ),
               const SizedBox(height: 2),
@@ -128,12 +126,9 @@ class _MainShellState extends State<MainShell> {
                 label,
                 style: TextStyle(
                   fontSize: 10,
-                  color: isActive
-                      ? AppTheme.primaryColor
-                      : Colors.grey.shade500,
-                  fontWeight: isActive
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                  color:
+                      isActive ? AppTheme.primaryColor : Colors.grey.shade500,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
             ],
@@ -165,9 +160,8 @@ class _MainShellState extends State<MainShell> {
                 children: [
                   Icon(
                     isActive ? activeIcon : icon,
-                    color: isActive
-                        ? AppTheme.primaryColor
-                        : Colors.grey.shade500,
+                    color:
+                        isActive ? AppTheme.primaryColor : Colors.grey.shade500,
                     size: 22,
                   ),
                   if (badgeCount > 0)
@@ -181,8 +175,8 @@ class _MainShellState extends State<MainShell> {
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        constraints: const BoxConstraints(
-                            minWidth: 14, minHeight: 14),
+                        constraints:
+                            const BoxConstraints(minWidth: 14, minHeight: 14),
                         child: Text(
                           badgeCount > 99 ? '99+' : '$badgeCount',
                           style: const TextStyle(
@@ -201,12 +195,9 @@ class _MainShellState extends State<MainShell> {
                 label,
                 style: TextStyle(
                   fontSize: 10,
-                  color: isActive
-                      ? AppTheme.primaryColor
-                      : Colors.grey.shade500,
-                  fontWeight: isActive
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                  color:
+                      isActive ? AppTheme.primaryColor : Colors.grey.shade500,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
             ],
@@ -239,8 +230,7 @@ class _MainShellState extends State<MainShell> {
                   const CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.white24,
-                    child: Icon(Icons.warehouse,
-                        color: Colors.white, size: 32),
+                    child: Icon(Icons.warehouse, color: Colors.white, size: 32),
                   ),
                   const SizedBox(height: 12),
                   const Text(
@@ -252,21 +242,17 @@ class _MainShellState extends State<MainShell> {
                   ),
                   const Text(
                     'Powered by HiveVault',
-                    style:
-                        TextStyle(color: Colors.white70, fontSize: 12),
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      _statBadge(
-                          '${prov.allProducts.length}', 'products'),
+                      _statBadge('${prov.allProducts.length}', 'products'),
                       const SizedBox(width: 12),
-                      _statBadge(
-                          '${prov.categories.length}', 'categories'),
+                      _statBadge('${prov.categories.length}', 'categories'),
                       if (prov.unreadAlertCount > 0) ...[
                         const SizedBox(width: 12),
-                        _statBadge(
-                            '${prov.unreadAlertCount}', 'alerts',
+                        _statBadge('${prov.unreadAlertCount}', 'alerts',
                             color: Colors.orange),
                       ],
                     ],
@@ -333,8 +319,7 @@ class _MainShellState extends State<MainShell> {
                     label: 'Stock Movements',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(
-                          context, AppRoutes.stockMovements);
+                      Navigator.pushNamed(context, AppRoutes.stockMovements);
                     },
                   ),
                   _drawerItem(
@@ -343,8 +328,7 @@ class _MainShellState extends State<MainShell> {
                     label: 'Inventory Count',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(
-                          context, AppRoutes.inventoryCount);
+                      Navigator.pushNamed(context, AppRoutes.inventoryCount);
                     },
                   ),
 
@@ -370,8 +354,7 @@ class _MainShellState extends State<MainShell> {
                       final count = await prov.runAlertScan();
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                            'Alert scan: $count new alert(s) found'),
+                        content: Text('Alert scan: $count new alert(s) found'),
                       ));
                     },
                   ),
@@ -381,12 +364,10 @@ class _MainShellState extends State<MainShell> {
                     label: 'Auto Reorder',
                     onTap: () async {
                       Navigator.pop(context);
-                      final count =
-                          await prov.createReorderRequests();
+                      final count = await prov.createReorderRequests();
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                            '$count reorder request(s) created'),
+                        content: Text('$count reorder request(s) created'),
                       ));
                     },
                   ),
@@ -415,8 +396,7 @@ class _MainShellState extends State<MainShell> {
                     label: 'Team Members',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(
-                          context, AppRoutes.team);
+                      Navigator.pushNamed(context, AppRoutes.team);
                     },
                   ),
                   _drawerItem(
@@ -436,8 +416,7 @@ class _MainShellState extends State<MainShell> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
               child: Text(
                 'InventoryVault v1.0.0 • AES-256-GCM encrypted',
-                style: TextStyle(
-                    fontSize: 10, color: Colors.grey.shade400),
+                style: TextStyle(fontSize: 10, color: Colors.grey.shade400),
               ),
             ),
           ],

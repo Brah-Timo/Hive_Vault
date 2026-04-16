@@ -123,11 +123,10 @@ class PluginRegistry {
   }
 
   /// Returns the plugin with [name], or null.
-  VaultPlugin? find(String name) =>
-      _plugins.cast<VaultPlugin?>().firstWhere(
-            (p) => p?.name == name,
-            orElse: () => null,
-          );
+  VaultPlugin? find(String name) => _plugins.cast<VaultPlugin?>().firstWhere(
+        (p) => p?.name == name,
+        orElse: () => null,
+      );
 
   List<VaultPlugin> get all => List.unmodifiable(_plugins);
   int get count => _plugins.length;
@@ -372,8 +371,7 @@ class PluggableVault implements SecureStorageInterface {
   Future<Uint8List> exportEncrypted() => _inner.exportEncrypted();
 
   @override
-  Future<void> importEncrypted(Uint8List data) =>
-      _inner.importEncrypted(data);
+  Future<void> importEncrypted(Uint8List data) => _inner.importEncrypted(data);
 
   @override
   Future<VaultStats> getStats() => _inner.getStats();
@@ -405,7 +403,8 @@ class ConsoleLoggingPlugin extends VaultPlugin {
 
   @override
   Future<void> afterGet(PluginContext ctx) async {
-    if (verbose) print('[HiveVault] GET  key="${ctx.key}" hit=${ctx.value != null}');
+    if (verbose)
+      print('[HiveVault] GET  key="${ctx.key}" hit=${ctx.value != null}');
   }
 
   @override

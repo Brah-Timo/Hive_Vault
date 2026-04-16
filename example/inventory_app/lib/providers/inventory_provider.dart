@@ -112,9 +112,8 @@ class InventoryProvider extends ChangeNotifier {
           .toList();
     }
     if (_selectedCategoryFilter != null) {
-      result = result
-          .where((p) => p.categoryId == _selectedCategoryFilter)
-          .toList();
+      result =
+          result.where((p) => p.categoryId == _selectedCategoryFilter).toList();
     }
     if (_statusFilter != null) {
       result = result.where((p) => p.status == _statusFilter).toList();
@@ -664,7 +663,8 @@ class InventoryProvider extends ChangeNotifier {
   Future<void> saveSettings(Map<String, dynamic> prefs) async {
     try {
       for (final entry in prefs.entries) {
-        await _alertRepo.saveRaw('setting:${entry.key}', entry.value.toString());
+        await _alertRepo.saveRaw(
+            'setting:${entry.key}', entry.value.toString());
       }
     } catch (_) {}
   }

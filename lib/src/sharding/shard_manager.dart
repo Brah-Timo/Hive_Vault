@@ -155,8 +155,7 @@ class ShardStats {
   });
 
   @override
-  String toString() =>
-      'ShardStats(index: $shardIndex, box: $boxName, '
+  String toString() => 'ShardStats(index: $shardIndex, box: $boxName, '
       'entries: $entryCount, reads: $readOps, writes: $writeOps)';
 }
 
@@ -206,8 +205,7 @@ class ShardManager implements SecureStorageInterface {
     return _shards[idx].vault;
   }
 
-  int _shardIndexFor(String key) =>
-      _strategy.route(key, _shards.length);
+  int _shardIndexFor(String key) => _strategy.route(key, _shards.length);
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -240,11 +238,11 @@ class ShardManager implements SecureStorageInterface {
     final idx = _shardIndexFor(key);
     _writeCounts[idx]++;
     await _shards[idx].vault.secureSave(
-      key,
-      value,
-      sensitivity: sensitivity,
-      searchableText: searchableText,
-    );
+          key,
+          value,
+          sensitivity: sensitivity,
+          searchableText: searchableText,
+        );
   }
 
   @override
@@ -288,9 +286,9 @@ class ShardManager implements SecureStorageInterface {
     }
     for (final group in groups.entries) {
       await _shards[group.key].vault.secureSaveBatch(
-        group.value,
-        sensitivity: sensitivity,
-      );
+            group.value,
+            sensitivity: sensitivity,
+          );
     }
   }
 

@@ -15,8 +15,7 @@ class PurchaseOrderRepository extends VaultRepository<PurchaseOrder> {
   Map<String, dynamic> toMap(PurchaseOrder item) => item.toMap();
 
   @override
-  PurchaseOrder fromMap(Map<String, dynamic> map) =>
-      PurchaseOrder.fromMap(map);
+  PurchaseOrder fromMap(Map<String, dynamic> map) => PurchaseOrder.fromMap(map);
 
   @override
   String searchableText(PurchaseOrder item) =>
@@ -25,9 +24,8 @@ class PurchaseOrderRepository extends VaultRepository<PurchaseOrder> {
   Future<PurchaseOrder?> getById(String id) => get('$_prefix$id');
 
   Future<List<PurchaseOrder>> getAllOrders() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     final orders = maps.values
@@ -53,8 +51,7 @@ class PurchaseOrderRepository extends VaultRepository<PurchaseOrder> {
         .toList();
   }
 
-  Future<List<PurchaseOrder>> getOrdersForSupplier(
-      String supplierId) async {
+  Future<List<PurchaseOrder>> getOrdersForSupplier(String supplierId) async {
     final all = await getAllOrders();
     return all.where((o) => o.supplierId == supplierId).toList();
   }

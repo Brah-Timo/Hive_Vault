@@ -6,7 +6,8 @@
 import 'package:test/test.dart';
 import '../../lib/src/sync/conflict_resolver.dart';
 
-VersionedValue<T> _vv<T>(T value, {
+VersionedValue<T> _vv<T>(
+  T value, {
   required String sourceId,
   required DateTime timestamp,
   int version = 1,
@@ -177,14 +178,19 @@ void main() {
       final resolver = FieldMergeResolver();
       final c = _conflict<Map<String, dynamic>>(
         key: 'doc',
-        localVal: {'address': {'street': '123 Main St', 'city': 'Springfield'}},
-        remoteVal: {'address': {'city': 'Shelbyville', 'zip': '12345'}},
+        localVal: {
+          'address': {'street': '123 Main St', 'city': 'Springfield'}
+        },
+        remoteVal: {
+          'address': {'city': 'Shelbyville', 'zip': '12345'}
+        },
       );
       final res = await resolver.resolve(c);
       final addr = res.resolvedValue['address'] as Map<String, dynamic>;
       expect(addr['street'], equals('123 Main St')); // local-only field kept
       expect(addr['zip'], equals('12345')); // remote-only field added
-      expect(addr['city'], equals('Shelbyville')); // remote wins scalar conflict
+      expect(
+          addr['city'], equals('Shelbyville')); // remote wins scalar conflict
     });
   });
 
@@ -243,7 +249,8 @@ void main() {
   group('DeferredResolver', () {
     test('deferred resolution keeps local and queues conflict', () async {
       final resolver = DeferredResolver<String>();
-      final c = _conflict<String>(key: 'k', localVal: 'local', remoteVal: 'remote');
+      final c =
+          _conflict<String>(key: 'k', localVal: 'local', remoteVal: 'remote');
       final res = await resolver.resolve(c);
       expect(res.strategy, equals(ResolutionStrategy.deferred));
       expect(res.resolvedValue, equals('local'));
@@ -297,7 +304,8 @@ void main() {
 
   group('VersionedValue', () {
     test('bump increments version', () {
-      final vv = _vv('value', sourceId: 'A', timestamp: DateTime.now(), version: 3);
+      final vv =
+          _vv('value', sourceId: 'A', timestamp: DateTime.now(), version: 3);
       final bumped = vv.bump(newValue: 'new', bySource: 'A');
       expect(bumped.version, equals(4));
       expect(bumped.value, equals('new'));

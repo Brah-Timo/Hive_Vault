@@ -88,6 +88,5 @@ class BackgroundProcessor {
 
   /// Returns `true` if a payload of [sizeBytes] would be processed in the
   /// background.
-  bool wouldUseBackground(int sizeBytes) =>
-      enabled && sizeBytes >= threshold;
+  bool wouldUseBackground(int sizeBytes) => enabled && sizeBytes >= threshold;
 }

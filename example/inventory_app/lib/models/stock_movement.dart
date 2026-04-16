@@ -5,14 +5,14 @@
 
 /// Type of stock movement.
 enum MovementType {
-  stockIn,       // Goods received
-  stockOut,      // Goods dispatched / sold
-  adjustment,    // Manual inventory correction
-  transfer,      // Between locations
-  returnIn,      // Customer return
-  returnOut,     // Return to supplier
-  damaged,       // Write-off for damaged goods
-  expired,       // Write-off for expired goods
+  stockIn, // Goods received
+  stockOut, // Goods dispatched / sold
+  adjustment, // Manual inventory correction
+  transfer, // Between locations
+  returnIn, // Customer return
+  returnOut, // Return to supplier
+  damaged, // Write-off for damaged goods
+  expired, // Write-off for expired goods
 }
 
 extension MovementTypeX on MovementType {
@@ -28,23 +28,22 @@ extension MovementTypeX on MovementType {
       };
 
   bool get isPositive =>
-      this == MovementType.stockIn ||
-      this == MovementType.returnIn;
+      this == MovementType.stockIn || this == MovementType.returnIn;
 }
 
 class StockMovement {
   final String id;
   final String productId;
   final MovementType type;
-  final double quantity;       // Always positive; direction inferred from type
+  final double quantity; // Always positive; direction inferred from type
   final double stockBefore;
   final double stockAfter;
-  final String? reference;     // PO number, invoice, etc.
+  final String? reference; // PO number, invoice, etc.
   final String? notes;
-  final String? userId;        // Who performed the movement
+  final String? userId; // Who performed the movement
   final String? locationFrom;
   final String? locationTo;
-  final String? orderId;       // Related purchase/sales order
+  final String? orderId; // Related purchase/sales order
   final DateTime createdAt;
   final Map<String, dynamic> metadata;
 

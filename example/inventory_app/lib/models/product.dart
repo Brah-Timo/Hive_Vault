@@ -13,8 +13,8 @@ enum UnitOfMeasure { pieces, kg, liters, meters, boxes, pallets }
 class Product {
   final String id;
   String name;
-  String sku;            // Stock-Keeping Unit (unique identifier)
-  String barcode;        // EAN-13, UPC-A, QR, etc.
+  String sku; // Stock-Keeping Unit (unique identifier)
+  String barcode; // EAN-13, UPC-A, QR, etc.
   String? description;
   String categoryId;
   String? supplierId;
@@ -22,9 +22,9 @@ class Product {
 
   // ── Stock ─────────────────────────────────────────────────────────────────
   double currentStock;
-  double minimumStock;   // Low-stock threshold
-  double reorderPoint;   // Triggers auto reorder request
-  double reorderQty;     // Suggested reorder quantity
+  double minimumStock; // Low-stock threshold
+  double reorderPoint; // Triggers auto reorder request
+  double reorderQty; // Suggested reorder quantity
   double maximumStock;
 
   // ── Pricing ───────────────────────────────────────────────────────────────
@@ -34,7 +34,7 @@ class Product {
   // ── Metadata ─────────────────────────────────────────────────────────────
   UnitOfMeasure unit;
   ProductStatus status;
-  String? location;      // Warehouse location / bin code
+  String? location; // Warehouse location / bin code
   DateTime createdAt;
   DateTime updatedAt;
   Map<String, dynamic> customFields;
@@ -71,9 +71,8 @@ class Product {
   bool get needsReorder => currentStock <= reorderPoint;
   bool get isOutOfStock => currentStock <= 0;
   double get stockValue => currentStock * costPrice;
-  double get margin => sellingPrice > 0
-      ? ((sellingPrice - costPrice) / sellingPrice) * 100
-      : 0;
+  double get margin =>
+      sellingPrice > 0 ? ((sellingPrice - costPrice) / sellingPrice) * 100 : 0;
 
   String get stockStatusLabel {
     if (isOutOfStock) return 'Out of Stock';

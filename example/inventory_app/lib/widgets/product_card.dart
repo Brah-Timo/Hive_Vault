@@ -75,8 +75,7 @@ class ProductCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.location_on_outlined,
-                                  size: 10,
-                                  color: Colors.grey.shade400),
+                                  size: 10, color: Colors.grey.shade400),
                               const SizedBox(width: 2),
                               Text(
                                 product.location!,
@@ -106,8 +105,7 @@ class ProductCard extends StatelessWidget {
                   _metricItem(
                     context,
                     label: 'Stock',
-                    value: formatStock(
-                        product.currentStock, product.unit.name),
+                    value: formatStock(product.currentStock, product.unit.name),
                     valueColor: product.isOutOfStock
                         ? AppTheme.errorColor
                         : product.isLowStock
@@ -202,8 +200,8 @@ class ProductCard extends StatelessWidget {
               foregroundColor: Colors.white,
               icon: Icons.delete_outline,
               label: 'Delete',
-              borderRadius: const BorderRadius.horizontal(
-                  right: Radius.circular(12)),
+              borderRadius:
+                  const BorderRadius.horizontal(right: Radius.circular(12)),
             ),
           ],
         ),

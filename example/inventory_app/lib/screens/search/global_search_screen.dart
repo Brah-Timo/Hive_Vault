@@ -205,9 +205,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
 
         if (products.isNotEmpty) ...[
           _sectionHeader('Products', products.length, Icons.inventory_2),
-          ...products
-              .take(3)
-              .map((p) => _buildProductTile(context, p, prov)),
+          ...products.take(3).map((p) => _buildProductTile(context, p, prov)),
           if (products.length > 3)
             _showMoreButton(
               'View all ${products.length} products',
@@ -216,9 +214,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
         ],
         if (suppliers.isNotEmpty) ...[
           _sectionHeader('Suppliers', suppliers.length, Icons.business),
-          ...suppliers
-              .take(3)
-              .map((s) => _buildSupplierTile(context, s)),
+          ...suppliers.take(3).map((s) => _buildSupplierTile(context, s)),
           if (suppliers.length > 3)
             _showMoreButton(
               'View all ${suppliers.length} suppliers',
@@ -226,11 +222,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
             ),
         ],
         if (orders.isNotEmpty) ...[
-          _sectionHeader(
-              'Purchase Orders', orders.length, Icons.shopping_cart),
-          ...orders
-              .take(3)
-              .map((o) => _buildOrderTile(context, o)),
+          _sectionHeader('Purchase Orders', orders.length, Icons.shopping_cart),
+          ...orders.take(3).map((o) => _buildOrderTile(context, o)),
           if (orders.length > 3)
             _showMoreButton(
               'View all ${orders.length} orders',
@@ -242,13 +235,11 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
           ...categories.map((c) => ListTile(
                 leading: CircleAvatar(
                   backgroundColor: c.color.withOpacity(0.15),
-                  child: Icon(Icons.folder_outlined,
-                      color: c.color, size: 20),
+                  child: Icon(Icons.folder_outlined, color: c.color, size: 20),
                 ),
                 title: Text(c.name),
                 subtitle: c.description != null
-                    ? Text(c.description!,
-                        style: const TextStyle(fontSize: 12))
+                    ? Text(c.description!, style: const TextStyle(fontSize: 12))
                     : null,
               )),
         ],
@@ -260,10 +251,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
       BuildContext context, List<Product> products, InventoryProvider prov) {
     if (products.isEmpty) {
       return _buildNoResults(context, _query,
-          onCreate: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const ProductFormScreen())));
+          onCreate: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const ProductFormScreen())));
     }
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 40),
@@ -272,8 +261,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
     );
   }
 
-  Widget _buildSuppliersTab(
-      BuildContext context, List<Supplier> suppliers) {
+  Widget _buildSuppliersTab(BuildContext context, List<Supplier> suppliers) {
     if (suppliers.isEmpty) return _buildNoResults(context, _query);
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 40),
@@ -282,8 +270,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
     );
   }
 
-  Widget _buildOrdersTab(
-      BuildContext context, List<PurchaseOrder> orders) {
+  Widget _buildOrdersTab(BuildContext context, List<PurchaseOrder> orders) {
     if (orders.isEmpty) return _buildNoResults(context, _query);
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 40),
@@ -369,8 +356,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
         ),
       ),
       title: Text(p.name,
-          style:
-              const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
       subtitle: Text(
         '${p.sku} • ${cat?.name ?? 'Uncategorised'} • ${p.currentStock.toInt()} ${p.unit.name}',
         style: const TextStyle(fontSize: 11),
@@ -378,8 +364,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
       trailing: StockStatusBadge(product: p),
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (_) => ProductDetailScreen(product: p)),
+        MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
       ),
     );
   }
@@ -395,8 +380,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
         ),
       ),
       title: Text(s.name,
-          style:
-              const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
       subtitle: Text(
         [s.contactName, s.email, s.phone]
             .where((x) => x != null && x.isNotEmpty)
@@ -416,8 +400,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
       ),
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (_) => SupplierDetailScreen(supplier: s)),
+        MaterialPageRoute(builder: (_) => SupplierDetailScreen(supplier: s)),
       ),
     );
   }
@@ -465,8 +448,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen>
       ),
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (_) => PurchaseOrderDetailScreen(order: o)),
+        MaterialPageRoute(builder: (_) => PurchaseOrderDetailScreen(order: o)),
       ),
     );
   }

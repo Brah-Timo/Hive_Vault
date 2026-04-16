@@ -39,7 +39,7 @@ final kSampleInvoice = {
   'status': 'PENDING',
   'items': [
     {'sku': 'LAPTOP-PRO', 'name': 'Laptop Pro 15"', 'qty': 2, 'price': 55000},
-    {'sku': 'PRINT-A4',   'name': 'Laser Printer A4', 'qty': 1, 'price': 15000},
+    {'sku': 'PRINT-A4', 'name': 'Laser Printer A4', 'qty': 1, 'price': 15000},
   ],
 };
 
@@ -81,8 +81,7 @@ void main() async {
   await vault.secureSave(
     kSampleClient['code']!,
     kSampleClient,
-    searchableText:
-        '${kSampleClient['code']} ${kSampleClient['name']} '
+    searchableText: '${kSampleClient['code']} ${kSampleClient['name']} '
         '${kSampleClient['city']}',
   );
 
@@ -90,8 +89,7 @@ void main() async {
   await vault.secureSave(
     kSampleInvoice['number']!,
     kSampleInvoice,
-    searchableText:
-        '${kSampleInvoice['number']} ${kSampleInvoice['client']} '
+    searchableText: '${kSampleInvoice['number']} ${kSampleInvoice['client']} '
         'laptop printer invoice',
   );
 

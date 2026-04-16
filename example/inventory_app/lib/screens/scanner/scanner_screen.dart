@@ -446,8 +446,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
               const SizedBox(height: 12),
               const Text(
                 'Product Not Found',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               const SizedBox(height: 8),
               Text(

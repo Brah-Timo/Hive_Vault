@@ -46,8 +46,7 @@ void main() {
         final key = KeyManager.generateMasterKey();
         final encoded = key.map((b) => b.toString()).join(',');
 
-        when(mockStorage.write(
-                key: kMasterKeyStorageId, value: encoded))
+        when(mockStorage.write(key: kMasterKeyStorageId, value: encoded))
             .thenAnswer((_) async {});
         when(mockStorage.read(key: kMasterKeyStorageId))
             .thenAnswer((_) async => encoded);
@@ -70,8 +69,7 @@ void main() {
       test('creates new key when none exists', () async {
         when(mockStorage.read(key: kMasterKeyStorageId))
             .thenAnswer((_) async => null);
-        when(mockStorage.write(
-                key: anyNamed('key'), value: anyNamed('value')))
+        when(mockStorage.write(key: anyNamed('key'), value: anyNamed('value')))
             .thenAnswer((_) async {});
 
         final key = await keyManager.getOrCreateMasterKey();

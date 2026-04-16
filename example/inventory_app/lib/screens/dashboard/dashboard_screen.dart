@@ -193,8 +193,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 const SizedBox(height: 4),
                 Text(
                   today,
-                  style: const TextStyle(
-                      color: Colors.white70, fontSize: 13),
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
                 const SizedBox(height: 10),
                 // Quick status row
@@ -233,8 +232,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               color: Colors.white.withOpacity(0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.warehouse,
-                size: 36, color: Colors.white),
+            child: const Icon(Icons.warehouse, size: 36, color: Colors.white),
           ),
         ],
       ),
@@ -334,8 +332,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget _buildQuickActions(BuildContext context, InventoryProvider prov) {
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -445,8 +442,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildMovementBarChart(
-      BuildContext context, InventoryProvider prov) {
+  Widget _buildMovementBarChart(BuildContext context, InventoryProvider prov) {
     // Build last 7 days movement counts
     final now = DateTime.now();
     final days = List.generate(7, (i) {
@@ -459,8 +455,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     final outCounts = List<double>.filled(7, 0);
 
     for (final m in prov.movements) {
-      final mDay = DateTime(
-          m.createdAt.year, m.createdAt.month, m.createdAt.day);
+      final mDay =
+          DateTime(m.createdAt.year, m.createdAt.month, m.createdAt.day);
       final idx = days.indexOf(mDay);
       if (idx == -1) continue;
       if (m.type.isPositive) {
@@ -470,13 +466,11 @@ class _DashboardScreenState extends State<DashboardScreen>
       }
     }
 
-    final hasData =
-        inCounts.any((v) => v > 0) || outCounts.any((v) => v > 0);
+    final hasData = inCounts.any((v) => v > 0) || outCounts.any((v) => v > 0);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -508,10 +502,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                       BarChartData(
                         alignment: BarChartAlignment.spaceAround,
                         maxY: [
-                          ...inCounts,
-                          ...outCounts,
-                          1,
-                        ].reduce((a, b) => a > b ? a : b) *
+                              ...inCounts,
+                              ...outCounts,
+                              1,
+                            ].reduce((a, b) => a > b ? a : b) *
                             1.2,
                         barTouchData: BarTouchData(
                           touchTooltipData: BarTouchTooltipData(
@@ -611,8 +605,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 4),
-        Text(label,
-            style: const TextStyle(fontSize: 10, color: Colors.grey)),
+        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
       ],
     );
   }
@@ -636,8 +629,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -660,10 +652,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                         pieTouchData: PieTouchData(
                           touchCallback: (event, response) {
                             setState(() {
-                              _touchedPieIndex =
-                                  response?.touchedSection
-                                          ?.touchedSectionIndex ??
-                                      -1;
+                              _touchedPieIndex = response
+                                      ?.touchedSection?.touchedSectionIndex ??
+                                  -1;
                             });
                           },
                         ),
@@ -674,9 +665,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                           return PieChartSectionData(
                             color: colors[i % colors.length],
                             value: entries[i].value,
-                            title: isTouched
-                                ? '${pct.toStringAsFixed(1)}%'
-                                : '',
+                            title:
+                                isTouched ? '${pct.toStringAsFixed(1)}%' : '',
                             radius: isTouched ? 65 : 55,
                             titleStyle: const TextStyle(
                               color: Colors.white,
@@ -711,15 +701,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                               const SizedBox(width: 6),
                               Flexible(
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       entries[i].key.length > 14
                                           ? '${entries[i].key.substring(0, 12)}…'
                                           : entries[i].key,
-                                      style:
-                                          const TextStyle(fontSize: 11),
+                                      style: const TextStyle(fontSize: 11),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
@@ -752,8 +740,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Column(
         children: [
           ListTile(
@@ -782,13 +769,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                   : '${prov.summary.lowStockCount} need attention',
             ),
             trailing: lowStock.isEmpty
-                ? const Icon(Icons.check_circle,
-                    color: AppTheme.successColor)
+                ? const Icon(Icons.check_circle, color: AppTheme.successColor)
                 : TextButton(
                     onPressed: () => Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) => const AlertsScreen()),
+                      MaterialPageRoute(builder: (_) => const AlertsScreen()),
                     ),
                     child: const Text('View All'),
                   ),
@@ -798,8 +783,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle,
-                      color: Colors.green, size: 20),
+                  Icon(Icons.check_circle, color: Colors.green, size: 20),
                   SizedBox(width: 8),
                   Text(
                     'Inventory levels are healthy',
@@ -817,9 +801,10 @@ class _DashboardScreenState extends State<DashboardScreen>
               dense: true,
               leading: CircleAvatar(
                 radius: 18,
-                backgroundColor:
-                    (p.isOutOfStock ? AppTheme.errorColor : AppTheme.warningColor)
-                        .withOpacity(0.12),
+                backgroundColor: (p.isOutOfStock
+                        ? AppTheme.errorColor
+                        : AppTheme.warningColor)
+                    .withOpacity(0.12),
                 child: Icon(
                   Icons.inventory_2_outlined,
                   size: 16,
@@ -830,8 +815,8 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               title: Text(
                 p.name,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, fontSize: 13),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -870,8 +855,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   ),
                   Text(
                     'min: ${p.minimumStock.toInt()}',
-                    style: const TextStyle(
-                        fontSize: 10, color: Colors.grey),
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
                   ),
                 ],
               ),
@@ -889,8 +873,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Column(
         children: [
           ListTile(
@@ -920,9 +903,8 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
           ...movements.map((m) {
-            final product = prov.allProducts
-                .where((p) => p.id == m.productId)
-                .firstOrNull;
+            final product =
+                prov.allProducts.where((p) => p.id == m.productId).firstOrNull;
             final isPositive = m.type.isPositive;
             return ListTile(
               dense: true,
@@ -932,9 +914,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     ? Colors.green.withOpacity(0.12)
                     : Colors.red.withOpacity(0.12),
                 child: Icon(
-                  isPositive
-                      ? Icons.arrow_downward
-                      : Icons.arrow_upward,
+                  isPositive ? Icons.arrow_downward : Icons.arrow_upward,
                   size: 14,
                   color: isPositive ? Colors.green : Colors.red,
                 ),
@@ -964,8 +944,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   if (m.reference != null)
                     Text(
                       m.reference!,
-                      style: const TextStyle(
-                          fontSize: 9, color: Colors.grey),
+                      style: const TextStyle(fontSize: 9, color: Colors.grey),
                     ),
                 ],
               ),
@@ -987,8 +966,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Column(
         children: [
           ListTile(
@@ -1086,8 +1064,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
             ListTile(
-              leading:
-                  const Icon(Icons.refresh, color: AppTheme.infoColor),
+              leading: const Icon(Icons.refresh, color: AppTheme.infoColor),
               title: const Text('Run Alert Scan'),
               subtitle: const Text('Check all products for stock issues'),
               onTap: () async {
@@ -1095,8 +1072,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 final count = await prov.runAlertScan();
                 if (!mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content:
-                      Text('Alert scan complete: $count new alert(s)'),
+                  content: Text('Alert scan complete: $count new alert(s)'),
                 ));
               },
             ),
@@ -1104,8 +1080,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               leading: const Icon(Icons.shopping_cart_outlined,
                   color: AppTheme.primaryColor),
               title: const Text('Create Reorder Requests'),
-              subtitle: const Text(
-                  'Auto-generate POs for low stock items'),
+              subtitle: const Text('Auto-generate POs for low stock items'),
               onTap: () async {
                 Navigator.pop(context);
                 final count = await prov.createReorderRequests();
@@ -1116,8 +1091,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               },
             ),
             ListTile(
-              leading: const Icon(Icons.data_object,
-                  color: Colors.orange),
+              leading: const Icon(Icons.data_object, color: Colors.orange),
               title: const Text('Load Demo Data'),
               subtitle: const Text('Seed sample products for testing'),
               onTap: () async {

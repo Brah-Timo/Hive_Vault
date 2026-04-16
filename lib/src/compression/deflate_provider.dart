@@ -13,8 +13,7 @@ import '../core/vault_exceptions.dart';
 import 'compression_provider.dart';
 import 'lz4_provider.dart';
 
-import '_io_codec_stub.dart'
-    if (dart.library.io) '_io_codec_native.dart';
+import '_io_codec_stub.dart' if (dart.library.io) '_io_codec_native.dart';
 
 /// Deflate (ZLib) compression provider.
 ///
@@ -32,8 +31,7 @@ class DeflateCompressionProvider extends CompressionProvider {
   String get algorithmName => kIsWeb ? 'Lz4(web-fallback)' : 'Deflate';
 
   @override
-  int get headerFlag =>
-      kIsWeb ? CompressionFlag.lz4 : CompressionFlag.deflate;
+  int get headerFlag => kIsWeb ? CompressionFlag.lz4 : CompressionFlag.deflate;
 
   @override
   Uint8List compress(Uint8List data) {
@@ -55,7 +53,8 @@ class DeflateCompressionProvider extends CompressionProvider {
       return ioDeflateDecompress(compressedData);
     } catch (e) {
       throw VaultDecompressionException(
-          'Deflate decompression failed — data may be corrupt', cause: e);
+          'Deflate decompression failed — data may be corrupt',
+          cause: e);
     }
   }
 

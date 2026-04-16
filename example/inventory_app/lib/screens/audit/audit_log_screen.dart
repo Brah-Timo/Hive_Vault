@@ -10,7 +10,7 @@ import '../../theme/app_theme.dart';
 
 /// Represents a single audit log entry for display.
 class AuditLogEntry {
-  final String operation;   // read, write, delete, etc.
+  final String operation; // read, write, delete, etc.
   final String key;
   final DateTime timestamp;
   final String? userId;
@@ -133,8 +133,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
               children: [
                 Text(
                   '${entries.length} entries',
-                  style: TextStyle(
-                      fontSize: 12, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
                 const Spacer(),
                 if (_opFilter != 'all' || _search.isNotEmpty)
@@ -171,11 +170,9 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                     ),
                   )
                 : ListView.builder(
-                    padding:
-                        const EdgeInsets.fromLTRB(12, 0, 12, 80),
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 80),
                     itemCount: entries.length,
-                    itemBuilder: (context, i) =>
-                        _EntryTile(entry: entries[i]),
+                    itemBuilder: (context, i) => _EntryTile(entry: entries[i]),
                   ),
           ),
         ],
@@ -204,8 +201,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text('Filter by Operation',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ),
             ...['all', 'write', 'read', 'delete'].map((op) => ListTile(
                   leading: Icon(
@@ -275,8 +271,7 @@ class _EntryTile extends StatelessWidget {
         ),
         title: Text(
           entry.key,
-          style: const TextStyle(
-              fontFamily: 'monospace', fontSize: 12),
+          style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

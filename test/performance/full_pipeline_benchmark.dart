@@ -58,10 +58,10 @@ Future<void> benchmarkPipeline({
 
   print(
     '  $label'.padRight(30) +
-    '  write: ${avgWriteMs.toStringAsFixed(2).padLeft(6)}ms'
-    '  read: ${avgReadMs.toStringAsFixed(2).padLeft(6)}ms'
-    '  size: ${rawBytes.length}→$storedSize bytes'
-    '  saved: ${ratio.toStringAsFixed(1)}%',
+        '  write: ${avgWriteMs.toStringAsFixed(2).padLeft(6)}ms'
+            '  read: ${avgReadMs.toStringAsFixed(2).padLeft(6)}ms'
+            '  size: ${rawBytes.length}→$storedSize bytes'
+            '  saved: ${ratio.toStringAsFixed(1)}%',
   );
 }
 
@@ -76,22 +76,26 @@ void main() async {
     'client': 'Ahmed Ben Ali',
     'amount': 125000.0,
     'date': '2026-04-16',
-    'items': List.generate(5, (i) => {'name': 'Item $i', 'qty': i + 1, 'price': 1000.0 * (i + 1)}),
+    'items': List.generate(
+        5, (i) => {'name': 'Item $i', 'qty': i + 1, 'price': 1000.0 * (i + 1)}),
   };
 
   final largeInvoice = {
     'number': 'INV-2026-999',
     'client': 'شركة النور للاستيراد والتصدير',
     'amount': 9999999.99,
-    'items': List.generate(100, (i) => {
-      'code': 'SKU-${i.toString().padLeft(4, '0')}',
-      'name': 'Produit numéro $i avec description longue',
-      'qty': i * 3,
-      'price': 1234.56 * (i + 1),
-      'tva': 19.0,
-    }),
-    'notes': 'Facture établie conformément à la législation fiscale algérienne. '
-        'Numéro NIF: 123456789012345 — RC: 06/00-0123456B13',
+    'items': List.generate(
+        100,
+        (i) => {
+              'code': 'SKU-${i.toString().padLeft(4, '0')}',
+              'name': 'Produit numéro $i avec description longue',
+              'qty': i * 3,
+              'price': 1234.56 * (i + 1),
+              'tva': 19.0,
+            }),
+    'notes':
+        'Facture établie conformément à la législation fiscale algérienne. '
+            'Numéro NIF: 123456789012345 — RC: 06/00-0123456B13',
   };
 
   final configs = [
@@ -121,7 +125,9 @@ void main() async {
     );
   }
 
-  print('\nNote: Each "round" = 1 complete compress+encrypt (write) or decrypt+decompress (read).');
-  print('Results include PBKDF2 key derivation (100K iterations for ERP/MaxSec).');
+  print(
+      '\nNote: Each "round" = 1 complete compress+encrypt (write) or decrypt+decompress (read).');
+  print(
+      'Results include PBKDF2 key derivation (100K iterations for ERP/MaxSec).');
   print('Using fast iterations (1K) would be ~100× faster for ERP preset.\n');
 }

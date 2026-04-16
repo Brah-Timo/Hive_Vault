@@ -37,9 +37,8 @@ class ProductRepository extends VaultRepository<Product> {
   }
 
   Future<List<Product>> getAllProducts() async {
-    final keys = (await vault.getAllKeys())
-        .where((k) => k.startsWith(_prefix))
-        .toList();
+    final keys =
+        (await vault.getAllKeys()).where((k) => k.startsWith(_prefix)).toList();
     if (keys.isEmpty) return [];
     final maps = await vault.secureGetBatch(keys);
     return maps.values
@@ -50,12 +49,16 @@ class ProductRepository extends VaultRepository<Product> {
 
   Future<List<Product>> getLowStockProducts() async {
     final all = await getAllProducts();
-    return all.where((p) => p.isLowStock && p.status == ProductStatus.active).toList();
+    return all
+        .where((p) => p.isLowStock && p.status == ProductStatus.active)
+        .toList();
   }
 
   Future<List<Product>> getOutOfStockProducts() async {
     final all = await getAllProducts();
-    return all.where((p) => p.isOutOfStock && p.status == ProductStatus.active).toList();
+    return all
+        .where((p) => p.isOutOfStock && p.status == ProductStatus.active)
+        .toList();
   }
 
   Future<List<Product>> getProductsByCategory(String categoryId) async {
@@ -90,12 +93,13 @@ class ProductRepository extends VaultRepository<Product> {
     if (query.isEmpty) return getAllProducts();
     final q = query.toLowerCase();
     final all = await getAllProducts();
-    return all.where((p) =>
-      p.name.toLowerCase().contains(q) ||
-      p.sku.toLowerCase().contains(q) ||
-      p.barcode.toLowerCase().contains(q) ||
-      (p.description?.toLowerCase().contains(q) ?? false)
-    ).toList();
+    return all
+        .where((p) =>
+            p.name.toLowerCase().contains(q) ||
+            p.sku.toLowerCase().contains(q) ||
+            p.barcode.toLowerCase().contains(q) ||
+            (p.description?.toLowerCase().contains(q) ?? false))
+        .toList();
   }
 
   Future<void> updateStock(String productId, double newStock) async {

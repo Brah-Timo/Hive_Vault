@@ -29,14 +29,12 @@ extension ReportTypeX on ReportType {
           'Overview of current inventory levels across all products',
         ReportType.stockMovements =>
           'Detailed log of all stock in/out movements',
-        ReportType.lowStockReport =>
-          'Products below minimum stock thresholds',
+        ReportType.lowStockReport => 'Products below minimum stock thresholds',
         ReportType.valuationReport =>
           'Total inventory value by cost and selling price',
         ReportType.supplierReport =>
           'Purchase history and performance by supplier',
-        ReportType.categoryReport =>
-          'Stock distribution and value by category',
+        ReportType.categoryReport => 'Stock distribution and value by category',
         ReportType.reorderReport =>
           'Products requiring reorder based on current stock',
       };

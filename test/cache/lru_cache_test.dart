@@ -71,7 +71,7 @@ void main() {
       cache.put('b', 'b');
       cache.put('c', 'c');
       cache.put('a', 'updated'); // Re-insert 'a' → a becomes MRU
-      cache.put('d', 'd');       // Should evict 'b' (now LRU)
+      cache.put('d', 'd'); // Should evict 'b' (now LRU)
       expect(cache.get('a'), equals('updated'));
       expect(cache.get('b'), isNull);
     });

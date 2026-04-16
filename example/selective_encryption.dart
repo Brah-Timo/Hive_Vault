@@ -88,7 +88,7 @@ class SelectiveClientRepository {
   }
 
   Future<Client?> getFullClient(String code) async {
-    final pub  = await getPublicData(code);
+    final pub = await getPublicData(code);
     final priv = await getPrivateData(code);
     if (pub == null || priv == null) return null;
 
@@ -126,10 +126,11 @@ class SelectiveClientRepository {
 Future<void> main() async {
   final dir = Directory.systemTemp.createTempSync('hive_selective_demo_');
   Hive.init(dir.path);
-  print('HiveVault — Selective Encryption Demo\n══════════════════════════════════\n');
+  print(
+      'HiveVault — Selective Encryption Demo\n══════════════════════════════════\n');
 
   final vault = await VaultFactory.open('clients', config: VaultConfig.debug());
-  final repo  = SelectiveClientRepository(vault);
+  final repo = SelectiveClientRepository(vault);
 
   // ── Seed ──────────────────────────────────────────────────────────────────
   final clients = [
@@ -166,12 +167,14 @@ Future<void> main() async {
   ];
 
   for (final c in clients) await repo.saveClient(c);
-  print('✅ Saved ${clients.length} clients (${clients.length * 2} vault entries).\n');
+  print(
+      '✅ Saved ${clients.length} clients (${clients.length * 2} vault entries).\n');
 
   // ── Search public fields ───────────────────────────────────────────────────
   final algiers = await repo.search('Algiers');
   print('🔍 Search "Algiers" — ${algiers.length} result(s):');
-  for (final r in algiers) print('   ${r['code']} — ${r['name']} — ${r['city']}');
+  for (final r in algiers)
+    print('   ${r['code']} — ${r['name']} — ${r['city']}');
   print('');
 
   // ── Retrieve full client ───────────────────────────────────────────────────
@@ -189,7 +192,8 @@ Future<void> main() async {
 
   // ── Verify private data is NOT in index ────────────────────────────────────
   final bankSearch = await repo.search('CPA');
-  print('🔒 Search "CPA" (bank account number) in index: ${bankSearch.length} result(s)');
+  print(
+      '🔒 Search "CPA" (bank account number) in index: ${bankSearch.length} result(s)');
   print('   → Bank accounts are NOT indexed, so 0 results is correct.\n');
 
   // ── Stats ─────────────────────────────────────────────────────────────────

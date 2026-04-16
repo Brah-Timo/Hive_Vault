@@ -36,15 +36,15 @@ class ReportsScreen extends StatelessWidget {
             title: 'Low Stock Report',
             subtitle: 'Products below minimum stock level',
             onGenerate: () => Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (_) => const _LowStockReportPage())),
+                MaterialPageRoute(builder: (_) => const _LowStockReportPage())),
           ),
           _ReportCard(
             icon: Icons.account_balance_wallet_outlined,
             color: AppTheme.successColor,
             title: 'Valuation Report',
             subtitle: 'Inventory cost & selling value breakdown',
-            onGenerate: () => Navigator.push(context,
+            onGenerate: () => Navigator.push(
+                context,
                 MaterialPageRoute(
                     builder: (_) => const _ValuationReportPage())),
           ),
@@ -54,8 +54,7 @@ class ReportsScreen extends StatelessWidget {
             title: 'Stock Movements',
             subtitle: 'In/out history with date range filter',
             onGenerate: () => Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (_) => const _MovementReportPage())),
+                MaterialPageRoute(builder: (_) => const _MovementReportPage())),
           ),
           _ReportCard(
             icon: Icons.shopping_cart_outlined,
@@ -63,8 +62,7 @@ class ReportsScreen extends StatelessWidget {
             title: 'Reorder Report',
             subtitle: 'Products that need to be reordered',
             onGenerate: () => Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (_) => const _ReorderReportPage())),
+                MaterialPageRoute(builder: (_) => const _ReorderReportPage())),
           ),
           _ReportCard(
             icon: Icons.dashboard_outlined,
@@ -72,8 +70,7 @@ class ReportsScreen extends StatelessWidget {
             title: 'Summary Report',
             subtitle: 'Category totals & overall KPIs',
             onGenerate: () => Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (_) => const _SummaryReportPage())),
+                MaterialPageRoute(builder: (_) => const _SummaryReportPage())),
           ),
         ],
       ),
@@ -123,23 +120,19 @@ class _ReportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         leading: CircleAvatar(
           backgroundColor: color.withOpacity(0.12),
           child: Icon(icon, color: color),
         ),
-        title: Text(title,
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle,
-            style: const TextStyle(fontSize: 12)),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
         trailing: ElevatedButton(
           onPressed: onGenerate,
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
             foregroundColor: Colors.white,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             textStyle: const TextStyle(fontSize: 12),
           ),
           child: const Text('View'),
@@ -179,9 +172,8 @@ class _LowStockReportPageState extends State<_LowStockReportPage> {
             future: _future,
             builder: (_, snap) => IconButton(
               icon: const Icon(Icons.picture_as_pdf),
-              onPressed: snap.hasData
-                  ? () => _exportPdf(context, snap.data!)
-                  : null,
+              onPressed:
+                  snap.hasData ? () => _exportPdf(context, snap.data!) : null,
             ),
           ),
         ],
@@ -228,23 +220,19 @@ class _LowStockReportPageState extends State<_LowStockReportPage> {
                         ),
                       ),
                       title: Text(item.name,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600)),
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${item.sku} • ${item.categoryName}',
-                              style:
-                                  const TextStyle(fontSize: 11)),
+                              style: const TextStyle(fontSize: 11)),
                           const SizedBox(height: 4),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
                               value: pct,
-                              backgroundColor:
-                                  Colors.grey.shade200,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(
+                              backgroundColor: Colors.grey.shade200,
+                              valueColor: AlwaysStoppedAnimation<Color>(
                                 pct == 0
                                     ? AppTheme.errorColor
                                     : AppTheme.warningColor,
@@ -287,36 +275,28 @@ class _LowStockReportPageState extends State<_LowStockReportPage> {
   }
 
   Widget _buildSummaryBanner(List<LowStockItem> items) {
-    final outOf =
-        items.where((i) => i.isCritical).length;
+    final outOf = items.where((i) => i.isCritical).length;
     return Container(
       padding: const EdgeInsets.all(16),
       color: AppTheme.warningColor.withOpacity(0.08),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _bannerStat('Total', '${items.length}',
-              AppTheme.warningColor),
-          _bannerStat('Out of Stock', '$outOf',
-              AppTheme.errorColor),
-          _bannerStat('Need Reorder',
-              '${items.length - outOf}', AppTheme.infoColor),
+          _bannerStat('Total', '${items.length}', AppTheme.warningColor),
+          _bannerStat('Out of Stock', '$outOf', AppTheme.errorColor),
+          _bannerStat(
+              'Need Reorder', '${items.length - outOf}', AppTheme.infoColor),
         ],
       ),
     );
   }
 
-  Widget _bannerStat(String label, String value, Color color) =>
-      Column(
+  Widget _bannerStat(String label, String value, Color color) => Column(
         children: [
           Text(value,
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                  color: color)),
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 11, color: Colors.grey)),
+                  fontWeight: FontWeight.bold, fontSize: 22, color: color)),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
         ],
       );
 
@@ -334,8 +314,7 @@ class _ValuationReportPage extends StatefulWidget {
   const _ValuationReportPage();
 
   @override
-  State<_ValuationReportPage> createState() =>
-      _ValuationReportPageState();
+  State<_ValuationReportPage> createState() => _ValuationReportPageState();
 }
 
 class _ValuationReportPageState extends State<_ValuationReportPage> {
@@ -358,9 +337,8 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
             future: _future,
             builder: (_, snap) => IconButton(
               icon: const Icon(Icons.picture_as_pdf),
-              onPressed: snap.hasData
-                  ? () => _exportPdf(context, snap.data!)
-                  : null,
+              onPressed:
+                  snap.hasData ? () => _exportPdf(context, snap.data!) : null,
             ),
           ),
         ],
@@ -376,14 +354,11 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
             return const EmptyState(
               icon: Icons.account_balance_wallet_outlined,
               title: 'No Valuation Data',
-              subtitle:
-                  'Add products with cost prices to see valuation.',
+              subtitle: 'Add products with cost prices to see valuation.',
             );
           }
-          final totalCost =
-              items.fold(0.0, (s, i) => s + i.costValue);
-          final totalSell =
-              items.fold(0.0, (s, i) => s + i.sellingValue);
+          final totalCost = items.fold(0.0, (s, i) => s + i.costValue);
+          final totalSell = items.fold(0.0, (s, i) => s + i.sellingValue);
 
           return ListView(
             children: [
@@ -392,16 +367,12 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
               const Divider(),
               ...items.map((item) => ListTile(
                     leading: CircleAvatar(
-                      backgroundColor:
-                          AppTheme.successColor.withOpacity(0.12),
-                      child: const Icon(
-                          Icons.inventory_2_outlined,
-                          size: 20,
-                          color: AppTheme.successColor),
+                      backgroundColor: AppTheme.successColor.withOpacity(0.12),
+                      child: const Icon(Icons.inventory_2_outlined,
+                          size: 20, color: AppTheme.successColor),
                     ),
                     title: Text(item.name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600)),
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
                     subtitle: Text(
                         '${item.categoryName} • Qty: ${item.quantity.toInt()}',
                         style: const TextStyle(fontSize: 12)),
@@ -417,8 +388,8 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
                         ),
                         Text(
                           'Sell: ${formatCurrency(item.sellingValue)}',
-                          style: const TextStyle(
-                              fontSize: 10, color: Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -431,8 +402,7 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
     );
   }
 
-  Widget _buildPieChart(
-      List<ValuationItem> items, double totalCost) {
+  Widget _buildPieChart(List<ValuationItem> items, double totalCost) {
     if (totalCost == 0) return const SizedBox.shrink();
     final colors = [
       const Color(0xFF1565C0),
@@ -450,8 +420,7 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Cost Value Distribution',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             SizedBox(
               height: 180,
@@ -461,68 +430,48 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
                     child: PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback:
-                              (event, response) {
+                          touchCallback: (event, response) {
                             setState(() {
                               _touchedIdx = response
-                                      ?.touchedSection
-                                      ?.touchedSectionIndex ??
+                                      ?.touchedSection?.touchedSectionIndex ??
                                   -1;
                             });
                           },
                         ),
-                        sections: List.generate(
-                            items.length, (i) {
-                          final pct = (items[i]
-                                      .costValue /
-                                  totalCost) *
-                              100;
-                          final touched =
-                              i == _touchedIdx;
+                        sections: List.generate(items.length, (i) {
+                          final pct = (items[i].costValue / totalCost) * 100;
+                          final touched = i == _touchedIdx;
                           return PieChartSectionData(
-                            color: colors[
-                                i % colors.length],
-                            value: items[i]
-                                .costValue,
-                            title: touched
-                                ? '${pct.toStringAsFixed(1)}%'
-                                : '',
+                            color: colors[i % colors.length],
+                            value: items[i].costValue,
+                            title: touched ? '${pct.toStringAsFixed(1)}%' : '',
                             radius: touched ? 65 : 52,
                             titleStyle: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
-                                fontWeight:
-                                    FontWeight.bold),
+                                fontWeight: FontWeight.bold),
                           );
                         }),
                         centerSpaceRadius: 28,
-                        borderData:
-                            FlBorderData(show: false),
+                        borderData: FlBorderData(show: false),
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center,
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: List.generate(
-                        items.length.clamp(0, 6), (i) {
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(items.length.clamp(0, 6), (i) {
                       return Padding(
-                        padding: const EdgeInsets
-                            .symmetric(vertical: 3),
+                        padding: const EdgeInsets.symmetric(vertical: 3),
                         child: Row(
                           children: [
                             Container(
                               width: 9,
                               height: 9,
                               decoration: BoxDecoration(
-                                color: colors[
-                                    i % colors.length],
-                                borderRadius:
-                                    BorderRadius.circular(
-                                        2),
+                                color: colors[i % colors.length],
+                                borderRadius: BorderRadius.circular(2),
                               ),
                             ),
                             const SizedBox(width: 5),
@@ -530,8 +479,7 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
                               items[i].name.length > 13
                                   ? '${items[i].name.substring(0, 11)}…'
                                   : items[i].name,
-                              style: const TextStyle(
-                                  fontSize: 10),
+                              style: const TextStyle(fontSize: 10),
                             ),
                           ],
                         ),
@@ -548,30 +496,26 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
   }
 
   Widget _buildTotalsRow(double cost, double sell) {
-    final margin = sell > 0
-        ? ((sell - cost) / sell * 100)
-        : 0.0;
+    final margin = sell > 0 ? ((sell - cost) / sell * 100) : 0.0;
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
           Expanded(
-              child: _valueTile('Total Cost',
-                  formatCurrency(cost), AppTheme.successColor)),
+              child: _valueTile(
+                  'Total Cost', formatCurrency(cost), AppTheme.successColor)),
           Expanded(
-              child: _valueTile('Total Selling',
-                  formatCurrency(sell), AppTheme.primaryColor)),
+              child: _valueTile('Total Selling', formatCurrency(sell),
+                  AppTheme.primaryColor)),
           Expanded(
-              child: _valueTile('Gross Margin',
-                  '${margin.toStringAsFixed(1)}%',
+              child: _valueTile('Gross Margin', '${margin.toStringAsFixed(1)}%',
                   AppTheme.secondaryColor)),
         ],
       ),
     );
   }
 
-  Widget _valueTile(String label, String value, Color color) =>
-      Container(
+  Widget _valueTile(String label, String value, Color color) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -582,12 +526,9 @@ class _ValuationReportPageState extends State<_ValuationReportPage> {
           children: [
             Text(value,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: color)),
+                    fontWeight: FontWeight.bold, fontSize: 15, color: color)),
             Text(label,
-                style: const TextStyle(
-                    fontSize: 10, color: Colors.grey)),
+                style: const TextStyle(fontSize: 10, color: Colors.grey)),
           ],
         ),
       );
@@ -606,13 +547,11 @@ class _MovementReportPage extends StatefulWidget {
   const _MovementReportPage();
 
   @override
-  State<_MovementReportPage> createState() =>
-      _MovementReportPageState();
+  State<_MovementReportPage> createState() => _MovementReportPageState();
 }
 
 class _MovementReportPageState extends State<_MovementReportPage> {
-  DateTime _from =
-      DateTime.now().subtract(const Duration(days: 30));
+  DateTime _from = DateTime.now().subtract(const Duration(days: 30));
   DateTime _to = DateTime.now();
   Future<List<StockMovement>>? _future;
 
@@ -644,18 +583,15 @@ class _MovementReportPageState extends State<_MovementReportPage> {
             child: FutureBuilder<List<StockMovement>>(
               future: _future,
               builder: (context, snap) {
-                if (snap.connectionState !=
-                    ConnectionState.done) {
-                  return const Center(
-                      child: CircularProgressIndicator());
+                if (snap.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final movements = snap.data ?? [];
                 if (movements.isEmpty) {
                   return const EmptyState(
                     icon: Icons.swap_vert,
                     title: 'No Movements',
-                    subtitle:
-                        'No stock movements in selected range.',
+                    subtitle: 'No stock movements in selected range.',
                   );
                 }
                 final inQty = movements
@@ -674,68 +610,52 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                         children: [
                           Expanded(
                               child: _countChip(
-                                  'Stock In',
-                                  inQty.toInt(),
-                                  Colors.green)),
+                                  'Stock In', inQty.toInt(), Colors.green)),
                           const SizedBox(width: 8),
                           Expanded(
-                              child: _countChip(
-                                  'Stock Out',
-                                  outQty.toInt(),
+                              child: _countChip('Stock Out', outQty.toInt(),
                                   AppTheme.errorColor)),
                           const SizedBox(width: 8),
                           Expanded(
-                              child: _countChip(
-                                  'Total Txns',
-                                  movements.length,
+                              child: _countChip('Total Txns', movements.length,
                                   AppTheme.primaryColor)),
                         ],
                       ),
                     ),
                     const Divider(),
                     ...movements.map((m) {
-                      final prov =
-                          context.read<InventoryProvider>();
-                      final product =
-                          prov.allProducts
-                              .where((p) =>
-                                  p.id == m.productId)
-                              .firstOrNull;
+                      final prov = context.read<InventoryProvider>();
+                      final product = prov.allProducts
+                          .where((p) => p.id == m.productId)
+                          .firstOrNull;
                       return ListTile(
                         dense: true,
                         leading: CircleAvatar(
                           radius: 16,
                           backgroundColor: m.type.isPositive
-                              ? Colors.green
-                                  .withOpacity(0.12)
-                              : Colors.red
-                                  .withOpacity(0.12),
+                              ? Colors.green.withOpacity(0.12)
+                              : Colors.red.withOpacity(0.12),
                           child: Icon(
                             m.type.isPositive
                                 ? Icons.arrow_downward
                                 : Icons.arrow_upward,
                             size: 14,
-                            color: m.type.isPositive
-                                ? Colors.green
-                                : Colors.red,
+                            color:
+                                m.type.isPositive ? Colors.green : Colors.red,
                           ),
                         ),
-                        title: Text(
-                            product?.name ?? m.productId,
-                            style: const TextStyle(
-                                fontSize: 13)),
+                        title: Text(product?.name ?? m.productId,
+                            style: const TextStyle(fontSize: 13)),
                         subtitle: Text(
                           '${m.type.label} • ${DateFormat('dd MMM HH:mm').format(m.createdAt)}',
-                          style: const TextStyle(
-                              fontSize: 11),
+                          style: const TextStyle(fontSize: 11),
                         ),
                         trailing: Text(
                           '${m.type.isPositive ? '+' : '-'}${m.quantity.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: m.type.isPositive
-                                ? Colors.green
-                                : Colors.red,
+                            color:
+                                m.type.isPositive ? Colors.green : Colors.red,
                           ),
                         ),
                       );
@@ -763,11 +683,8 @@ class _MovementReportPageState extends State<_MovementReportPage> {
         outByDay[key] = (outByDay[key] ?? 0) + m.quantity;
       }
     }
-    final days = {...inByDay.keys, ...outByDay.keys}.toList()
-      ..sort();
-    final visible = days.length > 7
-        ? days.sublist(days.length - 7)
-        : days;
+    final days = {...inByDay.keys, ...outByDay.keys}.toList()..sort();
+    final visible = days.length > 7 ? days.sublist(days.length - 7) : days;
 
     if (visible.isEmpty) return const SizedBox.shrink();
 
@@ -779,8 +696,7 @@ class _MovementReportPageState extends State<_MovementReportPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Daily Movement Overview',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             SizedBox(
               height: 160,
@@ -794,8 +710,7 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                         reservedSize: 32,
                         getTitlesWidget: (v, _) => Text(
                           v.toInt().toString(),
-                          style: const TextStyle(
-                              fontSize: 9),
+                          style: const TextStyle(fontSize: 9),
                         ),
                       ),
                     ),
@@ -804,29 +719,23 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                         showTitles: true,
                         getTitlesWidget: (v, _) {
                           final idx = v.toInt();
-                          if (idx < 0 ||
-                              idx >= visible.length)
+                          if (idx < 0 || idx >= visible.length)
                             return const SizedBox();
                           return Text(
                             visible[idx],
-                            style: const TextStyle(
-                                fontSize: 9),
+                            style: const TextStyle(fontSize: 9),
                           );
                         },
                       ),
                     ),
                     topTitles: const AxisTitles(
-                        sideTitles: SideTitles(
-                            showTitles: false)),
+                        sideTitles: SideTitles(showTitles: false)),
                     rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(
-                            showTitles: false)),
+                        sideTitles: SideTitles(showTitles: false)),
                   ),
-                  gridData:
-                      const FlGridData(show: false),
+                  gridData: const FlGridData(show: false),
                   borderData: FlBorderData(show: false),
-                  barGroups: List.generate(
-                      visible.length, (i) {
+                  barGroups: List.generate(visible.length, (i) {
                     final day = visible[i];
                     return BarChartGroupData(
                       x: i,
@@ -835,15 +744,13 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                           toY: inByDay[day] ?? 0,
                           color: Colors.green,
                           width: 7,
-                          borderRadius:
-                              BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         BarChartRodData(
                           toY: outByDay[day] ?? 0,
                           color: AppTheme.errorColor,
                           width: 7,
-                          borderRadius:
-                              BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ],
                     );
@@ -867,17 +774,13 @@ class _MovementReportPageState extends State<_MovementReportPage> {
 
   Widget _legend(Color color, String label) => Row(
         children: [
-          Container(
-              width: 10,
-              height: 10,
-              color: color),
+          Container(width: 10, height: 10, color: color),
           const SizedBox(width: 4),
           Text(label, style: const TextStyle(fontSize: 11)),
         ],
       );
 
-  Widget _countChip(String label, int value, Color color) =>
-      Container(
+  Widget _countChip(String label, int value, Color color) => Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: color.withOpacity(0.08),
@@ -887,24 +790,19 @@ class _MovementReportPageState extends State<_MovementReportPage> {
           children: [
             Text('$value',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: color)),
+                    fontWeight: FontWeight.bold, fontSize: 18, color: color)),
             Text(label,
-                style: const TextStyle(
-                    fontSize: 10, color: Colors.grey)),
+                style: const TextStyle(fontSize: 10, color: Colors.grey)),
           ],
         ),
       );
 
   Widget _buildDateFilter() {
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          const Icon(Icons.date_range, size: 18,
-              color: Colors.grey),
+          const Icon(Icons.date_range, size: 18, color: Colors.grey),
           const SizedBox(width: 6),
           Expanded(
             child: InkWell(
@@ -913,8 +811,7 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                   context: context,
                   firstDate: DateTime(2020),
                   lastDate: DateTime.now(),
-                  initialDateRange:
-                      DateTimeRange(start: _from, end: _to),
+                  initialDateRange: DateTimeRange(start: _from, end: _to),
                 );
                 if (picked != null) {
                   _from = picked.start;
@@ -923,11 +820,10 @@ class _MovementReportPageState extends State<_MovementReportPage> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.grey.shade300),
+                  border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -941,8 +837,7 @@ class _MovementReportPageState extends State<_MovementReportPage> {
           const SizedBox(width: 8),
           TextButton(
             onPressed: () {
-              _from = DateTime.now()
-                  .subtract(const Duration(days: 30));
+              _from = DateTime.now().subtract(const Duration(days: 30));
               _to = DateTime.now();
               _load();
             },
@@ -962,8 +857,7 @@ class _ReorderReportPage extends StatefulWidget {
   const _ReorderReportPage();
 
   @override
-  State<_ReorderReportPage> createState() =>
-      _ReorderReportPageState();
+  State<_ReorderReportPage> createState() => _ReorderReportPageState();
 }
 
 class _ReorderReportPageState extends State<_ReorderReportPage> {
@@ -1008,26 +902,22 @@ class _ReorderReportPageState extends State<_ReorderReportPage> {
               final item = items[i];
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundColor:
-                      AppTheme.infoColor.withOpacity(0.12),
+                  backgroundColor: AppTheme.infoColor.withOpacity(0.12),
                   child: const Icon(Icons.shopping_cart_outlined,
                       size: 20, color: AppTheme.infoColor),
                 ),
                 title: Text(item.name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600)),
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
                 subtitle: Text(
                     '${item.sku} • Stock: ${item.currentStock.toInt()} '
                     '(min: ${item.minimumStock.toInt()})',
                     style: const TextStyle(fontSize: 12)),
                 trailing: Chip(
-                  backgroundColor:
-                      AppTheme.infoColor.withOpacity(0.1),
+                  backgroundColor: AppTheme.infoColor.withOpacity(0.1),
                   label: Text(
                     'Order ${item.reorderQty.toInt()}',
                     style: const TextStyle(
-                        color: AppTheme.infoColor,
-                        fontSize: 11),
+                        color: AppTheme.infoColor, fontSize: 11),
                   ),
                 ),
               );
@@ -1042,8 +932,8 @@ class _ReorderReportPageState extends State<_ReorderReportPage> {
     final prov = context.read<InventoryProvider>();
     final count = await prov.createReorderRequests();
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('$count purchase order(s) created')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$count purchase order(s) created')));
     Navigator.pop(context);
   }
 }
@@ -1072,24 +962,17 @@ class _SummaryReportPage extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 childAspectRatio: 1.6,
                 children: [
-                  _kpiCard('Total Products',
-                      '${s.totalProducts}', Icons.inventory_2,
-                      AppTheme.primaryColor),
-                  _kpiCard('Active Products',
-                      '${s.activeProducts}', Icons.check_circle,
-                      AppTheme.successColor),
-                  _kpiCard('Low Stock',
-                      '${s.lowStockCount}', Icons.warning_amber,
-                      AppTheme.warningColor),
-                  _kpiCard('Out of Stock',
-                      '${s.outOfStockCount}', Icons.remove_shopping_cart,
-                      AppTheme.errorColor),
-                  _kpiCard('Cost Value',
-                      formatCurrency(s.totalCostValue),
-                      Icons.account_balance_wallet,
-                      AppTheme.successColor),
-                  _kpiCard('Selling Value',
-                      formatCurrency(s.totalSellingValue),
+                  _kpiCard('Total Products', '${s.totalProducts}',
+                      Icons.inventory_2, AppTheme.primaryColor),
+                  _kpiCard('Active Products', '${s.activeProducts}',
+                      Icons.check_circle, AppTheme.successColor),
+                  _kpiCard('Low Stock', '${s.lowStockCount}',
+                      Icons.warning_amber, AppTheme.warningColor),
+                  _kpiCard('Out of Stock', '${s.outOfStockCount}',
+                      Icons.remove_shopping_cart, AppTheme.errorColor),
+                  _kpiCard('Cost Value', formatCurrency(s.totalCostValue),
+                      Icons.account_balance_wallet, AppTheme.successColor),
+                  _kpiCard('Selling Value', formatCurrency(s.totalSellingValue),
                       Icons.sell, AppTheme.primaryColor),
                 ],
               ),
@@ -1100,26 +983,20 @@ class _SummaryReportPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Value by Category',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 12),
                       ...s.valueByCategory.entries.map(
                         (e) => Padding(
-                          padding:
-                              const EdgeInsets.symmetric(
-                                  vertical: 4),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Row(
                             children: [
                               Expanded(child: Text(e.key)),
-                              Text(
-                                  formatCurrency(e.value),
+                              Text(formatCurrency(e.value),
                                   style: const TextStyle(
-                                      fontWeight:
-                                          FontWeight.bold)),
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -1136,8 +1013,7 @@ class _SummaryReportPage extends StatelessWidget {
     );
   }
 
-  Widget _kpiCard(String label, String value,
-      IconData icon, Color color) {
+  Widget _kpiCard(String label, String value, IconData icon, Color color) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -1151,17 +1027,14 @@ class _SummaryReportPage extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                     child: Text(label,
-                        style: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey))),
+                        style:
+                            const TextStyle(fontSize: 11, color: Colors.grey))),
               ],
             ),
             const SizedBox(height: 6),
             Text(value,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: color)),
+                    fontWeight: FontWeight.bold, fontSize: 16, color: color)),
           ],
         ),
       ),
