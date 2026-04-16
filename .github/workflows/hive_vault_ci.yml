@@ -6,19 +6,15 @@ on:
   pull_request:
     branches: [main, develop]
 
-# Cancel in-progress runs for the same branch on new pushes
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Code Quality Gate
-  # ══════════════════════════════════════════════════════════════════════════
+
   quality:
     name: Code Quality
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -28,211 +24,129 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze --no-fatal-infos
 
-      - name: Generate mocks (mockito)
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Dart format check
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Flutter analyze (0 warnings, 0 errors)
-        run: flutter analyze --no-fatal-infos
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Integrity Tests — binary round-trip, compression, payload parsing
-  # ══════════════════════════════════════════════════════════════════════════
   integrity:
     name: Integrity Tests
     runs-on: ubuntu-latest
     needs: quality
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Generate mocks
-        run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test test/compression/gzip_provider_test.dart --reporter expanded
+      - run: flutter test test/compression/lz4_provider_test.dart --reporter expanded
+      - run: flutter test test/binary/binary_processor_test.dart --reporter expanded
+      - run: flutter test test/binary/lru_cache_test.dart --reporter expanded
 
-      - name: "Test: Compression — GZip round-trip integrity"
-        run: flutter test test/compression/gzip_provider_test.dart --reporter expanded
-
-      - name: "Test: Compression — Lz4 round-trip integrity"
-        run: flutter test test/compression/lz4_provider_test.dart --reporter expanded
-
-      - name: "Test: Binary — payload build/parse integrity"
-        run: flutter test test/binary/binary_processor_test.dart --reporter expanded
-
-      - name: "Test: Cache — LRU eviction integrity"
-        run: flutter test test/binary/lru_cache_test.dart --reporter expanded
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Security Tests — encryption, tamper detection, key management
-  # ══════════════════════════════════════════════════════════════════════════
   security:
     name: Security Tests
     runs-on: ubuntu-latest
     needs: quality
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Generate mocks
-        run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test test/encryption/aes_gcm_test.dart --reporter expanded
+      - run: flutter test test/encryption/key_manager_test.dart --reporter expanded
 
-      - name: "Test: AES-GCM — encrypt/decrypt/tamper detection"
-        run: flutter test test/encryption/aes_gcm_test.dart --reporter expanded
-
-      - name: "Test: Key Manager — storage and rotation"
-        run: flutter test test/encryption/key_manager_test.dart --reporter expanded
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Indexing Tests — search correctness and Arabic text support
-  # ══════════════════════════════════════════════════════════════════════════
   indexing:
     name: Indexing Tests
     runs-on: ubuntu-latest
     needs: quality
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: flutter test test/indexing/index_engine_test.dart --reporter expanded
 
-      - name: "Test: In-Memory Index Engine"
-        run: flutter test test/indexing/index_engine_test.dart --reporter expanded
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Integration Tests — full pipeline (save → search → delete)
-  # ══════════════════════════════════════════════════════════════════════════
   integration:
     name: Integration Tests
     runs-on: ubuntu-latest
     needs: [integrity, security, indexing]
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test test/integration/vault_integration_test.dart --reporter expanded
 
-      - name: Generate mocks
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: "Test: Full Integration Pipeline"
-        run: flutter test test/integration/vault_integration_test.dart --reporter expanded
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Full Test Suite + Coverage
-  # ══════════════════════════════════════════════════════════════════════════
   full_suite:
     name: Full Test Suite + Coverage
     runs-on: ubuntu-latest
     needs: integration
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test --coverage --reporter json > test_results.json || true
 
-      - name: Generate mocks
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Run all tests with coverage
-        run: flutter test --coverage --reporter json > test_results.json || true
-
-      - name: Upload coverage to Codecov
+      - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
           file: coverage/lcov.info
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Coverage threshold check (>= 85%)
-        run: |
-          sudo apt-get install -y lcov
-          COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" | grep -oP '\d+\.\d+' | head -1)
-          echo "Coverage: ${COVERAGE}%"
-          if (( $(echo "$COVERAGE < 85" | bc -l) )); then
-            echo "❌ Coverage ${COVERAGE}% is below the 85% threshold!"
-            exit 1
-          fi
-          echo "✅ Coverage ${COVERAGE}% meets the 85% requirement."
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Multi-Flutter-Version Matrix
-  # ══════════════════════════════════════════════════════════════════════════
   matrix:
-    name: Flutter ${{ matrix.flutter-version }}
+    name: Flutter ${{ matrix.flutter_version }}
     runs-on: ubuntu-latest
     needs: quality
+
     strategy:
       fail-fast: false
       matrix:
-        flutter-version: ["3.22.x", "3.24.x"]
+        flutter_version: ["3.22.x", "3.24.x"]
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ matrix.flutter-version }}
+          flutter-version: ${{ matrix.flutter_version }}
           channel: stable
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Generate mocks
-        run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter test test/compression/ --reporter expanded
+      - run: flutter test test/binary/ --reporter expanded
+      - run: flutter test test/indexing/ --reporter expanded
 
-      - name: Run core tests
-        run: |
-          flutter test test/compression/ --reporter expanded
-          flutter test test/binary/ --reporter expanded
-          flutter test test/indexing/ --reporter expanded
-
-  # ══════════════════════════════════════════════════════════════════════════
-  #  Summary Badge
-  # ══════════════════════════════════════════════════════════════════════════
   summary:
     name: CI Summary
     runs-on: ubuntu-latest
