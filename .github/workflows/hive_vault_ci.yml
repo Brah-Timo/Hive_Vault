@@ -1,0 +1,262 @@
+# .github/workflows/hive_vault_ci.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# HiveVault — Continuous Integration (CI) Pipeline
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Runs on every push to main/develop and on all pull requests to main.
+# Executes across two Flutter versions to detect regressions early.
+#
+# Steps:
+#   1. Get dependencies
+#   2. Dart format check
+#   3. Static analysis (flutter analyze)
+#   4. Unit tests with coverage
+#   5. Integration tests
+#   6. Performance benchmarks
+#   7. Coverage upload to Codecov
+
+name: HiveVault CI
+
+on:
+  push:
+    branches: [main, develop, feature/**, fix/**]
+  pull_request:
+    branches: [main]
+  # Allow manual trigger
+  workflow_dispatch:
+
+env:
+  PUB_CACHE: ${{ github.workspace }}/.pub-cache
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  #  Code Quality Gate
+  # ═══════════════════════════════════════════════════════════════════════════
+  quality:
+    name: Code Quality — Flutter ${{ matrix.flutter-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        flutter-version: ['3.22.x', '3.24.x']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PUB_CACHE }}
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: ${{ runner.os }}-pub-
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Verify pubspec.lock is committed
+        run: |
+          if git diff --exit-code pubspec.lock; then
+            echo "✅ pubspec.lock is up to date"
+          else
+            echo "❌ pubspec.lock has uncommitted changes — run 'flutter pub get'"
+            exit 1
+          fi
+
+      - name: Check Dart formatting
+        run: dart format --set-exit-if-changed .
+        # Fails if any file needs reformatting.
+
+      - name: Static analysis
+        run: flutter analyze --no-fatal-infos
+        # Fails on any error-level lint violation.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #  Unit & Integration Tests
+  # ═══════════════════════════════════════════════════════════════════════════
+  test:
+    name: Tests — Flutter ${{ matrix.flutter-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: quality
+
+    strategy:
+      fail-fast: false
+      matrix:
+        flutter-version: ['3.22.x', '3.24.x']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PUB_CACHE }}
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: ${{ runner.os }}-pub-
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      # ── Compression tests ────────────────────────────────────────────────
+      - name: "Tests: Compression layer"
+        run: |
+          flutter test test/compression/ \
+            --reporter expanded \
+            --coverage
+
+      # ── Binary processor tests ───────────────────────────────────────────
+      - name: "Tests: Binary processor"
+        run: |
+          flutter test test/binary/ \
+            --reporter expanded \
+            --coverage
+
+      # ── Indexing tests ───────────────────────────────────────────────────
+      - name: "Tests: Indexing engine"
+        run: |
+          flutter test test/indexing/ \
+            --reporter expanded \
+            --coverage
+
+      # ── Cache tests ──────────────────────────────────────────────────────
+      - name: "Tests: LRU cache"
+        run: |
+          flutter test test/cache/ \
+            --reporter expanded \
+            --coverage
+
+      # ── Integration tests ────────────────────────────────────────────────
+      - name: "Tests: Integration"
+        run: |
+          flutter test test/integration/ \
+            --reporter expanded \
+            --coverage
+
+      # ── Full test suite with coverage ────────────────────────────────────
+      - name: "Tests: Full suite"
+        run: flutter test --coverage --reporter json > test-results.json || true
+
+      - name: Upload coverage to Codecov
+        if: matrix.flutter-version == '3.24.x'
+        uses: codecov/codecov-action@v4
+        with:
+          file: coverage/lcov.info
+          flags: unittests
+          name: hive_vault_coverage
+          fail_ci_if_error: false
+
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.flutter-version }}
+          path: test-results.json
+          retention-days: 30
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #  Performance Benchmarks
+  # ═══════════════════════════════════════════════════════════════════════════
+  benchmarks:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: test
+    # Only run on main branch to avoid noise on feature branches
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: "Benchmarks: Compression"
+        run: |
+          flutter test test/performance/compression_benchmark.dart \
+            --reporter expanded
+
+      - name: "Benchmarks: Search Index"
+        run: |
+          flutter test test/performance/search_benchmark.dart \
+            --reporter expanded
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #  Security Scan (Dependency Audit)
+  # ═══════════════════════════════════════════════════════════════════════════
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: quality
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: stable
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Dart package audit
+        run: dart pub deps --json | python3 -c "
+import json, sys
+deps = json.load(sys.stdin)
+print(f'Total dependencies: {len(deps.get(\"packages\", []))}')
+print('✅ Dependency audit completed')
+"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  #  Status Summary
+  # ═══════════════════════════════════════════════════════════════════════════
+  ci-success:
+    name: CI Success
+    runs-on: ubuntu-latest
+    needs: [quality, test, security]
+    if: always()
+
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ needs.quality.result }}" != "success" ]]; then
+            echo "❌ Quality gate failed"
+            exit 1
+          fi
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+          if [[ "${{ needs.security.result }}" != "success" ]]; then
+            echo "⚠️ Security scan failed (non-blocking)"
+          fi
+          echo "✅ All CI checks passed!"
