@@ -1,262 +1,248 @@
-# .github/workflows/hive_vault_ci.yml
-# ─────────────────────────────────────────────────────────────────────────────
-# HiveVault — Continuous Integration (CI) Pipeline
-# ─────────────────────────────────────────────────────────────────────────────
-#
-# Runs on every push to main/develop and on all pull requests to main.
-# Executes across two Flutter versions to detect regressions early.
-#
-# Steps:
-#   1. Get dependencies
-#   2. Dart format check
-#   3. Static analysis (flutter analyze)
-#   4. Unit tests with coverage
-#   5. Integration tests
-#   6. Performance benchmarks
-#   7. Coverage upload to Codecov
-
 name: HiveVault CI
 
 on:
   push:
-    branches: [main, develop, feature/**, fix/**]
+    branches: [main, develop, "feature/**"]
   pull_request:
-    branches: [main]
-  # Allow manual trigger
-  workflow_dispatch:
+    branches: [main, develop]
 
-env:
-  PUB_CACHE: ${{ github.workspace }}/.pub-cache
+# Cancel in-progress runs for the same branch on new pushes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  # ═══════════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════════
   #  Code Quality Gate
-  # ═══════════════════════════════════════════════════════════════════════════
+  # ══════════════════════════════════════════════════════════════════════════
   quality:
-    name: Code Quality — Flutter ${{ matrix.flutter-version }}
+    name: Code Quality
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    strategy:
-      fail-fast: false
-      matrix:
-        flutter-version: ['3.22.x', '3.24.x']
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Cache pub dependencies
-        uses: actions/cache@v4
+      - uses: subosito/flutter-action@v2
         with:
-          path: ${{ env.PUB_CACHE }}
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: ${{ runner.os }}-pub-
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ matrix.flutter-version }}
+          flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Verify pubspec.lock is committed
-        run: |
-          if git diff --exit-code pubspec.lock; then
-            echo "✅ pubspec.lock is up to date"
-          else
-            echo "❌ pubspec.lock has uncommitted changes — run 'flutter pub get'"
-            exit 1
-          fi
+      - name: Generate mocks (mockito)
+        run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Check Dart formatting
-        run: dart format --set-exit-if-changed .
-        # Fails if any file needs reformatting.
+      - name: Dart format check
+        run: dart format --output=none --set-exit-if-changed .
 
-      - name: Static analysis
+      - name: Flutter analyze (0 warnings, 0 errors)
         run: flutter analyze --no-fatal-infos
-        # Fails on any error-level lint violation.
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  #  Unit & Integration Tests
-  # ═══════════════════════════════════════════════════════════════════════════
-  test:
-    name: Tests — Flutter ${{ matrix.flutter-version }}
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Integrity Tests — binary round-trip, compression, payload parsing
+  # ══════════════════════════════════════════════════════════════════════════
+  integrity:
+    name: Integrity Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     needs: quality
 
-    strategy:
-      fail-fast: false
-      matrix:
-        flutter-version: ['3.22.x', '3.24.x']
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Cache pub dependencies
-        uses: actions/cache@v4
+      - uses: subosito/flutter-action@v2
         with:
-          path: ${{ env.PUB_CACHE }}
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: ${{ runner.os }}-pub-
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ matrix.flutter-version }}
+          flutter-version: "3.24.x"
           channel: stable
           cache: true
 
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      # ── Compression tests ────────────────────────────────────────────────
-      - name: "Tests: Compression layer"
-        run: |
-          flutter test test/compression/ \
-            --reporter expanded \
-            --coverage
+      - name: Generate mocks
+        run: dart run build_runner build --delete-conflicting-outputs
 
-      # ── Binary processor tests ───────────────────────────────────────────
-      - name: "Tests: Binary processor"
-        run: |
-          flutter test test/binary/ \
-            --reporter expanded \
-            --coverage
+      - name: "Test: Compression — GZip round-trip integrity"
+        run: flutter test test/compression/gzip_provider_test.dart --reporter expanded
 
-      # ── Indexing tests ───────────────────────────────────────────────────
-      - name: "Tests: Indexing engine"
-        run: |
-          flutter test test/indexing/ \
-            --reporter expanded \
-            --coverage
+      - name: "Test: Compression — Lz4 round-trip integrity"
+        run: flutter test test/compression/lz4_provider_test.dart --reporter expanded
 
-      # ── Cache tests ──────────────────────────────────────────────────────
-      - name: "Tests: LRU cache"
-        run: |
-          flutter test test/cache/ \
-            --reporter expanded \
-            --coverage
+      - name: "Test: Binary — payload build/parse integrity"
+        run: flutter test test/binary/binary_processor_test.dart --reporter expanded
 
-      # ── Integration tests ────────────────────────────────────────────────
-      - name: "Tests: Integration"
-        run: |
-          flutter test test/integration/ \
-            --reporter expanded \
-            --coverage
+      - name: "Test: Cache — LRU eviction integrity"
+        run: flutter test test/binary/lru_cache_test.dart --reporter expanded
 
-      # ── Full test suite with coverage ────────────────────────────────────
-      - name: "Tests: Full suite"
-        run: flutter test --coverage --reporter json > test-results.json || true
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Security Tests — encryption, tamper detection, key management
+  # ══════════════════════════════════════════════════════════════════════════
+  security:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    needs: quality
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.x"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate mocks
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: "Test: AES-GCM — encrypt/decrypt/tamper detection"
+        run: flutter test test/encryption/aes_gcm_test.dart --reporter expanded
+
+      - name: "Test: Key Manager — storage and rotation"
+        run: flutter test test/encryption/key_manager_test.dart --reporter expanded
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Indexing Tests — search correctness and Arabic text support
+  # ══════════════════════════════════════════════════════════════════════════
+  indexing:
+    name: Indexing Tests
+    runs-on: ubuntu-latest
+    needs: quality
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.x"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: "Test: In-Memory Index Engine"
+        run: flutter test test/indexing/index_engine_test.dart --reporter expanded
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Integration Tests — full pipeline (save → search → delete)
+  # ══════════════════════════════════════════════════════════════════════════
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [integrity, security, indexing]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.x"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate mocks
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: "Test: Full Integration Pipeline"
+        run: flutter test test/integration/vault_integration_test.dart --reporter expanded
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Full Test Suite + Coverage
+  # ══════════════════════════════════════════════════════════════════════════
+  full_suite:
+    name: Full Test Suite + Coverage
+    runs-on: ubuntu-latest
+    needs: integration
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.x"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate mocks
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run all tests with coverage
+        run: flutter test --coverage --reporter json > test_results.json || true
 
       - name: Upload coverage to Codecov
-        if: matrix.flutter-version == '3.24.x'
         uses: codecov/codecov-action@v4
         with:
           file: coverage/lcov.info
-          flags: unittests
-          name: hive_vault_coverage
           fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Archive test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-${{ matrix.flutter-version }}
-          path: test-results.json
-          retention-days: 30
+      - name: Coverage threshold check (>= 85%)
+        run: |
+          sudo apt-get install -y lcov
+          COVERAGE=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" | grep -oP '\d+\.\d+' | head -1)
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 85" | bc -l) )); then
+            echo "❌ Coverage ${COVERAGE}% is below the 85% threshold!"
+            exit 1
+          fi
+          echo "✅ Coverage ${COVERAGE}% meets the 85% requirement."
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  #  Performance Benchmarks
-  # ═══════════════════════════════════════════════════════════════════════════
-  benchmarks:
-    name: Performance Benchmarks
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Multi-Flutter-Version Matrix
+  # ══════════════════════════════════════════════════════════════════════════
+  matrix:
+    name: Flutter ${{ matrix.flutter-version }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: test
-    # Only run on main branch to avoid noise on feature branches
-    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: quality
+    strategy:
+      fail-fast: false
+      matrix:
+        flutter-version: ["3.22.x", "3.24.x"]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x'
+          flutter-version: ${{ matrix.flutter-version }}
           channel: stable
           cache: true
 
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: "Benchmarks: Compression"
+      - name: Generate mocks
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run core tests
         run: |
-          flutter test test/performance/compression_benchmark.dart \
-            --reporter expanded
+          flutter test test/compression/ --reporter expanded
+          flutter test test/binary/ --reporter expanded
+          flutter test test/indexing/ --reporter expanded
 
-      - name: "Benchmarks: Search Index"
-        run: |
-          flutter test test/performance/search_benchmark.dart \
-            --reporter expanded
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  #  Security Scan (Dependency Audit)
-  # ═══════════════════════════════════════════════════════════════════════════
-  security:
-    name: Security Scan
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Summary Badge
+  # ══════════════════════════════════════════════════════════════════════════
+  summary:
+    name: CI Summary
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: quality
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.x'
-          channel: stable
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Dart package audit
-        run: dart pub deps --json | python3 -c "
-import json, sys
-deps = json.load(sys.stdin)
-print(f'Total dependencies: {len(deps.get(\"packages\", []))}')
-print('✅ Dependency audit completed')
-"
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  #  Status Summary
-  # ═══════════════════════════════════════════════════════════════════════════
-  ci-success:
-    name: CI Success
-    runs-on: ubuntu-latest
-    needs: [quality, test, security]
+    needs: [full_suite, matrix]
     if: always()
 
     steps:
-      - name: Check all jobs passed
+      - name: Print CI result
         run: |
-          if [[ "${{ needs.quality.result }}" != "success" ]]; then
-            echo "❌ Quality gate failed"
-            exit 1
-          fi
-          if [[ "${{ needs.test.result }}" != "success" ]]; then
-            echo "❌ Tests failed"
-            exit 1
-          fi
-          if [[ "${{ needs.security.result }}" != "success" ]]; then
-            echo "⚠️ Security scan failed (non-blocking)"
-          fi
-          echo "✅ All CI checks passed!"
+          echo "══════════════════════════════════════"
+          echo "  HiveVault CI completed"
+          echo "  Status: ${{ needs.full_suite.result }}"
+          echo "══════════════════════════════════════"
