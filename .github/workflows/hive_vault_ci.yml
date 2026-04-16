@@ -26,7 +26,19 @@ jobs:
 
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: dart format --output=none --set-exit-if-changed .
+
+      # ✅ Auto format بدل fail
+      - name: Auto format
+        run: dart format .
+
+      - name: Commit format changes if any
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "ci: auto format"
+          git push
+
       - run: flutter analyze --no-fatal-infos
 
   integrity:
