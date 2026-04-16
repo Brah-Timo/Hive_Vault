@@ -1,0 +1,45 @@
+name: hive_vault
+description: >
+  Advanced Secure Storage Wrapper for Flutter — A middleware layer over Hive
+  that adds AES-256-GCM/CBC encryption, GZip/Lz4 compression, O(1) in-memory
+  indexing, binary transparency, audit logging, and LRU caching.
+version: 1.0.0
+homepage: https://github.com/your-org/hive_vault
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── Database ──────────────────────────────────────────────────────────────
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
+
+  # ── Cryptography ──────────────────────────────────────────────────────────
+  encrypt: ^5.0.3
+  pointycastle: ^3.9.1
+  cryptography: ^2.7.0
+
+  # ── Secure Key Storage ────────────────────────────────────────────────────
+  flutter_secure_storage: ^9.2.4
+
+  # ── Utilities ─────────────────────────────────────────────────────────────
+  collection: ^1.18.0
+  meta: ^1.15.0
+  path: ^1.9.0
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.25.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.13
+  flutter_lints: ^5.0.0
+
+flutter:
+  # No assets required for this package
