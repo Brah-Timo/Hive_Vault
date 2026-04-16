@@ -1,0 +1,73 @@
+name: inventory_app
+description: >
+  Complete Inventory Management System — barcode-based stock tracking,
+  low-stock alerts, reports, and reorder requests built with Flutter,
+  Hive, and HiveVault.
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── HiveVault (parent package) ────────────────────────────────────────────
+  hive_vault:
+    path: ../..
+
+  # ── Database ──────────────────────────────────────────────────────────────
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
+
+  # ── State Management ──────────────────────────────────────────────────────
+  provider: ^6.1.2
+
+  # ── Barcode / QR Scanner ──────────────────────────────────────────────────
+  mobile_scanner: ^5.2.3
+
+  # ── Barcode Generator ─────────────────────────────────────────────────────
+  barcode_widget: ^2.0.4
+
+  # ── Notifications ─────────────────────────────────────────────────────────
+  flutter_local_notifications: ^17.2.4
+
+  # ── Charts & Reports ──────────────────────────────────────────────────────
+  fl_chart: ^0.70.2
+
+  # ── PDF & Printing ────────────────────────────────────────────────────────
+  pdf: ^3.11.1
+  printing: ^5.13.2
+
+  # ── Image Picking ─────────────────────────────────────────────────────────
+  image_picker: ^1.1.2
+
+  # ── Utilities ─────────────────────────────────────────────────────────────
+  uuid: ^4.5.1
+  intl: ^0.19.0
+  collection: ^1.18.0
+  share_plus: ^10.1.4
+  path: ^1.9.0
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.8
+  flutter_slidable: ^3.1.1
+  shimmer: ^3.0.0
+  badges: ^3.1.2
+  fl_toast: ^3.2.0
+  flutter_staggered_animations: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
