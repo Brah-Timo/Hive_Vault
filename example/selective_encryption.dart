@@ -141,7 +141,7 @@ Future<void> main() async {
       phone: '+213 555 123456',
       email: 'ahmed@example.dz',
       bankAccount: 'CPA 00200123456789012',
-      balance: 250_000.0,
+      balance: 250000.0,
     ),
     Client(
       code: 'CLI-002',
@@ -151,7 +151,7 @@ Future<void> main() async {
       phone: '+213 555 654321',
       email: 'fatima@example.dz',
       bankAccount: 'BNA 00300987654321098',
-      balance: -15_000.0,
+      balance: -15000.0,
     ),
     Client(
       code: 'CLI-003',
@@ -161,7 +161,7 @@ Future<void> main() async {
       phone: '+213 555 112233',
       email: 'karim@example.dz',
       bankAccount: 'CNEP 00400112233445566',
-      balance: 1_500_000.0,
+      balance: 1500000.0,
     ),
   ];
 
